@@ -5,41 +5,31 @@ module "vpc" {
   enable_dns_hostnames       = var.enable_dns_hostnames
   private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
   public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
-  vpc_flow_log_role_name     = "vpc-flow-logs-to-cloudwatch"
+  vpc_flow_log_role_name     = var.vpc_flow_log_role_name
 }
 
 module "gateway_endpoints" {
   source          = "../Terraform/Modules/Gateway_Endpoint"
   vpc_id          = module.vpc.vpc_id
-  service_name    = ["com.amazonaws.${var.region}.s3"]
+  service_name    = var.gateway_endpoints
   route_table_ids = [module.vpc.private_route_table_id]
 }
 
 module "interface_endpoints" {
-  source = "../Terraform/Modules/Interface_Endpoint"
-  vpc_id = module.vpc.vpc_id
-  service_names = [
-    "com.amazonaws.${var.region}.ecr.api",
-    "com.amazonaws.${var.region}.ecr.dkr",
-    "com.amazonaws.${var.region}.logs",
-    "com.amazonaws.${var.region}.kms",
-    "com.amazonaws.${var.region}.elasticloadbalancing",
-    "com.amazonaws.${var.region}.monitoring",
-    "com.amazonaws.${var.region}.ecs",
-  ]
+  source              = "../Terraform/Modules/Interface_Endpoint"
+  vpc_id              = module.vpc.vpc_id
+  service_names       = var.interface_endpoints
   subnet_ids          = module.vpc.private_subnet_ids
   security_group_ids  = [module.vpce_sg.security_group_id]
   private_dns_enabled = true
-  ip_address_type     = "ipv4"
-
+  ip_address_type     = var.ip_address_type
 }
 
 module "vpce_sg" {
   source         = "../Terraform/Modules/Security_Groups"
   vpc_id         = module.vpc.vpc_id
   sg_name        = "VPCE_SG"
-  sg_description = "Security group for Interface VPC Endpoints (allow 443 from VPC)"
-
+  sg_description = "Security group for Interface VPC Endpoints"
   ingress_rules = [
     {
       from_port       = 443
@@ -64,13 +54,11 @@ module "vpce_sg" {
     }
   ]
 }
-
 module "alb_sg" {
   source         = "../Terraform/Modules/Security_Groups"
   vpc_id         = module.vpc.vpc_id
   sg_name        = "ALB_SECURITY_GROUP"
   sg_description = "ALB security group"
-
   ingress_rules = [
     {
       from_port       = 443
@@ -103,8 +91,8 @@ module "application_sg" {
   sg_description = "Application security group for ECS service"
   ingress_rules = [
     {
-      from_port       = 3000
-      to_port         = 3000
+      from_port       = var.container_port
+      to_port         = var.container_port
       protocol        = "tcp"
       security_groups = [module.alb_sg.security_group_id]
       cidr_blocks     = []
@@ -127,7 +115,6 @@ module "application_sg" {
 
   ]
 }
-
 module "route53_new_zone" {
   source                 = "../Terraform/Modules/Route53"
   domain_name            = var.domain_name
@@ -136,17 +123,15 @@ module "route53_new_zone" {
   zone_id                = module.cloudfront.hosted_zone_id
   evaluate_target_health = false
 }
-
-
 module "alb" {
   source                = "../Terraform/Modules/ALB"
   vpc_id                = module.vpc.vpc_id
   security_group_id     = module.alb_sg.security_group_id
   private_subnet_ids    = module.vpc.private_subnet_ids
-  target_group_name     = "web-targets"
-  target_group_port     = 3000
-  target_group_protocol = "HTTP"
-  health_check_path     = "/"
+  target_group_name     = var.target_group_name
+  target_group_port     = var.target_group_port
+  target_group_protocol = var.target_group_protocol
+  health_check_path     = var.health_check_path
   acm_certificate_arn   = module.acm_alb.certificate_arn
 
 }
@@ -155,8 +140,8 @@ module "acm_alb" {
   source             = "../Terraform/Modules/ACM"
   domain_name        = var.domain_name
   zone_id            = module.route53_new_zone.hosted_zone_id
-  dns_ttl            = 60
-  validation_timeout = "2h"
+  dns_ttl            = var.dns_ttl
+  validation_timeout = var.validation_timeout
 }
 
 module "cloudfront" {
@@ -166,77 +151,36 @@ module "cloudfront" {
   alb_arn             = module.alb.alb_arn
   domain_name         = module.alb.alb_dns_name
   waf_acl             = module.waf_acl.waf_arn
-
 }
 
 module "ecs" {
   source                    = "../Terraform/Modules/ECS"
   subnet_ids                = module.vpc.private_subnet_ids
   security_group_id         = module.application_sg.security_group_id
-  cluster_name              = "threat-model-cluster"
-  desired_count             = 2
-  container_name            = "threat-model-app"
-  container_port            = 3000
-  cpu                       = "256"
-  memory                    = "512"
-  cpu_target                = 50
-  family                    = "threat-model-task-family"
+  cluster_name              = var.cluster_name
+  desired_count             = var.desired_count
+  container_name            = var.container_name
+  container_port            = var.container_port
+  cpu                       = var.cpu
+  memory                    = var.memory
+  cpu_target                = var.cpu_target
+  family                    = var.family
   execution_role_arn        = module.ecs_execution_role.role_arn
   force_new_deployment      = true
   aws_kms_key_alias_ecs_log = "alias/ecs-log-key"
-  task_role_arn             = module.task_role.role_arn
   target_group_arn          = module.alb.target_group_arn
-  min_capacity              = 2
-  max_capacity              = 3
-  image                     = "${data.aws_ecr_image.app}:latest"
+  min_capacity              = var.min_capacity
+  max_capacity              = var.max_capacity
+  image                     = var.image_url
   region                    = var.region
-  service_name              = "threat-model-service"
+  service_name              = var.service_name
 }
-
-module "task_role" {
-  source                 = "../Terraform/Modules/IAM"
-  assume_role_policy     = data.aws_iam_policy_document.ecs_task_assume_role.json
-  create_custom_policy   = true
-  role_name              = "threat-composer-task-role"
-  custom_policy_name     = "threat-composer-task-policy"
-  custom_policy_document = data.aws_iam_policy_document.ecs_task_execution_policy.json
-}
-
-data "aws_iam_policy_document" "ecs_task_execution_policy" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:PutObject",
-      "s3:ListBucket"
-    ]
-    resources = [
-      "arn:aws:s3:::threat-model-bucket",
-      "arn:aws:s3:::threat-model-bucket/*"
-    ]
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "dynamodb:PutItem",
-      "dynamodb:GetItem",
-      "dynamodb:UpdateItem",
-      "dynamodb:Scan",
-      "dynamodb:Query"
-    ]
-    resources = [
-      "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/ThreatModelTable"
-    ]
-  }
-}
-
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"
-  role_name              = "threat-composer-ecs-execution-role"
+  role_name              = var.ecs_execution_role
   assume_role_policy     = data.aws_iam_policy_document.ecs_task_assume_role.json
   create_custom_policy   = true
-  custom_policy_name     = "threat-composer-ecs-policy"
+  custom_policy_name     = var.ecs_execution_policy
   custom_policy_document = data.aws_iam_policy_document.ecs_execution_policy.json
 }
 
@@ -259,7 +203,9 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage"
     ]
-    resources = ["175798131198.dkr.ecr.eu-west-2.amazonaws.com/threat_model_app:latest"]
+    resources = [
+      "arn:aws:ecr:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:repository/threat_model_app"
+    ]
   }
 
   statement {
@@ -286,8 +232,10 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
 
 module "waf_acl" {
   source = "../Terraform/Modules/WAF"
+  providers = {
+    aws = aws.use1
+  }
 
-  name        = "threat-model-waf-acl"
+  name        = var.waf_name
   description = "Web ACL for Threat Model"
-  scope       = "CLOUDFRONT"
 }

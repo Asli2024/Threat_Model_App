@@ -43,6 +43,30 @@ variable "vpc_cidr_block" {
   type        = string
   default     = ""
 }
+
+variable "vpc_flow_log_role_name" {
+  description = "IAM Role name for VPC Flow Logs"
+  type        = string
+  default     = ""
+}
+
+variable "gateway_endpoints" {
+  description = "List of gateway endpoint service names"
+  type        = list(string)
+  default     = []
+}
+
+variable "interface_endpoints" {
+  description = "List of interface endpoint service names"
+  type        = list(string)
+  default     = []
+}
+
+variable "ip_address_type" {
+  description = "IP address type for interface endpoints"
+  type        = string
+  default     = "ipv4"
+}
 variable "domain_name" {
   description = "Domain name"
   type        = string
@@ -57,4 +81,128 @@ variable "aliases" {
   description = "List of domain names (CNAMEs) for the CloudFront distribution"
   type        = list(string)
   default     = []
+}
+
+variable "target_group_name" {
+  description = "Name of the target group"
+  type        = string
+  default     = ""
+}
+
+variable "target_group_port" {
+  description = "Port for the target group"
+  type        = number
+  default     = null
+}
+
+variable "target_group_protocol" {
+  description = "Protocol for the target group"
+  type        = string
+  default     = "HTTP"
+}
+
+variable "health_check_path" {
+  description = "Health check path for the target group"
+  type        = string
+  default     = "/"
+}
+
+variable "dns_ttl" {
+  description = "TTL for DNS records"
+  type        = number
+  default     = 60
+}
+
+variable "validation_timeout" {
+  description = "Timeout for ACM certificate validation"
+  type        = string
+  default     = "2h"
+}
+
+variable "cluster_name" {
+  description = "ECS Cluster Name"
+  type        = string
+  default     = ""
+}
+
+variable "desired_count" {
+  description = "Number of desired ECS tasks"
+  type        = number
+  default     = null
+}
+
+variable "container_name" {
+  description = "Name of the container in the ECS task"
+  type        = string
+  default     = ""
+}
+
+variable "container_port" {
+  description = "Port on which the container listens"
+  type        = number
+  default     = null
+}
+
+variable "cpu" {
+  description = "CPU units for the ECS task"
+  type        = string
+  default     = "256"
+}
+
+variable "memory" {
+  description = "Memory in MB for the ECS task"
+  type        = string
+  default     = "512"
+}
+
+variable "cpu_target" {
+  description = "CPU utilization target percentage for ECS service auto-scaling"
+  type        = number
+  default     = 50
+}
+
+variable "min_capacity" {
+  description = "Minimum capacity for ECS service auto-scaling"
+  type        = number
+  default     = null
+}
+
+variable "max_capacity" {
+  description = "Maximum capacity for ECS service auto-scaling"
+  type        = number
+  default     = null
+}
+
+variable "family" {
+  description = "Family name for the ECS task definition"
+  type        = string
+  default     = "threat-model-task-family"
+}
+variable "image_url" {
+  description = "URL of the container image"
+  type        = string
+  default     = ""
+}
+
+variable "service_name" {
+  description = "Name of the ECS service"
+  type        = string
+  default     = ""
+}
+
+variable "ecs_execution_role" {
+  description = "Name of the ECS execution role"
+  type        = string
+  default     = ""
+}
+variable "ecs_execution_policy" {
+  description = "Name of the ECS execution policy"
+  type        = string
+  default     = ""
+}
+
+variable "waf_name" {
+  description = "Name for the WAFv2 Web ACL"
+  type        = string
+  default     = ""
 }

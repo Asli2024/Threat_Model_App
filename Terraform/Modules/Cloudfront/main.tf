@@ -14,10 +14,11 @@ resource "aws_cloudfront_vpc_origin" "alb" {
 }
 
 # tfsec:ignore:AVD-AWS-0010  # Logging for distribution not enabled intentional for this module
+#tfsec:ignore:AVD-AWS-0011 because: WAF ARN is supplied by root module
 resource "aws_cloudfront_distribution" "this" {
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "Threat Composer App CloudFront (VPC origin -> ALB)"
+  comment         = "Threat Composer App CloudFront"
   aliases         = var.aliases
   price_class     = var.price_class
   web_acl_id      = var.waf_acl
@@ -32,18 +33,13 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   default_cache_behavior {
-    target_origin_id       = "vpc-origin" # Must match origin_id above
+    target_origin_id       = "vpc-origin"
     viewer_protocol_policy = "redirect-to-https"
 
     allowed_methods = ["GET", "HEAD", "OPTIONS"]
     cached_methods  = ["GET", "HEAD"]
 
     cache_policy_id = aws_cloudfront_cache_policy.threatcomposer.id
-
-    forwarded_values {
-      query_string = false
-      cookies { forward = "none" }
-    }
 
     min_ttl     = var.min_ttl
     default_ttl = var.default_ttl

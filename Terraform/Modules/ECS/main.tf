@@ -64,8 +64,6 @@ data "aws_iam_policy_document" "ecs_log_kms_key_policy" {
       values   = ["arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:log-group:*"]
     }
   }
-
-  # Optional: allow ECS tasks service (remove if it causes errors)
   statement {
     sid    = "AllowECSTasksToWriteLogs"
     effect = "Allow"
@@ -152,7 +150,6 @@ resource "aws_ecs_task_definition" "this" {
   cpu                      = var.cpu
   memory                   = var.memory
   execution_role_arn       = var.execution_role_arn
-  task_role_arn            = var.task_role_arn
 
   runtime_platform {
     cpu_architecture = "ARM64"
