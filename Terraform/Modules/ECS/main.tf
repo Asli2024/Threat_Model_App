@@ -19,7 +19,8 @@ resource "aws_kms_key" "ecs_log_key" {
 }
 
 resource "aws_kms_alias" "ecs_log_key_alias" {
-  name          = var.aws_kms_key_alias_ecs_log
+  count         = var.aws_kms_key_alias_ecs_log == "" ? 0 : 1
+  name          = trimspace(var.environment) != "" ? format("%s-%s", var.aws_kms_key_alias_ecs_log, var.environment) : var.aws_kms_key_alias_ecs_log
   target_key_id = aws_kms_key.ecs_log_key.id
 }
 
@@ -64,8 +65,6 @@ data "aws_iam_policy_document" "ecs_log_kms_key_policy" {
       values   = ["arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:log-group:*"]
     }
   }
-
-  # Optional: allow ECS tasks service (remove if it causes errors)
   statement {
     sid    = "AllowECSTasksToWriteLogs"
     effect = "Allow"
@@ -152,7 +151,6 @@ resource "aws_ecs_task_definition" "this" {
   cpu                      = var.cpu
   memory                   = var.memory
   execution_role_arn       = var.execution_role_arn
-  task_role_arn            = var.task_role_arn
 
   runtime_platform {
     cpu_architecture = "ARM64"

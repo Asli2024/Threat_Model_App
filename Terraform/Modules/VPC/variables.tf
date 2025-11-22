@@ -30,6 +30,12 @@ variable "vpc_flow_log_role_name" {
   type        = string
   default     = ""
 }
+
+variable "environment" {
+  description = "Environment identifier used for log group and KMS alias uniqueness"
+  type        = string
+  default     = ""
+}
 variable "vpc_flow_log_kms_key_policy_json" {
   description = "KMS Key Policy JSON for VPC Flow Logs KMS Key"
   type        = string
@@ -42,6 +48,12 @@ variable "vpc_flow_logs_assume_role" {
 }
 variable "vpc_flow_log_role_policy_json" {
   description = "The IAM policy document for the VPC Flow Log role"
+  type        = string
+  default     = ""
+}
+
+variable "name_prefix" {
+  description = "Prefix used for Name tags on all VPC resources"
   type        = string
   default     = ""
 }

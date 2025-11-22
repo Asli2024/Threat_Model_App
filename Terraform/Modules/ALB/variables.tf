@@ -44,3 +44,9 @@ variable "acm_certificate_arn" {
   type        = string
   default     = ""
 }
+
+variable "environment" {
+  description = "Environment identifier used for unique ALB naming"
+  type        = string
+  default     = ""
+}

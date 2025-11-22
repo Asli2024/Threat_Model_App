@@ -1,9 +1,0 @@
-check for merge conflicts................................................Passed
-fix end of files.........................................................Passed
-trim trailing whitespace.................................................Passed
-check yaml...............................................................Passed
-Terraform fmt............................................................Passed
-Terraform validate.......................................................Passed
-Terraform validate with tflint...........................................Passed
-Terraform docs...........................................................Passed
-Terraform validate with trivy............................................Passed

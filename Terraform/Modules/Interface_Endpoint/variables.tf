@@ -45,3 +45,9 @@ variable "endpoint_policy_json" {
   type        = string
   default     = null
 }
+
+variable "name_prefix" {
+  description = "Prefix to use for naming interface VPC endpoints (Name tag)."
+  type        = string
+  default     = "vpce"
+}

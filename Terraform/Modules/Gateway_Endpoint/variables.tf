@@ -12,3 +12,9 @@ variable "route_table_ids" {
   description = "A list of route table IDs to associate with the gateway endpoint."
   type        = list(string)
 }
+
+variable "name_prefix" {
+  description = "Prefix used for the Name tag applied to the gateway endpoint."
+  type        = string
+  default     = "gw"
+}

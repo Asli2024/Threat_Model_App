@@ -31,4 +31,8 @@ resource "aws_security_group" "this" {
       prefix_list_ids  = lookup(egress.value, "prefix_list_ids", null)
     }
   }
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-${var.sg_name}" : var.sg_name
+  }
 }
