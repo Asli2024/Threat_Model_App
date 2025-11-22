@@ -62,6 +62,7 @@
 | <a name="input_ecs_execution_role"></a> [ecs\_execution\_role](#input\_ecs\_execution\_role) | Name of the ECS execution role | `string` | `""` | no |
 | <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | Enable DNS hostnames in the VPC | `bool` | `true` | no |
 | <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | Enable DNS support in the VPC | `bool` | `true` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Short environment identifier used for naming (e.g. dev, staging, prod). | `string` | `""` | no |
 | <a name="input_family"></a> [family](#input\_family) | Family name for the ECS task definition | `string` | `"threat-model-task-family"` | no |
 | <a name="input_gateway_endpoints"></a> [gateway\_endpoints](#input\_gateway\_endpoints) | List of gateway endpoint service names | `list(string)` | `[]` | no |
 | <a name="input_health_check_path"></a> [health\_check\_path](#input\_health\_check\_path) | Health check path for the target group | `string` | `"/"` | no |

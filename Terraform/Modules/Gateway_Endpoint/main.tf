@@ -3,4 +3,8 @@ resource "aws_vpc_endpoint" "gateway" {
   service_name = var.service_name[0]
 
   route_table_ids = var.route_table_ids
+
+  tags = {
+    Name = "${var.name_prefix}-${replace(replace(var.service_name[0], "com.amazonaws.", ""), ".", "-")}"
+  }
 }

@@ -19,10 +19,18 @@ resource "aws_vpc" "main_vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-vpc" : "vpc"
+  }
 }
 
 resource "aws_internet_gateway" "IGW" {
   vpc_id = aws_vpc.main_vpc.id
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-igw" : "igw"
+  }
 }
 
 resource "aws_subnet" "public_subnet" {
@@ -31,6 +39,10 @@ resource "aws_subnet" "public_subnet" {
   cidr_block              = each.value.cidr
   availability_zone       = each.value.az
   map_public_ip_on_launch = true
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-${each.key}" : each.key
+  }
 }
 
 resource "aws_subnet" "private_subnet" {
@@ -38,10 +50,18 @@ resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.main_vpc.id
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-${each.key}" : each.key
+  }
 }
 
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main_vpc.id
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-public-rt" : "public-rt"
+  }
 }
 
 resource "aws_route_table_association" "public_rt_association" {
@@ -58,6 +78,10 @@ resource "aws_route" "public_internet_gateway_route" {
 
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.main_vpc.id
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-private-rt" : "private-rt"
+  }
 }
 
 resource "aws_route_table_association" "private_rt_association" {
@@ -131,23 +155,35 @@ resource "aws_kms_key" "vpc_flow_logs" {
   description         = "KMS key for VPC Flow Logs (CloudWatch Logs encryption)"
   enable_key_rotation = true
   policy              = var.vpc_flow_log_kms_key_policy_json != "" ? var.vpc_flow_log_kms_key_policy_json : data.aws_iam_policy_document.vpc_flow_logs_kms_default.json
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-flow-logs-kms" : "flow-logs-kms"
+  }
 }
 
 resource "aws_kms_alias" "vpc_flow_logs" {
-  name          = "alias/vpc-flow-logs-key"
+  name          = trimspace(var.environment) != "" ? "alias/vpc-flow-logs-key-${var.environment}" : "alias/vpc-flow-logs-key"
   target_key_id = aws_kms_key.vpc_flow_logs.id
 }
 
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
-  name              = "/aws/vpc/flow-logs"
+  name              = trimspace(var.environment) != "" ? "/aws/vpc/flow-logs/${var.environment}" : "/aws/vpc/flow-logs"
   retention_in_days = 7
   kms_key_id        = aws_kms_key.vpc_flow_logs.arn
   depends_on        = [aws_kms_alias.vpc_flow_logs]
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-flow-logs" : "flow-logs"
+  }
 }
 
 resource "aws_iam_role" "flow_log_role" {
   name               = var.vpc_flow_log_role_name
   assume_role_policy = var.vpc_flow_logs_assume_role != "" ? var.vpc_flow_logs_assume_role : data.aws_iam_policy_document.vpc_flow_logs_assume_default.json
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-flow-logs-role" : "flow-logs-role"
+  }
 }
 
 resource "aws_iam_role_policy" "vpc_flow_logs_to_cw" {
@@ -163,4 +199,8 @@ resource "aws_flow_log" "main" {
   iam_role_arn         = aws_iam_role.flow_log_role.arn
   traffic_type         = "ALL"
   depends_on           = [aws_cloudwatch_log_group.vpc_flow_logs]
+
+  tags = {
+    Name = var.name_prefix != "" ? "${var.name_prefix}-vpc-flow-log" : "vpc-flow-log"
+  }
 }

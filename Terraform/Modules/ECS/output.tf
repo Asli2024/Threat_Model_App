@@ -33,6 +33,16 @@ output "kms_key_arn" {
 }
 
 output "kms_key_alias_name" {
-  value       = aws_kms_alias.ecs_log_key_alias.name
+  value       = length(aws_kms_alias.ecs_log_key_alias) > 0 ? aws_kms_alias.ecs_log_key_alias[0].name : null
   description = "KMS Key Alias for ECS log encryption"
+}
+
+output "cloudwatch_log_group_name" {
+  value       = aws_cloudwatch_log_group.ecs_log_group.name
+  description = "CloudWatch Log Group name for ECS logs"
+}
+
+output "cloudwatch_log_group_arn" {
+  value       = aws_cloudwatch_log_group.ecs_log_group.arn
+  description = "CloudWatch Log Group ARN for ECS logs"
 }

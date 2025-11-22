@@ -32,6 +32,7 @@ No modules.
 | <a name="input_attach_policy"></a> [attach\_policy](#input\_attach\_policy) | Whether to attach an endpoint policy. | `bool` | `true` | no |
 | <a name="input_endpoint_policy_json"></a> [endpoint\_policy\_json](#input\_endpoint\_policy\_json) | Optional IAM policy JSON to attach. If null, a safe default policy is generated. | `string` | `null` | no |
 | <a name="input_ip_address_type"></a> [ip\_address\_type](#input\_ip\_address\_type) | The IP address type for the endpoint (ipv4 or dualstack). | `string` | `"ipv4"` | no |
+| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix to use for naming interface VPC endpoints (Name tag). | `string` | `"vpce"` | no |
 | <a name="input_private_dns_enabled"></a> [private\_dns\_enabled](#input\_private\_dns\_enabled) | Whether to enable private DNS for the endpoint. | `bool` | `true` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Security group IDs to associate with the endpoint ENIs. | `list(string)` | `[]` | no |
 | <a name="input_service_names"></a> [service\_names](#input\_service\_names) | List of interface endpoint service names to create endpoints for. | `list(string)` | `[]` | no |

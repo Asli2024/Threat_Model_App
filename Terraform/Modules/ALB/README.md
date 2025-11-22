@@ -29,6 +29,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_acm_certificate_arn"></a> [acm\_certificate\_arn](#input\_acm\_certificate\_arn) | ACM certificate ARN for HTTPS listener | `string` | `""` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment identifier used for unique ALB naming | `string` | `""` | no |
 | <a name="input_health_check_path"></a> [health\_check\_path](#input\_health\_check\_path) | Path for health check | `string` | `"/"` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | List of private subnet IDs for the ALB | `list(string)` | `[]` | no |
 | <a name="input_security_group_id"></a> [security\_group\_id](#input\_security\_group\_id) | Security group ID to associate with the ALB | `string` | `""` | no |

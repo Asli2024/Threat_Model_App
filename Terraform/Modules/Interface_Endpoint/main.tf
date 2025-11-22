@@ -1,3 +1,10 @@
+locals {
+  # Map full service name to a concise identifier for tagging
+  endpoint_name_map = {
+    for s in var.service_names : s => replace(replace(replace(s, "com.amazonaws.", ""), ".amazonaws.com", ""), ".", "-")
+  }
+}
+
 resource "aws_vpc_endpoint" "this" {
   for_each            = toset(var.service_names)
   vpc_id              = var.vpc_id
@@ -7,6 +14,11 @@ resource "aws_vpc_endpoint" "this" {
   security_group_ids  = var.security_group_ids
   private_dns_enabled = var.private_dns_enabled
   ip_address_type     = var.ip_address_type
+
+  tags = {
+    Name        = "${var.name_prefix}-${local.endpoint_name_map[each.key]}"
+    ServiceName = each.value
+  }
 }
 
 data "aws_iam_policy_document" "default_vpce_policy" {

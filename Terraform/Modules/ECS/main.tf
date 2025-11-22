@@ -19,7 +19,8 @@ resource "aws_kms_key" "ecs_log_key" {
 }
 
 resource "aws_kms_alias" "ecs_log_key_alias" {
-  name          = var.aws_kms_key_alias_ecs_log
+  count         = var.aws_kms_key_alias_ecs_log == "" ? 0 : 1
+  name          = trimspace(var.environment) != "" ? format("%s-%s", var.aws_kms_key_alias_ecs_log, var.environment) : var.aws_kms_key_alias_ecs_log
   target_key_id = aws_kms_key.ecs_log_key.id
 }
 

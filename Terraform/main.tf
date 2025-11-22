@@ -6,6 +6,8 @@ module "vpc" {
   private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
   public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
   vpc_flow_log_role_name     = var.vpc_flow_log_role_name
+  environment                = var.environment
+  name_prefix                = var.environment
 }
 
 module "gateway_endpoints" {
@@ -133,7 +135,7 @@ module "alb" {
   target_group_protocol = var.target_group_protocol
   health_check_path     = var.health_check_path
   acm_certificate_arn   = module.acm_alb.certificate_arn
-
+  environment           = var.environment
 }
 
 module "acm_alb" {
@@ -174,6 +176,7 @@ module "ecs" {
   image                     = var.image_url
   region                    = var.region
   service_name              = var.service_name
+  environment               = var.environment
 }
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"
@@ -189,7 +192,7 @@ data "aws_iam_policy_document" "ecs_task_assume_role" {
     effect = "Allow"
     principals {
       type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com", "ecs.amazonaws.com"]
+      identifiers = ["ecs-tasks.amazonaws.com"]
     }
     actions = ["sts:AssumeRole"]
   }
@@ -201,7 +204,8 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage"
+      "ecr:BatchGetImage",
+      "ecr:DescribeRepositories"
     ]
     resources = [
       "arn:aws:ecr:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:repository/threat_model_app"
@@ -222,7 +226,13 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
       "logs:CreateLogStream",
       "logs:PutLogEvents",
       "logs:CreateLogGroup",
-      "kms:*"
+      "logs:DescribeLogStreams",
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey"
+
+
     ]
     resources = [
       "*"

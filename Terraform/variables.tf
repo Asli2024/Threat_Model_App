@@ -206,3 +206,9 @@ variable "waf_name" {
   type        = string
   default     = ""
 }
+
+variable "environment" {
+  description = "Short environment identifier used for naming (e.g. dev, staging, prod)."
+  type        = string
+  default     = ""
+}

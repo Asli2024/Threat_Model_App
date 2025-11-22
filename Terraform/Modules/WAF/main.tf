@@ -83,7 +83,7 @@ resource "aws_wafv2_web_acl" "this" {
 
     statement {
       managed_rule_group_statement {
-        name        = "AWSManagedRulesCoreRuleSet"
+        name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
       }
     }
@@ -105,7 +105,7 @@ resource "aws_wafv2_web_acl" "this" {
 
     statement {
       managed_rule_group_statement {
-        name        = "AWSManagedRulesSQLDatabaseRuleSet"
+        name        = "AWSManagedRulesSQLiRuleSet"
         vendor_name = "AWS"
       }
     }

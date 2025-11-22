@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  name                       = "ThreatComposer-ALB"
+  name                       = trimspace(var.environment) != "" ? "ThreatComposer-ALB-${var.environment}" : "ThreatComposer-ALB"
   internal                   = true
   load_balancer_type         = "application"
   security_groups            = [var.security_group_id]

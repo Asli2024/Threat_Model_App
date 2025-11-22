@@ -44,6 +44,7 @@ No modules.
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | CPU units for the task | `string` | `""` | no |
 | <a name="input_cpu_target"></a> [cpu\_target](#input\_cpu\_target) | Target average CPU utilization (%) before scaling | `number` | `null` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | How many tasks to run | `number` | `null` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment identifier used to suffix KMS alias if provided | `string` | `""` | no |
 | <a name="input_execution_role_arn"></a> [execution\_role\_arn](#input\_execution\_role\_arn) | IAM role ARN for ECS task execution | `string` | `""` | no |
 | <a name="input_family"></a> [family](#input\_family) | Task definition family name | `string` | `""` | no |
 | <a name="input_force_new_deployment"></a> [force\_new\_deployment](#input\_force\_new\_deployment) | Force a new deployment of the ECS service | `bool` | `false` | no |
@@ -62,6 +63,8 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_autoscaling_policy_name"></a> [autoscaling\_policy\_name](#output\_autoscaling\_policy\_name) | n/a |
+| <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | CloudWatch Log Group ARN for ECS logs |
+| <a name="output_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#output\_cloudwatch\_log\_group\_name) | CloudWatch Log Group name for ECS logs |
 | <a name="output_container_name"></a> [container\_name](#output\_container\_name) | The name of the container used in the task definition |
 | <a name="output_ecs_cluster_id"></a> [ecs\_cluster\_id](#output\_ecs\_cluster\_id) | The ID of the ECS cluster |
 | <a name="output_ecs_service_name"></a> [ecs\_service\_name](#output\_ecs\_service\_name) | The name of the ECS service |

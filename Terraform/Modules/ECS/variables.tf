@@ -93,3 +93,9 @@ variable "aws_kms_key_alias_ecs_log" {
   description = "KMS alias for the module-managed key (must start with alias/). Leave empty to skip alias."
   default     = ""
 }
+
+variable "environment" {
+  description = "Environment identifier used to suffix KMS alias if provided"
+  type        = string
+  default     = ""
+}
