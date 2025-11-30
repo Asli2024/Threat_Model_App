@@ -1,6 +1,6 @@
 resource "aws_cloudfront_vpc_origin" "alb" {
   vpc_origin_endpoint_config {
-    name                   = "threatcomposer-vpc-origin"
+    name                   = "english-somali-dictionary-vpc-origin"
     arn                    = var.alb_arn
     http_port              = 80
     https_port             = 443
@@ -18,7 +18,7 @@ resource "aws_cloudfront_vpc_origin" "alb" {
 resource "aws_cloudfront_distribution" "this" {
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "Threat Composer App CloudFront"
+  comment         = "English Somali Dictionary App CloudFront"
   aliases         = var.aliases
   price_class     = var.price_class
   web_acl_id      = var.waf_acl
@@ -36,10 +36,11 @@ resource "aws_cloudfront_distribution" "this" {
     target_origin_id       = "vpc-origin"
     viewer_protocol_policy = "redirect-to-https"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
-    cached_methods  = ["GET", "HEAD"]
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
+    cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
-    cache_policy_id = aws_cloudfront_cache_policy.threatcomposer.id
+
+    cache_policy_id = aws_cloudfront_cache_policy.EnglishSomaliDictionary.id
 
     min_ttl     = var.min_ttl
     default_ttl = var.default_ttl
@@ -59,9 +60,9 @@ resource "aws_cloudfront_distribution" "this" {
   depends_on = [aws_cloudfront_vpc_origin.alb]
 }
 
-resource "aws_cloudfront_cache_policy" "threatcomposer" {
-  name    = "ThreatComposer-Cache-Policy"
-  comment = "ThreatComposer-Cache-Policy"
+resource "aws_cloudfront_cache_policy" "EnglishSomaliDictionary" {
+  name    = "EnglishSomaliDictionary-Cache-Policy"
+  comment = "EnglishSomaliDictionary-Cache-Policy"
 
   default_ttl = var.default_ttl
   max_ttl     = var.max_ttl

@@ -5,7 +5,7 @@ module "vpc" {
   enable_dns_hostnames       = var.enable_dns_hostnames
   private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
   public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
-  vpc_flow_log_role_name     = var.vpc_flow_log_role_name
+  vpc_flow_log_role_name     = "${var.environment}-${var.vpc_flow_log_role_name}"
   environment                = var.environment
   name_prefix                = var.environment
 }
@@ -30,7 +30,7 @@ module "interface_endpoints" {
 module "vpce_sg" {
   source         = "../Terraform/Modules/Security_Groups"
   vpc_id         = module.vpc.vpc_id
-  sg_name        = "VPCE_SG"
+  sg_name        = "${var.environment}-VPCE-SG"
   sg_description = "Security group for Interface VPC Endpoints"
   ingress_rules = [
     {
@@ -59,7 +59,7 @@ module "vpce_sg" {
 module "alb_sg" {
   source         = "../Terraform/Modules/Security_Groups"
   vpc_id         = module.vpc.vpc_id
-  sg_name        = "ALB_SECURITY_GROUP"
+  sg_name        = "${var.environment}-ALB-SG"
   sg_description = "ALB security group"
   ingress_rules = [
     {
@@ -89,7 +89,7 @@ module "alb_sg" {
 module "application_sg" {
   source         = "../Terraform/Modules/Security_Groups"
   vpc_id         = module.vpc.vpc_id
-  sg_name        = "APP_SECURITY_GROUP"
+  sg_name        = "${var.environment}-APP-SG"
   sg_description = "Application security group for ECS service"
   ingress_rules = [
     {
@@ -130,7 +130,7 @@ module "alb" {
   vpc_id                = module.vpc.vpc_id
   security_group_id     = module.alb_sg.security_group_id
   private_subnet_ids    = module.vpc.private_subnet_ids
-  target_group_name     = var.target_group_name
+  target_group_name     = "${var.environment}-${var.target_group_name}"
   target_group_port     = var.target_group_port
   target_group_protocol = var.target_group_protocol
   health_check_path     = var.health_check_path
@@ -168,8 +168,9 @@ module "ecs" {
   cpu_target                = var.cpu_target
   family                    = var.family
   execution_role_arn        = module.ecs_execution_role.role_arn
+  task_role_arn             = module.ecs_task_role.role_arn
   force_new_deployment      = true
-  aws_kms_key_alias_ecs_log = "alias/ecs-log-key"
+  aws_kms_key_alias_ecs_log = "alias/ecs-log-key-${var.environment}"
   target_group_arn          = module.alb.target_group_arn
   min_capacity              = var.min_capacity
   max_capacity              = var.max_capacity
@@ -180,14 +181,14 @@ module "ecs" {
 }
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"
-  role_name              = var.ecs_execution_role
-  assume_role_policy     = data.aws_iam_policy_document.ecs_task_assume_role.json
+  role_name              = "${var.environment}-${var.ecs_execution_role}"
+  assume_role_policy     = data.aws_iam_policy_document.ecs_execution_assume_role.json
   create_custom_policy   = true
-  custom_policy_name     = var.ecs_execution_policy
+  custom_policy_name     = "${var.environment}-${var.ecs_execution_policy}"
   custom_policy_document = data.aws_iam_policy_document.ecs_execution_policy.json
 }
 
-data "aws_iam_policy_document" "ecs_task_assume_role" {
+data "aws_iam_policy_document" "ecs_execution_assume_role" {
   statement {
     effect = "Allow"
     principals {
@@ -208,7 +209,7 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
       "ecr:DescribeRepositories"
     ]
     resources = [
-      "arn:aws:ecr:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:repository/threat_model_app"
+      "arn:aws:ecr:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:repository/dictionary-app"
     ]
   }
 
@@ -240,12 +241,32 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
   }
 }
 
+module "ecs_task_role" {
+  source                 = "../Terraform/Modules/IAM"
+  role_name              = "${var.environment}-dictionary-task-role"
+  assume_role_policy     = data.aws_iam_policy_document.ecs_execution_assume_role.json
+  create_custom_policy   = true
+  custom_policy_name     = "${var.environment}-translate-policy"
+  custom_policy_document = data.aws_iam_policy_document.translate_policy.json
+}
+
+data "aws_iam_policy_document" "translate_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "translate:TranslateText",
+      "translate:DetectDominantLanguage"
+    ]
+    resources = ["*"]
+  }
+}
+
 module "waf_acl" {
   source = "../Terraform/Modules/WAF"
   providers = {
     aws = aws.use1
   }
 
-  name        = var.waf_name
-  description = "Web ACL for Threat Model"
+  name        = "${var.environment}-${var.waf_name}"
+  description = "Web ACL for Dictionary App - ${var.environment}"
 }

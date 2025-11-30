@@ -33,6 +33,6 @@ resource "aws_security_group" "this" {
   }
 
   tags = {
-    Name = var.name_prefix != "" ? "${var.name_prefix}-${var.sg_name}" : var.sg_name
+    Name = var.sg_name
   }
 }

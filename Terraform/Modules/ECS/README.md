@@ -57,6 +57,7 @@ No modules.
 | <a name="input_service_name"></a> [service\_name](#input\_service\_name) | ECS service name | `string` | `""` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of private subnet IDs | `list(string)` | `[]` | no |
 | <a name="input_target_group_arn"></a> [target\_group\_arn](#input\_target\_group\_arn) | Target group ARN from the ALB | `string` | `""` | no |
+| <a name="input_task_role_arn"></a> [task\_role\_arn](#input\_task\_role\_arn) | ARN of IAM role for ECS task runtime permissions (used by application code) | `string` | `""` | no |
 
 ## Outputs
 
