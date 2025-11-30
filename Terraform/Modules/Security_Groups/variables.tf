@@ -9,13 +9,6 @@ variable "sg_name" {
   type        = string
   default     = ""
 }
-
-variable "name_prefix" {
-  description = "Optional prefix for Name tag to distinguish SG purpose"
-  type        = string
-  default     = ""
-}
-
 variable "ingress_rules" {
   description = "Ingress rules"
   type = list(object({

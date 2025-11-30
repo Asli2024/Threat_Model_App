@@ -99,3 +99,9 @@ variable "environment" {
   type        = string
   default     = ""
 }
+
+variable "task_role_arn" {
+  description = "ARN of IAM role for ECS task runtime permissions (used by application code)"
+  type        = string
+  default     = ""
+}

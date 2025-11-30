@@ -26,6 +26,7 @@
 | <a name="module_cloudfront"></a> [cloudfront](#module\_cloudfront) | ../Terraform/Modules/Cloudfront | n/a |
 | <a name="module_ecs"></a> [ecs](#module\_ecs) | ../Terraform/Modules/ECS | n/a |
 | <a name="module_ecs_execution_role"></a> [ecs\_execution\_role](#module\_ecs\_execution\_role) | ../Terraform/Modules/IAM | n/a |
+| <a name="module_ecs_task_role"></a> [ecs\_task\_role](#module\_ecs\_task\_role) | ../Terraform/Modules/IAM | n/a |
 | <a name="module_gateway_endpoints"></a> [gateway\_endpoints](#module\_gateway\_endpoints) | ../Terraform/Modules/Gateway_Endpoint | n/a |
 | <a name="module_interface_endpoints"></a> [interface\_endpoints](#module\_interface\_endpoints) | ../Terraform/Modules/Interface_Endpoint | n/a |
 | <a name="module_route53_new_zone"></a> [route53\_new\_zone](#module\_route53\_new\_zone) | ../Terraform/Modules/Route53 | n/a |
@@ -40,8 +41,9 @@
 | [aws_acm_certificate.cloudfront_cert](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/acm_certificate) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/caller_identity) | data source |
 | [aws_ec2_managed_prefix_list.cf_origin](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/ec2_managed_prefix_list) | data source |
+| [aws_iam_policy_document.ecs_execution_assume_role](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ecs_execution_policy](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.ecs_task_assume_role](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.translate_policy](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/region) | data source |
 
 ## Inputs

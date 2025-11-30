@@ -200,7 +200,6 @@ variable "ecs_execution_policy" {
   type        = string
   default     = ""
 }
-
 variable "waf_name" {
   description = "Name for the WAFv2 Web ACL"
   type        = string

@@ -1,0 +1,87 @@
+/* Custom styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light mode translation output */
+#translationOutput.empty {
+    color: #9ca3af;
+}
+
+#translationOutput.filled {
+    color: #1f2937;
+    font-size: 1.125rem;
+}
+
+/* Translation container */
+#translationContainer {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background: #111827;
+}
+
+body.dark-mode #container {
+    background: #1f2937;
+}
+
+body.dark-mode h1,
+body.dark-mode label {
+    color: #f3f4f6;
+}
+
+body.dark-mode label {
+    color: #d1d5db;
+}
+
+body.dark-mode #englishInput,
+body.dark-mode #languageSelect {
+    background: #374151;
+    border-color: #4b5563;
+    color: white;
+}
+
+body.dark-mode #translationContainer {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+}
+
+body.dark-mode #englishInput::placeholder {
+    color: #9ca3af;
+}
+
+body.dark-mode #translationOutput.empty {
+    color: #6b7280 !important;
+}
+
+body.dark-mode #translationOutput.filled {
+    color: white !important;
+}
+
+body.dark-mode #translationOutput {
+    color: #f3f4f6 !important;
+}
+
+body.dark-mode #darkModeToggle {
+    background: #374151;
+    color: #fbbf24;
+}
+
+body.dark-mode #darkModeToggle:hover {
+    background: #4b5563;
+}
+
+body.dark-mode .text-indigo-600 {
+    color: #818cf8 !important;
+}
+
+body.dark-mode #app {
+    background: #111827;
+}
