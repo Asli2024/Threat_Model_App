@@ -68,7 +68,6 @@
 | <a name="input_family"></a> [family](#input\_family) | Family name for the ECS task definition | `string` | `"threat-model-task-family"` | no |
 | <a name="input_gateway_endpoints"></a> [gateway\_endpoints](#input\_gateway\_endpoints) | List of gateway endpoint service names | `list(string)` | `[]` | no |
 | <a name="input_health_check_path"></a> [health\_check\_path](#input\_health\_check\_path) | Health check path for the target group | `string` | `"/"` | no |
-| <a name="input_image_url"></a> [image\_url](#input\_image\_url) | URL of the container image | `string` | `""` | no |
 | <a name="input_interface_endpoints"></a> [interface\_endpoints](#input\_interface\_endpoints) | List of interface endpoint service names | `list(string)` | `[]` | no |
 | <a name="input_ip_address_type"></a> [ip\_address\_type](#input\_ip\_address\_type) | IP address type for interface endpoints | `string` | `"ipv4"` | no |
 | <a name="input_max_capacity"></a> [max\_capacity](#input\_max\_capacity) | Maximum capacity for ECS service auto-scaling | `number` | `null` | no |

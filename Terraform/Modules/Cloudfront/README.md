@@ -20,7 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_cloudfront_cache_policy.EnglishSomaliDictionary](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/resources/cloudfront_cache_policy) | resource |
+| [aws_cloudfront_cache_policy.custom](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/resources/cloudfront_cache_policy) | resource |
 | [aws_cloudfront_distribution.this](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_vpc_origin.alb](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/resources/cloudfront_vpc_origin) | resource |
 

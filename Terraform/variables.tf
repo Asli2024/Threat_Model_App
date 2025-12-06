@@ -178,12 +178,6 @@ variable "family" {
   type        = string
   default     = "threat-model-task-family"
 }
-variable "image_url" {
-  description = "URL of the container image"
-  type        = string
-  default     = ""
-}
-
 variable "service_name" {
   description = "Name of the ECS service"
   type        = string

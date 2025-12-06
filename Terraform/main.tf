@@ -174,7 +174,7 @@ module "ecs" {
   target_group_arn          = module.alb.target_group_arn
   min_capacity              = var.min_capacity
   max_capacity              = var.max_capacity
-  image                     = var.image_url
+  image                     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/english-somali-dictionary-app:latest"
   region                    = var.region
   service_name              = var.service_name
   environment               = var.environment
@@ -209,7 +209,7 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
       "ecr:DescribeRepositories"
     ]
     resources = [
-      "arn:aws:ecr:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:repository/dictionary-app"
+      "arn:aws:ecr:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:repository/english-somali-dictionary-app"
     ]
   }
 
@@ -254,8 +254,8 @@ data "aws_iam_policy_document" "translate_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "translate:TranslateText",
-      "translate:DetectDominantLanguage"
+      "bedrock:InvokeModel",
+      "bedrock:InvokeModelWithResponseStream"
     ]
     resources = ["*"]
   }
