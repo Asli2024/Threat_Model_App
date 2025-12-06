@@ -39,12 +39,11 @@ resource "aws_cloudfront_distribution" "this" {
     allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
+    # Use custom cache policy with configurable TTL
+    cache_policy_id = aws_cloudfront_cache_policy.custom.id
 
-    cache_policy_id = aws_cloudfront_cache_policy.EnglishSomaliDictionary.id
-
-    min_ttl     = var.min_ttl
-    default_ttl = var.default_ttl
-    max_ttl     = var.max_ttl
+    # Use AWS Managed Origin Request Policy to forward all viewer requests
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Managed-AllViewer
   }
 
   viewer_certificate {
@@ -60,13 +59,14 @@ resource "aws_cloudfront_distribution" "this" {
   depends_on = [aws_cloudfront_vpc_origin.alb]
 }
 
-resource "aws_cloudfront_cache_policy" "EnglishSomaliDictionary" {
-  name    = "EnglishSomaliDictionary-Cache-Policy"
-  comment = "EnglishSomaliDictionary-Cache-Policy"
+# Custom cache policy with configurable TTL
+resource "aws_cloudfront_cache_policy" "custom" {
+  name    = "dictionary-cache-policy"
+  comment = "Custom cache policy for dictionary API"
 
-  default_ttl = var.default_ttl
-  max_ttl     = var.max_ttl
-  min_ttl     = var.min_ttl
+  default_ttl = var.default_ttl # Default: 1 hour (3600 seconds)
+  max_ttl     = var.max_ttl     # Default: 24 hours (86400 seconds)
+  min_ttl     = var.min_ttl     # Default: 0 seconds
 
   parameters_in_cache_key_and_forwarded_to_origin {
     enable_accept_encoding_brotli = true
@@ -77,16 +77,11 @@ resource "aws_cloudfront_cache_policy" "EnglishSomaliDictionary" {
     }
 
     headers_config {
-      header_behavior = "whitelist"
-
-      headers {
-        items = ["Origin", "Authorization", "Host"]
-      }
+      header_behavior = "none"
     }
 
     query_strings_config {
-      query_string_behavior = "none"
+      query_string_behavior = "all" # Include query strings in cache key
     }
   }
-
 }

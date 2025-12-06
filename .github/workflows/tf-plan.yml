@@ -1,0 +1,91 @@
+name: Terraform Plan
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Environment to plan (dev, staging, prod)"
+                required: true
+                type: choice
+                options:
+                    - dev
+                    - staging
+                    - prod
+
+permissions:
+    id-token: write
+    contents: read
+    actions: write
+
+env:
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+    plan:
+        name: Terraform Plan - ${{ github.event.inputs.environment }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials via OIDC
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Terraform Init
+              working-directory: ./Terraform
+              run: |
+                  echo "Initializing Terraform..."
+                  terraform init
+
+            - name: Terraform Format Check
+              working-directory: ./Terraform
+              run: |
+                  echo "Running terraform fmt -check -recursive..."
+                  terraform fmt -check -recursive
+
+            - name: Terraform Validate
+              working-directory: ./Terraform
+              run: |
+                  echo "Running terraform validate..."
+                  terraform validate
+
+            - name: Install Trivy
+              run: |
+                  echo "Installing Trivy..."
+                  sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+                  wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+                  echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+                  sudo apt-get update
+                  sudo apt-get install trivy -y
+                  trivy --version
+
+            - name: Run Trivy Scan
+              working-directory: ./Terraform
+              run: |
+                  echo "Running Trivy security scan..."
+                  trivy config . --exit-code 0 --severity HIGH,CRITICAL
+
+            - name: Terraform Workspace
+              working-directory: ./Terraform
+              run: |
+                  terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
+
+            - name: Terraform Plan
+              working-directory: ./Terraform
+              run: |
+                  terraform plan -var-file=config/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars -out=tfplan-${{ github.event.inputs.environment }}
+
+            - name: Upload Plan Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: tfplan-${{ github.event.inputs.environment }}
+                  path: ./Terraform/tfplan-${{ github.event.inputs.environment }}
+                  retention-days: 30

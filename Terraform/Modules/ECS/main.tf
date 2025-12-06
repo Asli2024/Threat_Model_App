@@ -154,7 +154,7 @@ resource "aws_ecs_task_definition" "this" {
   task_role_arn            = var.task_role_arn
 
   runtime_platform {
-    cpu_architecture = "X86_64"
+    cpu_architecture = "ARM64"
   }
 
   container_definitions = jsonencode([
