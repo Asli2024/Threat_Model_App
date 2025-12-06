@@ -1,0 +1,73 @@
+name: Terraform State Unlock
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Environment to unlock (dev, staging, prod)"
+                required: true
+                type: choice
+                options:
+                    - dev
+                    - staging
+                    - prod
+            lock_id:
+                description: "Lock ID to force unlock (from error message)"
+                required: true
+                type: string
+            confirm:
+                description: "Type 'UNLOCK' to confirm you want to force unlock"
+                required: true
+                type: string
+
+permissions:
+    id-token: write
+    contents: read
+
+env:
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+    unlock:
+        name: Force Unlock State - ${{ github.event.inputs.environment }}
+        runs-on: ubuntu-latest
+        if: github.event.inputs.confirm == 'UNLOCK'
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials via OIDC
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Terraform Init
+              working-directory: ./Terraform
+              run: |
+                  echo "Initializing Terraform..."
+                  terraform init
+
+            - name: Select Workspace
+              working-directory: ./Terraform
+              run: |
+                  echo "Selecting workspace: ${{ github.event.inputs.environment }}"
+                  terraform workspace select ${{ github.event.inputs.environment }}
+
+            - name: Force Unlock State
+              working-directory: ./Terraform
+              run: |
+                  echo "⚠️  Force unlocking state with Lock ID: ${{ github.event.inputs.lock_id }}"
+                  echo "Environment: ${{ github.event.inputs.environment }}"
+                  terraform force-unlock -force ${{ github.event.inputs.lock_id }}
+
+            - name: Verify State Status
+              working-directory: ./Terraform
+              run: |
+                  echo "State unlocked successfully"
+                  terraform workspace show
