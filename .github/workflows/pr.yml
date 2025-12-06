@@ -29,6 +29,12 @@ jobs:
             - name: Set Up Terraform
               uses: hashicorp/setup-terraform@v3
 
+            - name: Terraform Init
+              working-directory: ./Terraform
+              run: |
+                  echo "Initializing Terraform..."
+                  terraform init -backend=false
+
             - name: Terraform Format Check
               working-directory: ./Terraform
               run: |
