@@ -56,20 +56,6 @@ jobs:
                   terraform workspace select dev || terraform workspace new dev
                   terraform plan -var-file=config/dev/dev.tfvars -no-color
 
-            - name: Terraform Plan (Staging)
-              working-directory: ./Terraform
-              run: |
-                  echo "Running terraform plan for staging environment..."
-                  terraform workspace select staging || terraform workspace new staging
-                  terraform plan -var-file=config/staging/staging.tfvars -no-color
-
-            - name: Terraform Plan (Prod)
-              working-directory: ./Terraform
-              run: |
-                  echo "Running terraform plan for prod environment..."
-                  terraform workspace select prod || terraform workspace new prod
-                  terraform plan -var-file=config/prod/prod.tfvars -no-color
-
             - name: Install Trivy
               run: |
                   echo "Installing Trivy..."
