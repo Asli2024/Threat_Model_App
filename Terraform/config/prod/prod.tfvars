@@ -59,4 +59,4 @@ ecs_execution_role   = "prod-threat-model-execution-role"
 ecs_execution_policy = "prod-threat-model-execution-policy"
 
 # WAF
-waf_name = "prod-threat-model-waf"
+waf_name = "prod-threat-model-wafs"
