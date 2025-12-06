@@ -4,6 +4,9 @@ on:
     pull_request:
         branches:
             - main
+        paths:
+            - "Terraform/**"
+            - ".github/workflows/**"
 
 permissions:
     id-token: write
