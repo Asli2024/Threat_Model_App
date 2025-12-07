@@ -153,6 +153,9 @@ module "cloudfront" {
   alb_arn             = module.alb.alb_arn
   domain_name         = module.alb.alb_dns_name
   waf_acl             = module.waf_acl.waf_arn
+  default_ttl         = var.default_ttl
+  min_ttl             = var.min_ttl
+  max_ttl             = var.max_ttl
 }
 
 module "ecs" {

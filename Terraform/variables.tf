@@ -205,3 +205,21 @@ variable "environment" {
   type        = string
   default     = ""
 }
+
+variable "default_ttl" {
+  description = "Default TTL for CloudFront cache (in seconds)"
+  type        = number
+  default     = 3600
+}
+
+variable "min_ttl" {
+  description = "Minimum TTL for CloudFront cache (in seconds)"
+  type        = number
+  default     = 0
+}
+
+variable "max_ttl" {
+  description = "Maximum TTL for CloudFront cache (in seconds)"
+  type        = number
+  default     = 86400
+}
