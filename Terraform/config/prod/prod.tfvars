@@ -28,8 +28,8 @@ interface_endpoints = [
 ip_address_type = "ipv4"
 
 parent_domain_name = "techwithaden.com"
-domain_name        = "techwithaden.com"
-aliases            = ["techwithaden.com"]
+domain_name        = "prod.techwithaden.com"
+aliases            = ["prod.techwithaden.com"]
 
 # ALB / Target Group
 target_group_name     = "prod-english-somali-tg"
