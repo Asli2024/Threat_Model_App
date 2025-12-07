@@ -6,14 +6,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "= 6.15.0"
     }
-    time = {
-      source  = "hashicorp/time"
-      version = ">= 0.9.1"
-    }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0"
-    }
   }
 }
 
