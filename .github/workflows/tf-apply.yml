@@ -1,57 +1,57 @@
-name: Terraform Apply
+# name: Terraform Apply
 
-on:
-    workflow_dispatch:
-        inputs:
-            environment:
-                description: "Environment to deploy (dev, staging, prod)"
-                required: true
-                type: choice
-                options:
-                    - dev
-                    - staging
-                    - prod
-            account_number:
-                description: "AWS Account Number"
-                required: true
+# on:
+#     workflow_dispatch:
+#         inputs:
+#             environment:
+#                 description: "Environment to deploy (dev, staging, prod)"
+#                 required: true
+#                 type: choice
+#                 options:
+#                     - dev
+#                     - staging
+#                     - prod
+#             account_number:
+#                 description: "AWS Account Number"
+#                 required: true
 
-permissions:
-    id-token: write
-    contents: read
-    actions: read
+# permissions:
+#     id-token: write
+#     contents: read
+#     actions: read
 
-env:
-    AWS_REGION: ${{ secrets.AWS_REGION }}
-    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+# env:
+#     AWS_REGION: ${{ secrets.AWS_REGION }}
+#     AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
-jobs:
-    apply:
-        name: Terraform Apply
-        runs-on: ubuntu-latest
+# jobs:
+#     apply:
+#         name: Terraform Apply
+#         runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+#         steps:
+#             - name: Checkout code
+#               uses: actions/checkout@v4
 
-            - name: Configure AWS credentials via OIDC
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                  role-to-assume: arn:aws:iam::${{ inputs.account_number }}:role/Github_Role_Demo
-                  aws-region: ${{ secrets.AWS_REGION }}
+#             - name: Configure AWS credentials via OIDC
+#               uses: aws-actions/configure-aws-credentials@v3
+#               with:
+#                   role-to-assume: arn:aws:iam::${{ inputs.account_number }}:role/Github_Role_Demo
+#                   aws-region: ${{ secrets.AWS_REGION }}
 
-            - name: Set up Terraform
-              uses: hashicorp/setup-terraform@v3
+#             - name: Set up Terraform
+#               uses: hashicorp/setup-terraform@v3
 
-            - name: Terraform Init
-              working-directory: ./Terraform
-              run: terraform init
+#             - name: Terraform Init
+#               working-directory: ./Terraform
+#               run: terraform init
 
-            - name: Terraform Workspace
-              working-directory: ./Terraform
-              run: |
-                  terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }}
+#             - name: Terraform Workspace
+#               working-directory: ./Terraform
+#               run: |
+#                   terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }}
 
-            - name: Terraform Apply
-              working-directory: ./Terraform
-              run: |
-                  terraform apply -var-file=config/${{ inputs.environment }}/${{ inputs.environment }}.tfvars -auto-approve
+#             - name: Terraform Apply
+#               working-directory: ./Terraform
+#               run: |
+#                   terraform apply -var-file=config/${{ inputs.environment }}/${{ inputs.environment }}.tfvars -auto-approve
