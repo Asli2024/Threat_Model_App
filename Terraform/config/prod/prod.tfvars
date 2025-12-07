@@ -51,7 +51,6 @@ cpu_target     = 50
 min_capacity   = 2
 max_capacity   = 4
 family         = "prod-english-somali-dictionary-task-family"
-image_url      = "175798131198.dkr.ecr.eu-west-2.amazonaws.com/english-somali-dictionary-app:latest"
 service_name   = "prod-english-somali-dictionary-service"
 
 # IAM

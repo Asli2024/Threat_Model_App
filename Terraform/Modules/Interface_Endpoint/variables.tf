@@ -51,3 +51,9 @@ variable "name_prefix" {
   type        = string
   default     = "vpce"
 }
+
+variable "environment" {
+  description = "Environment name (e.g., dev, staging, prod) to include in resource names."
+  type        = string
+  default     = ""
+}

@@ -16,7 +16,7 @@ resource "aws_vpc_endpoint" "this" {
   ip_address_type     = var.ip_address_type
 
   tags = {
-    Name        = "${var.name_prefix}-${local.endpoint_name_map[each.key]}"
+    Name        = "${var.environment}-${var.name_prefix}-${local.endpoint_name_map[each.key]}"
     ServiceName = each.value
   }
 }

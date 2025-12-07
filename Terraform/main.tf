@@ -25,6 +25,7 @@ module "interface_endpoints" {
   security_group_ids  = [module.vpce_sg.security_group_id]
   private_dns_enabled = true
   ip_address_type     = var.ip_address_type
+  environment         = var.environment
 }
 
 module "vpce_sg" {
