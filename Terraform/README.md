@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -57,6 +56,7 @@
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Port on which the container listens | `number` | `null` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | CPU units for the ECS task | `string` | `"256"` | no |
 | <a name="input_cpu_target"></a> [cpu\_target](#input\_cpu\_target) | CPU utilization target percentage for ECS service auto-scaling | `number` | `50` | no |
+| <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | Default TTL for CloudFront cache (in seconds) | `number` | `3600` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Number of desired ECS tasks | `number` | `null` | no |
 | <a name="input_dns_ttl"></a> [dns\_ttl](#input\_dns\_ttl) | TTL for DNS records | `number` | `60` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name | `string` | `""` | no |
@@ -71,8 +71,10 @@
 | <a name="input_interface_endpoints"></a> [interface\_endpoints](#input\_interface\_endpoints) | List of interface endpoint service names | `list(string)` | `[]` | no |
 | <a name="input_ip_address_type"></a> [ip\_address\_type](#input\_ip\_address\_type) | IP address type for interface endpoints | `string` | `"ipv4"` | no |
 | <a name="input_max_capacity"></a> [max\_capacity](#input\_max\_capacity) | Maximum capacity for ECS service auto-scaling | `number` | `null` | no |
+| <a name="input_max_ttl"></a> [max\_ttl](#input\_max\_ttl) | Maximum TTL for CloudFront cache (in seconds) | `number` | `86400` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Memory in MB for the ECS task | `string` | `"512"` | no |
 | <a name="input_min_capacity"></a> [min\_capacity](#input\_min\_capacity) | Minimum capacity for ECS service auto-scaling | `number` | `null` | no |
+| <a name="input_min_ttl"></a> [min\_ttl](#input\_min\_ttl) | Minimum TTL for CloudFront cache (in seconds) | `number` | `0` | no |
 | <a name="input_parent_domain_name"></a> [parent\_domain\_name](#input\_parent\_domain\_name) | Existing parent zone to delegate from (e.g., techwithaden.com). Must exist in Route 53. | `string` | `""` | no |
 | <a name="input_private_subnet_cidr_blocks"></a> [private\_subnet\_cidr\_blocks](#input\_private\_subnet\_cidr\_blocks) | The CIDR block for the private subnet. | `list(string)` | `[]` | no |
 | <a name="input_public_subnet_cidr_blocks"></a> [public\_subnet\_cidr\_blocks](#input\_public\_subnet\_cidr\_blocks) | The CIDR block for the public subnet. | `list(string)` | `[]` | no |
@@ -89,4 +91,3 @@
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->
