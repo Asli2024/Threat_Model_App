@@ -3,7 +3,7 @@ common_tags = {
   Environment = "prod"
   ManagedBy   = "Terraform"
   Owner       = "Asli Aden"
-  Project     = "Threat Composer App"
+  Project     = "English Somali Dictionary App"
 }
 
 environment = "prod"
@@ -32,31 +32,31 @@ domain_name        = "techwithaden.com"
 aliases            = ["techwithaden.com"]
 
 # ALB / Target Group
-target_group_name     = "prod-threat-model-tg"
-target_group_port     = 80
+target_group_name     = "prod-english-somali-tg"
+target_group_port     = 8000
 target_group_protocol = "HTTP"
-health_check_path     = "/"
+health_check_path     = "/api/health"
 
 dns_ttl            = 60
 validation_timeout = "2h"
 
 # ECS
-cluster_name   = "prod-threat-model-cluster"
+cluster_name   = "prod-english-somali-dictionary-cluster"
 desired_count  = 2
-container_name = "threat-model"
-container_port = 3000
+container_name = "english-somali-dictionary-app"
+container_port = 8000
 cpu            = "256"
 memory         = "512"
 cpu_target     = 50
 min_capacity   = 2
 max_capacity   = 4
-family         = "prod-threat-model-task-family"
+family         = "prod-english-somali-dictionary-task-family"
 image_url      = "175798131198.dkr.ecr.eu-west-2.amazonaws.com/english-somali-dictionary-app:latest"
-service_name   = "prod-threat-model-service"
+service_name   = "prod-english-somali-dictionary-service"
 
 # IAM
-ecs_execution_role   = "prod-threat-model-execution-role"
-ecs_execution_policy = "prod-threat-model-execution-policy"
+ecs_execution_role   = "prod-english-somali-dictionary-execution-role"
+ecs_execution_policy = "prod-english-somali-dictionary-execution-policy"
 
 # WAF
-waf_name = "prod-threat-model-wafs"
+waf_name = "prod-english-somali-dictionary-waf"

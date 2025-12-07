@@ -176,7 +176,7 @@ variable "max_capacity" {
 variable "family" {
   description = "Family name for the ECS task definition"
   type        = string
-  default     = "threat-model-task-family"
+  default     = "english-somali-dictionary-task-family"
 }
 variable "service_name" {
   description = "Name of the ECS service"
@@ -195,7 +195,7 @@ variable "ecs_execution_policy" {
   default     = ""
 }
 variable "waf_name" {
-  description = "Name for the WAFv2 Web ACL"
+  description = "Name for the WAFv3 Web ACL"
   type        = string
   default     = ""
 }

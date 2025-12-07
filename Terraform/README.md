@@ -65,7 +65,7 @@
 | <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | Enable DNS hostnames in the VPC | `bool` | `true` | no |
 | <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | Enable DNS support in the VPC | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Short environment identifier used for naming (e.g. dev, staging, prod). | `string` | `""` | no |
-| <a name="input_family"></a> [family](#input\_family) | Family name for the ECS task definition | `string` | `"threat-model-task-family"` | no |
+| <a name="input_family"></a> [family](#input\_family) | Family name for the ECS task definition | `string` | `"english-somali-dictionary-task-family"` | no |
 | <a name="input_gateway_endpoints"></a> [gateway\_endpoints](#input\_gateway\_endpoints) | List of gateway endpoint service names | `list(string)` | `[]` | no |
 | <a name="input_health_check_path"></a> [health\_check\_path](#input\_health\_check\_path) | Health check path for the target group | `string` | `"/"` | no |
 | <a name="input_interface_endpoints"></a> [interface\_endpoints](#input\_interface\_endpoints) | List of interface endpoint service names | `list(string)` | `[]` | no |
@@ -84,7 +84,7 @@
 | <a name="input_validation_timeout"></a> [validation\_timeout](#input\_validation\_timeout) | Timeout for ACM certificate validation | `string` | `"2h"` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block for the VPC | `string` | `""` | no |
 | <a name="input_vpc_flow_log_role_name"></a> [vpc\_flow\_log\_role\_name](#input\_vpc\_flow\_log\_role\_name) | IAM Role name for VPC Flow Logs | `string` | `""` | no |
-| <a name="input_waf_name"></a> [waf\_name](#input\_waf\_name) | Name for the WAFv2 Web ACL | `string` | `""` | no |
+| <a name="input_waf_name"></a> [waf\_name](#input\_waf\_name) | Name for the WAFv3 Web ACL | `string` | `""` | no |
 
 ## Outputs
 

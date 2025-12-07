@@ -26,8 +26,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_description"></a> [description](#input\_description) | Description for the WAFv2 Web ACL | `string` | `"Web ACL for Threat Composer Application"` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name for the WAFv2 Web ACL and metric | `string` | `"ThreatComposerAppWebACL"` | no |
+| <a name="input_description"></a> [description](#input\_description) | Description for the WAFv2 Web ACL | `string` | `"Web ACL for English Somali Dictionary Application"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name for the WAFv2 Web ACL and metric | `string` | `"EnglishSomaliDictionaryWebACL"` | no |
 
 ## Outputs
 

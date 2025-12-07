@@ -3,7 +3,7 @@ common_tags = {
   Environment = "staging"
   ManagedBy   = "Terraform"
   Owner       = "Asli Aden"
-  Project     = "Threat Composer App"
+  Project     = "English Somali Dictionary App"
 }
 
 environment = "staging"
@@ -32,31 +32,31 @@ domain_name        = "staging.techwithaden.com"
 aliases            = ["staging.techwithaden.com"]
 
 # ALB / Target Group
-target_group_name     = "staging-threat-model-tg"
-target_group_port     = 80
+target_group_name     = "staging-english-somali-tg"
+target_group_port     = 8000
 target_group_protocol = "HTTP"
-health_check_path     = "/"
+health_check_path     = "/api/health"
 
 dns_ttl            = 60
 validation_timeout = "2h"
 
 # ECS
-cluster_name   = "staging-threat-model-cluster"
+cluster_name   = "staging-english-somali-dictionary-cluster"
 desired_count  = 1
-container_name = "threat-model"
-container_port = 3000
+container_name = "english-somali-dictionary-app"
+container_port = 8000
 cpu            = "256"
 memory         = "512"
 cpu_target     = 50
 min_capacity   = 1
 max_capacity   = 2
-family         = "staging-threat-model-task-family"
+family         = "staging-english-somali-dictionary-task-family"
 image_url      = "175798131198.dkr.ecr.eu-west-2.amazonaws.com/english-somali-dictionary-app:latest"
-service_name   = "staging-threat-model-service"
+service_name   = "staging-english-somali-dictionary-service"
 
 # IAM
-ecs_execution_role   = "staging-threat-model-execution-role"
-ecs_execution_policy = "staging-threat-model-execution-policy"
+ecs_execution_role   = "staging-english-somali-dictionary-execution-role"
+ecs_execution_policy = "staging-english-somali-dictionary-execution-policy"
 
 # WAF
-waf_name = "staging-threat-model-waf"
+waf_name = "staging-english-somali-dictionary-waf"

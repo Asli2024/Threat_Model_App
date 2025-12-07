@@ -1,5 +1,5 @@
 variable "domain_name" {
-  description = "FQDN for the certificate (e.g., threatcomposer.techwithaden.com)"
+  description = "FQDN for the certificate"
   type        = string
   default     = ""
 }
@@ -11,7 +11,7 @@ variable "zone_id" {
 }
 
 variable "subject_alternative_names" {
-  description = "Optional SANs, e.g., [\"www.threatcomposer.techwithaden.com\"]"
+  description = "Optional SANs, e.g., [\"www.dev.techwithaden.com\"]"
   type        = list(string)
   default     = []
 }

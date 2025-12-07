@@ -1,5 +1,5 @@
 variable "domain_name" {
-  description = "FQDN of the hosted zone to create (e.g., threatcomposer.techwithaden.com or techwithaden.com)"
+  description = "FQDN of the hosted zone to create (e.g., dev.techwithaden.com or techwithaden.com)"
   type        = string
   default     = ""
 }

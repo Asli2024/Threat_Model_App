@@ -30,7 +30,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_dns_name"></a> [dns\_name](#input\_dns\_name) | ALB DNS name (e.g., myalb-123.eu-west-2.elb.amazonaws.com) | `string` | `""` | no |
-| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | FQDN of the hosted zone to create (e.g., threatcomposer.techwithaden.com or techwithaden.com) | `string` | `""` | no |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | FQDN of the hosted zone to create (e.g., dev.techwithaden.com or techwithaden.com) | `string` | `""` | no |
 | <a name="input_evaluate_target_health"></a> [evaluate\_target\_health](#input\_evaluate\_target\_health) | Whether Route 53 should evaluate target health for the ALIAS | `bool` | `false` | no |
 | <a name="input_parent_domain_name"></a> [parent\_domain\_name](#input\_parent\_domain\_name) | Existing parent zone to delegate from (e.g., techwithaden.com). Must exist in Route 53. | `string` | `""` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | ALB hosted zone ID (from aws\_lb.zone\_id) | `string` | `""` | no |
