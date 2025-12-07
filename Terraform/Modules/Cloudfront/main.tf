@@ -64,9 +64,9 @@ resource "aws_cloudfront_cache_policy" "custom" {
   name    = "dictionary-cache-policy"
   comment = "Custom cache policy for dictionary API"
 
-  default_ttl = var.default_ttl # Default: 1 hour (3600 seconds)
-  max_ttl     = var.max_ttl     # Default: 24 hours (86400 seconds)
-  min_ttl     = var.min_ttl     # Default: 0 seconds
+  default_ttl = var.default_ttl
+  max_ttl     = var.max_ttl
+  min_ttl     = var.min_ttl
 
   parameters_in_cache_key_and_forwarded_to_origin {
     enable_accept_encoding_brotli = true
