@@ -1,5 +1,4 @@
 locals {
-  # Map full service name to a concise identifier for tagging
   endpoint_name_map = {
     for s in var.service_names : s => replace(replace(replace(s, "com.amazonaws.", ""), ".amazonaws.com", ""), ".", "-")
   }

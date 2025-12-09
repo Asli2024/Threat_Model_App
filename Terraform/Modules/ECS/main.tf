@@ -1,5 +1,4 @@
 # tfsec:ignore:aws-ecs-enable-container-insight
-
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
   setting {
@@ -42,7 +41,6 @@ data "aws_iam_policy_document" "ecs_log_kms_key_policy" {
     resources = ["*"]
   }
 
-  # Allow CloudWatch Logs to use the key
   statement {
     sid    = "AllowCloudWatchLogsUseOfKey"
     effect = "Allow"

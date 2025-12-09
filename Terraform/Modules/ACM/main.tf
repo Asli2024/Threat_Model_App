@@ -7,7 +7,6 @@ resource "aws_acm_certificate" "cert" {
     create_before_destroy = true
   }
 }
-
 resource "aws_route53_record" "cert_validation" {
   for_each = {
     for dvo in aws_acm_certificate.cert.domain_validation_options :
@@ -24,11 +23,9 @@ resource "aws_route53_record" "cert_validation" {
   ttl     = var.dns_ttl
   records = [each.value.record]
 }
-
 resource "aws_acm_certificate_validation" "validated" {
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [for r in aws_route53_record.cert_validation : r.fqdn]
-
   timeouts {
     create = var.validation_timeout
   }
