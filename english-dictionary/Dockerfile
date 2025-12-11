@@ -1,7 +1,7 @@
 # Multi-stage build for smaller image
 FROM python:3.11-alpine AS builder
 
-WORKDIR /engish-dictionary
+WORKDIR /app
 
 # Install build dependencies (use --no-scripts to avoid QEMU busybox trigger issue)
 RUN apk add --no-cache --no-scripts --virtual .build-deps \
@@ -21,7 +21,7 @@ RUN apk del .build-deps
 # Final runtime stage
 FROM python: 3.11-alpine
 
-WORKDIR /engish-dictionary
+WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
