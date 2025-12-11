@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt && \
 # Final runtime stage
 FROM python:3.11-alpine
 
-WORKDIR /app
+WORKDIR /engish-dictionary
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
