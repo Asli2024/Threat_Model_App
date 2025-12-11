@@ -55,8 +55,8 @@ image_url      = "175798131198.dkr.ecr.eu-west-2.amazonaws.com/english-somali-di
 service_name   = "staging-english-somali-dictionary-service"
 
 # IAM
-ecs_execution_role   = "staging-english-somali-dictionary-execution-role"
-ecs_execution_policy = "staging-english-somali-dictionary-execution-policy"
+ecs_execution_role   = "english-somali-dictionary-execution-role"
+ecs_execution_policy = "english-somali-dictionary-execution-policy"
 
 # WAF
-waf_name = "staging-english-somali-dictionary-waf"
+waf_name = "english-somali-dictionary-waf"

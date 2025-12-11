@@ -1,0 +1,94 @@
+name: Terraform Apply
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Environment to apply (dev, staging, prod)"
+                required: true
+                type: choice
+                options:
+                    - dev
+                    - staging
+                    - prod
+            plan_run_id:
+                description: "Run ID of the terraform-plan workflow (find it in Actions tab)"
+                required: true
+                type: string
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    approval:
+        name: Approve Deployment - ${{ github.event.inputs.environment }}
+        runs-on: ubuntu-latest
+        environment: ${{ github.event.inputs.environment }}
+
+        steps:
+            - name: Approval Gate
+              run: |
+                  echo "✅ Deployment to ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
+                  echo "Using plan from run ID: ${{ github.event.inputs.plan_run_id }}"
+                  echo "Proceeding to apply Terraform changes..."
+
+    apply:
+        name: Terraform Apply - ${{ github.event.inputs.environment }}
+        runs-on: ubuntu-latest
+        needs: approval
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials via OIDC
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Terraform Init
+              working-directory: ./Terraform
+              run: |
+                  echo "Initializing Terraform..."
+                  terraform init
+
+            - name: Terraform Workspace
+              working-directory: ./Terraform
+              run: |
+                  terraform workspace select ${{ github.event.inputs.environment }}
+
+            - name: Download Plan Artifact
+              uses: dawidd6/action-download-artifact@v3
+              with:
+                  workflow: terraform-plan.yml
+                  run_id: ${{ github.event.inputs.plan_run_id }}
+                  name: tfplan-${{ github.event.inputs.environment }}
+                  path: ./Terraform
+
+            - name: Verify Plan Exists
+              working-directory: ./Terraform
+              run: |
+                  if [ ! -f "tfplan-${{ github.event.inputs.environment }}" ]; then
+                      echo "❌ Error: Plan file not found!"
+                      echo "Make sure the plan workflow completed successfully and the run ID is correct."
+                      exit 1
+                  fi
+                  echo "✅ Plan file found"
+
+            - name: Terraform Apply
+              working-directory: ./Terraform
+              run: |
+                  echo "🚀 Applying Terraform plan for ${{ github.event.inputs.environment }}..."
+                  terraform apply -auto-approve tfplan-${{ github.event.inputs.environment }}
+
+            - name: Deployment Summary
+              run: |
+                  echo "✅ Deployment to ${{ github.event.inputs.environment }} completed successfully!"
+                  echo "📋 Plan Run ID: ${{ github.event.inputs.plan_run_id }}"
+                  echo "👤 Approved by: ${{ github.actor }}"
+                  echo "⏰ Timestamp: $(date)"

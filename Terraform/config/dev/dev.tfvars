@@ -24,7 +24,6 @@ interface_endpoints = [
   "com.amazonaws.eu-west-2.elasticloadbalancing",
   "com.amazonaws.eu-west-2.monitoring",
   "com.amazonaws.eu-west-2.ecs",
-  "com.amazonaws.eu-west-2.translate",
   "com.amazonaws.eu-west-2.bedrock",
   "com.amazonaws.eu-west-2.bedrock-runtime"
 
