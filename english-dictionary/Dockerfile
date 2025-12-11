@@ -12,12 +12,14 @@ RUN apk add --no-cache --no-scripts --virtual .build-deps \
 
 COPY requirements.txt .
 # Install to /install instead of user directory
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt && \
-    apk del .build-deps
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Remove build dependencies in a separate step
+RUN apk del .build-deps
 
 
 # Final runtime stage
-FROM python:3.11-alpine
+FROM python: 3.11-alpine
 
 WORKDIR /engish-dictionary
 
@@ -31,7 +33,7 @@ RUN apk add --no-cache --no-scripts curl && \
     addgroup -g 1000 appgroup && \
     adduser -u 1000 -D -G appgroup appuser
 
-# Copy installed packages from builder to /install (not /root/.local)
+# Copy installed packages from builder to /install (not /root/. local)
 COPY --from=builder /install /install
 
 # Copy application files with ownership
