@@ -29,7 +29,6 @@ resource "aws_kms_key_policy" "ecs_log_key_policy" {
 }
 
 data "aws_iam_policy_document" "ecs_log_kms_key_policy" {
-  # Allow root account full access
   statement {
     sid    = "EnableRootPermissions"
     effect = "Allow"
