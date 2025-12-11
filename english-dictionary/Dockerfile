@@ -12,10 +12,8 @@ RUN apk add --no-cache --virtual .build-deps \
 
 COPY requirements.txt .
 # Install to /install instead of user directory
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
-
-# Remove build dependencies in a separate step
-RUN apk del .build-deps
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt && \
+    apk del .build-deps
 
 
 # Final runtime stage
@@ -31,9 +29,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Install runtime dependencies and create user
 RUN apk add --no-cache curl && \
     addgroup -g 1000 appgroup && \
-    adduser -u 1000 -D -G appgroup appuser
+    adduser -u 1000 -S appuser -G appgroup
 
-# Copy installed packages from builder to /install
+# Copy installed packages from builder to /install (not /root/.local)
 COPY --from=builder /install /install
 
 # Copy application files with ownership
