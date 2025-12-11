@@ -29,7 +29,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Install runtime dependencies and create user
 RUN apk add --no-cache curl && \
     addgroup -g 1000 appgroup && \
-    adduser -u 1000 -S appuser -G appgroup
+    adduser -u 1000 -D -G appgroup appuser
 
 # Copy installed packages from builder to /install (not /root/.local)
 COPY --from=builder /install /install

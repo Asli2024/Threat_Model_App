@@ -11,10 +11,6 @@ on:
                     - dev
                     - staging
                     - prod
-            image_tag:
-                description: "Docker image tag"
-                required: false
-                type: string
     push:
         branches:
             - feature*
@@ -61,11 +57,7 @@ jobs:
             - name: Determine Image Tag
               id: image-tag
               run: |
-                  if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.image_tag }}" ]; then
-                      IMAGE_TAG="${{ github.event.inputs.image_tag }}"
-                  else
-                      IMAGE_TAG="${{ github.sha }}"
-                  fi
+                  IMAGE_TAG="${{ github.sha }}"
                   echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
                   echo "Using image tag: ${IMAGE_TAG}"
 
