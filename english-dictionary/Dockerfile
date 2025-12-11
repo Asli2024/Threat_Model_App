@@ -13,7 +13,7 @@ RUN apk add --no-cache --no-scripts --virtual .build-deps \
 COPY requirements.txt .
 # Install to /install instead of user directory
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt && \
-    apk del .build-deps
+    apk del --no-scripts .build-deps
 
 
 # Final runtime stage
