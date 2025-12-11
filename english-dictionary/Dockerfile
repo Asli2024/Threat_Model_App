@@ -1,7 +1,7 @@
 # Multi-stage build for smaller image
 FROM python:3.11-alpine AS builder
 
-WORKDIR /app
+WORKDIR /engish-dictionary
 
 # Install build dependencies (use --no-scripts to avoid QEMU busybox trigger issue)
 RUN apk add --no-cache --no-scripts --virtual .build-deps \
