@@ -3,8 +3,8 @@ FROM python:3.11-alpine AS builder
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apk add --no-cache --virtual .build-deps \
+# Install build dependencies (use --no-scripts to avoid QEMU busybox trigger issue)
+RUN apk add --no-cache --no-scripts --virtual .build-deps \
     gcc \
     musl-dev \
     libffi-dev && \
