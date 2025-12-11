@@ -19,7 +19,7 @@ RUN apk del .build-deps
 
 
 # Final runtime stage
-FROM python: 3.11-alpine
+FROM python:3.11-alpine
 
 WORKDIR /app
 
