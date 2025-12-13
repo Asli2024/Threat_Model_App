@@ -22,9 +22,21 @@ env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
 jobs:
+  approval:
+    name: Approve Plan - ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Approval Gate
+        run: |
+          echo "✅ Terraform plan for ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
+          echo "Proceeding to create plan..."
+
   plan:
     name: Terraform Plan - ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
+    needs: approval
 
     steps:
       - name: Checkout code
