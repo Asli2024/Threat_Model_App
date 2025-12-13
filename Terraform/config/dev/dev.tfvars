@@ -41,7 +41,7 @@ target_group_protocol = "HTTP"
 health_check_path     = "/api/health"
 
 dns_ttl            = 60
-validation_timeout = "2h"
+validation_timeout = "1h"
 
 # ECS
 cluster_name   = "dev-english-somali-dictionary-cluster"
