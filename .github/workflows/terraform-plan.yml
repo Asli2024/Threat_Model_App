@@ -114,7 +114,9 @@ jobs:
           echo "Triggering apply workflow..."
 
       - name: Trigger Terraform Apply
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          event-type: terraform-apply-approved
-          client-payload: '{"environment": "${{ github.event.inputs.environment }}", "account_number": "${{ github.event.inputs.account_number }}"}'
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"terraform-apply-approved","client_payload":{"environment":"${{ github.event.inputs.environment }}","account_number":"${{ github.event.inputs.account_number }}"}}'
