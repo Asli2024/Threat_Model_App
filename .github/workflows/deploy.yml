@@ -76,8 +76,7 @@ jobs:
       - name: Terraform Workspace
         working-directory: ./Terraform
         run: |
-          echo "Selecting workspace: ${{ github.event.inputs.environment }}"
-          terraform workspace select ${{ github.event.inputs.environment }}
+          terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
 
       - name: Terraform Plan
         working-directory: ./Terraform
