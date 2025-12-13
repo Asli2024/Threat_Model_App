@@ -12,3 +12,8 @@ data "aws_acm_certificate" "cloudfront_cert" {
   statuses    = ["ISSUED"]
   most_recent = true
 }
+
+data "aws_ecr_image" "app_image" {
+  repository_name = "english-somali-dictionary-app"
+  most_recent     = true
+}

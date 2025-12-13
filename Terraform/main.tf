@@ -178,7 +178,7 @@ module "ecs" {
   target_group_arn          = module.alb.target_group_arn
   min_capacity              = var.min_capacity
   max_capacity              = var.max_capacity
-  image                     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/english-somali-dictionary-app:latest"
+  image                     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/english-somali-dictionary-app@${data.aws_ecr_image.app_image.image_digest}"
   region                    = var.region
   service_name              = var.service_name
   environment               = var.environment
