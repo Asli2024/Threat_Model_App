@@ -11,10 +11,6 @@ on:
                     - dev
                     - staging
                     - prod
-            plan_run_id:
-                description: "Run ID of the terraform-plan workflow (find it in Actions tab)"
-                required: true
-                type: string
 
 permissions:
     id-token: write
@@ -29,8 +25,7 @@ jobs:
         steps:
             - name: Approval Gate
               run: |
-                  echo "Deployment to ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
-                  echo "Using plan from run ID: ${{ github.event.inputs.plan_run_id }}"
+                  echo "✅ Deployment to ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
                   echo "Proceeding to apply Terraform changes..."
 
     apply:
@@ -62,11 +57,11 @@ jobs:
               run: |
                   terraform workspace select ${{ github.event.inputs.environment }}
 
-            - name: Download Plan Artifact
-              uses: dawidd6/action-download-artifact@v11
+            - name: Download Latest Plan Artifact
+              uses: dawidd6/action-download-artifact@v6
               with:
                   workflow: terraform-plan.yml
-                  run_id: ${{ github.event.inputs.plan_run_id }}
+                  workflow_conclusion: success
                   name: tfplan-${{ github.event.inputs.environment }}
                   path: ./Terraform
 
@@ -75,7 +70,7 @@ jobs:
               run: |
                   if [ ! -f "tfplan-${{ github.event.inputs.environment }}" ]; then
                       echo "Error: Plan file not found!"
-                      echo "Make sure the plan workflow completed successfully and the run ID is correct."
+                      echo "Make sure a plan workflow completed successfully for ${{ github.event.inputs.environment }}."
                       exit 1
                   fi
                   echo "Plan file found"
@@ -83,12 +78,11 @@ jobs:
             - name: Terraform Apply
               working-directory: ./Terraform
               run: |
-                  echo "Applying Terraform plan for ${{ github.event.inputs.environment }}..."
+                  echo "🚀 Applying Terraform plan for ${{ github.event.inputs.environment }}..."
                   terraform apply -auto-approve tfplan-${{ github.event.inputs.environment }}
 
             - name: Deployment Summary
               run: |
                   echo "Deployment to ${{ github.event.inputs.environment }} completed successfully!"
-                  echo "Plan Run ID: ${{ github.event.inputs.plan_run_id }}"
                   echo "Approved by: ${{ github.actor }}"
                   echo "Timestamp: $(date)"
