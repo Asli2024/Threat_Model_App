@@ -11,6 +11,9 @@ on:
           - dev
           - staging
           - prod
+      account_number:
+        description: "AWS Account Number"
+        required: true
 
 permissions:
   id-token: write
@@ -108,4 +111,10 @@ jobs:
       - name: Approval Gate
         run: |
           echo "Terraform plan for ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
-          echo "Proceeding to apply..."
+          echo "Triggering apply workflow..."
+
+      - name: Trigger Terraform Apply
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: terraform-apply-approved
+          client-payload: '{"environment": "${{ github.event.inputs.environment }}", "account_number": "${{ github.event.inputs.account_number }}"}'

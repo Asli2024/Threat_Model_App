@@ -1,16 +1,16 @@
-name: Terraform Apply
+name: Terraform Destroy Apply
 
 on:
     repository_dispatch:
-        types: [terraform-apply-approved]
+        types: [terraform-destroy-apply-approved]
 
 permissions:
     id-token: write
     contents: read
 
 jobs:
-    apply:
-        name: Terraform Apply
+    destroy_apply:
+        name: Terraform Destroy Apply
         runs-on: ubuntu-latest
         env:
             ENVIRONMENT: ${{ github.event.client_payload.environment }}
@@ -32,7 +32,6 @@ jobs:
             - name: Terraform Init
               working-directory: ./Terraform
               run: |
-                  echo "Initializing Terraform..."
                   terraform init
 
             - name: Terraform Workspace
@@ -40,32 +39,32 @@ jobs:
               run: |
                   terraform workspace select ${{ env.ENVIRONMENT }}
 
-            - name: Download Latest Plan Artifact
+            - name: Download Destroy Plan Artifact
               uses: dawidd6/action-download-artifact@v6
               with:
-                  workflow: terraform-plan.yml
+                  workflow: terraform-destroy-plan.yml
                   workflow_conclusion: success
-                  name: tfplan-${{ env.ENVIRONMENT }}
+                  name: tfplan-destroy-${{ env.ENVIRONMENT }}
                   path: ./Terraform
 
-            - name: Verify Plan Exists
+            - name: Verify Destroy Plan Exists
               working-directory: ./Terraform
               run: |
-                  if [ ! -f "tfplan-${{ env.ENVIRONMENT }}" ]; then
-                      echo "Error: Plan file not found!"
-                      echo "Make sure a plan workflow completed successfully for ${{ env.ENVIRONMENT }}."
+                  if [ ! -f "tfplan-destroy-${{ env.ENVIRONMENT }}" ]; then
+                      echo "Error: Destroy plan file not found!"
+                      echo "Make sure a destroy plan workflow completed successfully for ${{ env.ENVIRONMENT }}."
                       exit 1
                   fi
-                  echo "Plan file found"
+                  echo "Destroy plan file found"
 
-            - name: Terraform Apply
+            - name: Terraform Destroy Apply
               working-directory: ./Terraform
               run: |
-                  echo "Applying Terraform plan for ${{ env.ENVIRONMENT }}..."
-                  terraform apply -auto-approve tfplan-${{ env.ENVIRONMENT }}
+                  echo "Applying Terraform destroy plan for ${{ env.ENVIRONMENT }}..."
+                  terraform apply -auto-approve tfplan-destroy-${{ env.ENVIRONMENT }}
 
-            - name: Deployment Summary
+            - name: Destroy Summary
               run: |
-                  echo "Deployment to ${{ env.ENVIRONMENT }} completed successfully!"
+                  echo "Destroy completed for ${{ env.ENVIRONMENT }}!"
                   echo "Approved by: ${{ github.actor }}"
                   echo "Timestamp: $(date)"

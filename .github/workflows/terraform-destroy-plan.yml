@@ -1,0 +1,89 @@
+name: Terraform Destroy Plan
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Environment to destroy (dev, staging, prod)"
+                required: true
+                type: choice
+                options:
+                    - dev
+                    - staging
+                    - prod
+            account_number:
+                description: "AWS Account Number"
+                required: true
+
+permissions:
+    id-token: write
+    contents: read
+    actions: write
+
+env:
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+    destroy_plan:
+        name: Terraform Destroy Plan - ${{ github.event.inputs.environment }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials via OIDC
+              uses: aws-actions/configure-aws-credentials@v5
+              with:
+                  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Terraform Init
+              working-directory: ./Terraform
+              run: |
+                  terraform init
+
+            - name: Terraform Workspace
+              working-directory: ./Terraform
+              run: |
+                  terraform workspace select ${{ github.event.inputs.environment }}
+
+            - name: Terraform Destroy Plan
+              working-directory: ./Terraform
+              run: |
+                  terraform plan -destroy -var-file=config/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars -out=tfplan-destroy-${{ github.event.inputs.environment }}
+
+            - name: Upload Destroy Plan Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: tfplan-destroy-${{ github.event.inputs.environment }}
+                  path: ./Terraform/tfplan-destroy-${{ github.event.inputs.environment }}
+                  retention-days: 30
+
+            - name: Plan Summary
+              run: |
+                  echo "Terraform destroy plan created for ${{ github.event.inputs.environment }}"
+                  echo "Plan artifact uploaded"
+                  echo "Ready for approval and destroy apply"
+
+    approval:
+        name: Approve Destroy Plan - ${{ github.event.inputs.environment }}
+        runs-on: ubuntu-latest
+        needs: destroy_plan
+        environment: ${{ github.event.inputs.environment }}
+
+        steps:
+            - name: Approval Gate
+              run: |
+                  echo "Terraform destroy plan for ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
+                  echo "Triggering destroy apply workflow..."
+
+            - name: Trigger Terraform Destroy Apply
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  event-type: terraform-destroy-apply-approved
+                  client-payload: '{"environment": "${{ github.event.inputs.environment }}", "account_number": "${{ github.event.inputs.account_number }}"}'
