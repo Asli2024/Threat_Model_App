@@ -184,16 +184,6 @@ variable "service_name" {
   default     = ""
 }
 
-variable "ecs_execution_role" {
-  description = "Name of the ECS execution role"
-  type        = string
-  default     = ""
-}
-variable "ecs_execution_policy" {
-  description = "Name of the ECS execution policy"
-  type        = string
-  default     = ""
-}
 variable "waf_name" {
   description = "Name for the WAFv3 Web ACL"
   type        = string

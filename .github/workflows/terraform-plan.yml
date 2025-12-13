@@ -22,21 +22,9 @@ env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
 jobs:
-  approval:
-    name: Approve Plan - ${{ github.event.inputs.environment }}
-    runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
-
-    steps:
-      - name: Approval Gate
-        run: |
-          echo "✅ Terraform plan for ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
-          echo "Proceeding to create plan..."
-
   plan:
     name: Terraform Plan - ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
-    needs: approval
 
     steps:
       - name: Checkout code
@@ -94,6 +82,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ./Terraform
         run: |
+          echo "Creating Terraform plan for ${{ github.event.inputs.environment }}..."
           terraform plan -var-file=config/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars -out=tfplan-${{ github.event.inputs.environment }}
 
       - name: Upload Plan Artifact
@@ -102,3 +91,21 @@ jobs:
           name: tfplan-${{ github.event.inputs.environment }}
           path: ./Terraform/tfplan-${{ github.event.inputs.environment }}
           retention-days: 30
+
+      - name: Plan Summary
+        run: |
+          echo "Terraform plan created successfully for ${{ github.event.inputs.environment }}"
+          echo "Plan artifact uploaded"
+          echo "Ready for approval and apply"
+
+  approval:
+    name: Approve Plan - ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+    needs: plan
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Approval Gate
+        run: |
+          echo "Terraform plan for ${{ github.event.inputs.environment }} approved by ${{ github.actor }}"
+          echo "Proceeding to apply..."

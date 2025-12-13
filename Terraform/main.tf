@@ -185,10 +185,10 @@ module "ecs" {
 }
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"
-  role_name              = "${var.environment}-${var.ecs_execution_role}"
+  role_name              = "${var.environment}-ecs-execution-role"
   assume_role_policy     = data.aws_iam_policy_document.ecs_execution_assume_role.json
   create_custom_policy   = true
-  custom_policy_name     = "${var.environment}-${var.ecs_execution_policy}"
+  custom_policy_name     = "${var.environment}-ecs-execution-policy"
   custom_policy_document = data.aws_iam_policy_document.ecs_execution_policy.json
 }
 
