@@ -68,7 +68,6 @@ jobs:
           images: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
           tags: |
             type=raw,value=${{ steps.image-tag.outputs.tag }}
-            type=raw,value=latest
 
       - name: Run Trivy Vulnerability Scanner (Dockerfile)
         uses: aquasecurity/trivy-action@master
