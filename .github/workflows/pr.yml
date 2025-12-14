@@ -14,7 +14,7 @@ permissions:
     actions: write
 
 env:
-    AWS_REGION: ${{ secrets.AWS_REGION }}
+    AWS_REGION: eu-west-2
     AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
 jobs:
@@ -91,7 +91,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v5
               with:
                   role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
-                  aws-region: ${{ secrets.AWS_REGION }}
+                  aws-region: ${{ env.AWS_REGION }}
 
             - name: Set Up Terraform
               uses: hashicorp/setup-terraform@v3
@@ -102,21 +102,9 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: |
-                      ~/.terraform.d/plugin-cache
-                      Terraform/.terraform
-                  key: terraform-${{ matrix.environment }}-${{ hashFiles('Terraform/**/*.tf') }}
+                      .terraform
+                      .terraform.lock.hcl
+                  key: ${{ runner.os }}-terraform-${{ matrix.environment }}-${{ hashFiles('**/*.tf') }}
                   restore-keys: |
-                      terraform-${{ matrix.environment }}-
-
-            - name: Terraform Init
-              working-directory: ./Terraform
-              run: |
-                  echo "Initializing Terraform..."
-                  terraform init
-
-            - name: Terraform Plan (${{ matrix.environment }})
-              working-directory: ./Terraform
-              run: |
-                  echo "Running terraform plan for ${{ matrix.environment }} environment..."
-                  terraform workspace select ${{ matrix.environment }} || terraform workspace new ${{ matrix.environment }}
-                  terraform plan -var-file=config/${{ matrix.environment }}/${{ matrix.environment }}.tfvars -no-color
+                      ${{ runner.os }}-terraform-${{ matrix.environment }}-
+                      ${{ runner.os }}-terraform-

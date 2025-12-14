@@ -1,4 +1,6 @@
-# tfsec:ignore:aws-ecs-enable-container-insight
+locals {
+  service_name_effective = length(trimspace(var.service_name)) > 0 ? var.service_name : (length(trimspace(var.family)) > 0 ? "${var.family}-service" : "ecs-service")
+}
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
   setting {
@@ -6,11 +8,6 @@ resource "aws_ecs_cluster" "this" {
     value = "enabled"
   }
 }
-
-locals {
-  service_name_effective = length(trimspace(var.service_name)) > 0 ? var.service_name : (length(trimspace(var.family)) > 0 ? "${var.family}-service" : "ecs-service")
-}
-
 resource "aws_kms_key" "ecs_log_key" {
   description             = "KMS key for ECR repository encryption"
   deletion_window_in_days = 7

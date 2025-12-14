@@ -19,14 +19,21 @@ on:
                 description: "Type 'UNLOCK' to confirm you want to force unlock"
                 required: true
                 type: string
+            account_number:
+                description: "AWS Account Number"
+                required: true
+            aws_region:
+                description: "AWS Region"
+                required: true
+                default: "eu-west-2"
 
 permissions:
     id-token: write
     contents: read
 
 env:
-    AWS_REGION: ${{ secrets.AWS_REGION }}
-    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+    AWS_REGION: ${{ github.event.inputs.aws_region }}
+    AWS_ACCOUNT_ID: ${{ github.event.inputs.account_number }}
 
 jobs:
     unlock:
@@ -42,7 +49,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v5
               with:
                   role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
-                  aws-region: ${{ secrets.AWS_REGION }}
+                  aws-region: ${{ env.AWS_REGION }}
 
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v3
@@ -62,8 +69,9 @@ jobs:
             - name: Force Unlock State
               working-directory: ./Terraform
               run: |
-                  echo "⚠️  Force unlocking state with Lock ID: ${{ github.event.inputs.lock_id }}"
+                  echo "Force unlocking state with Lock ID: ${{ github.event.inputs.lock_id }}"
                   echo "Environment: ${{ github.event.inputs.environment }}"
+                  echo "Region: ${{ env.AWS_REGION }}"
                   terraform force-unlock -force ${{ github.event.inputs.lock_id }}
 
             - name: Verify State Status

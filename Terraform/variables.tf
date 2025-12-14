@@ -213,3 +213,9 @@ variable "max_ttl" {
   type        = number
   default     = 86400
 }
+
+variable "replica_regions" {
+  description = "List of regions to replicate DynamoDB table to"
+  type        = list(string)
+  default     = []
+}

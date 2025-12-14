@@ -263,6 +263,40 @@ data "aws_iam_policy_document" "translate_policy" {
     ]
     resources = ["*"]
   }
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:DeleteItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem"
+    ]
+    resources = [
+      "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}",
+      "arn:aws:dynamodb:us-east-1:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}"
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:GenerateDataKey"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values = [
+        "dynamodb.${var.region}.amazonaws.com",
+        "dynamodb.us-east-1.amazonaws.com"
+      ]
+    }
+  }
 }
 
 module "waf_acl" {
@@ -273,4 +307,13 @@ module "waf_acl" {
 
   name        = "${var.environment}-${var.waf_name}"
   description = "Web ACL for Dictionary App - ${var.environment}"
+}
+
+module "dynamodb" {
+  source             = "../Terraform/Modules/Dynamodb"
+  region             = var.region
+  table_name         = "dictionary-words-${var.environment}"
+  replica_regions    = var.replica_regions
+  environment        = var.environment
+  ecs_task_role_name = "${var.environment}-dictionary-task-role"
 }

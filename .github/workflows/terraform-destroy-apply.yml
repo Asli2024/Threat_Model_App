@@ -15,6 +15,7 @@ jobs:
         env:
             ENVIRONMENT: ${{ github.event.client_payload.environment }}
             ACCOUNT_NUMBER: ${{ github.event.client_payload.account_number }}
+            AWS_REGION: ${{ github.event.client_payload.aws_region }}
 
         steps:
             - name: Checkout code
@@ -24,7 +25,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v5
               with:
                   role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
-                  aws-region: ${{ secrets.AWS_REGION }}
+                  aws-region: ${{ env.AWS_REGION }}
 
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v3
@@ -68,3 +69,4 @@ jobs:
                   echo "Destroy completed for ${{ env.ENVIRONMENT }}!"
                   echo "Approved by: ${{ github.actor }}"
                   echo "Timestamp: $(date)"
+                  echo "Region: ${{ env.AWS_REGION }}"

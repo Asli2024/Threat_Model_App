@@ -15,14 +15,19 @@ on:
                 description: "AWS Account Number"
                 required: true
 
+            aws_region:
+                description: "AWS Region"
+                required: true
+                default: "eu-west-2"
+
 permissions:
     id-token: write
     contents: read
     actions: write
 
 env:
-    AWS_REGION: ${{ secrets.AWS_REGION }}
-    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+    AWS_REGION: ${{ github.event.inputs.aws_region }}
+    AWS_ACCOUNT_ID: ${{ github.event.inputs.account_number }}
 
 jobs:
     destroy_plan:
@@ -37,7 +42,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v5
               with:
                   role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
-                  aws-region: ${{ secrets.AWS_REGION }}
+                  aws-region: ${{ env.AWS_REGION }}
 
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v3
@@ -87,4 +92,4 @@ jobs:
                     -H "Accept: application/vnd.github+json" \
                     -H "Authorization: Bearer ${{ secrets.TOKEN_2 }}" \
                     https://api.github.com/repos/${{ github.repository }}/dispatches \
-                    -d '{"event_type":"terraform-destroy-apply-approved","client_payload":{"environment":"${{ github.event.inputs.environment }}","account_number":"${{ github.event.inputs.account_number }}"}}'
+                    -d '{"event_type":"terraform-destroy-apply-approved","client_payload":{"environment":"${{ github.event.inputs.environment }}","account_number":"${{ github.event.inputs.account_number }}","aws_region":"${{ github.event.inputs.aws_region }}"}}'
