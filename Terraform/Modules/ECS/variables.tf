@@ -105,3 +105,32 @@ variable "task_role_arn" {
   type        = string
   default     = ""
 }
+
+variable "dynamodb_table_name" {
+  description = "Name of the DynamoDB table for dictionary data"
+  type        = string
+}
+
+variable "bedrock_model_id" {
+  description = "Bedrock model ID for translations"
+  type        = string
+  default     = "anthropic.claude-3-7-sonnet-20250219-v1:0"
+}
+
+variable "temperature" {
+  description = "Temperature for Bedrock model"
+  type        = number
+  default     = 0.3
+}
+
+variable "top_p" {
+  description = "Top P for Bedrock model"
+  type        = number
+  default     = 0.9
+}
+
+variable "max_tokens" {
+  description = "Maximum number of tokens for Bedrock model output"
+  type        = number
+  default     = 1000
+}

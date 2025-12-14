@@ -182,6 +182,10 @@ module "ecs" {
   region                    = var.region
   service_name              = var.service_name
   environment               = var.environment
+  dynamodb_table_name       = "dictionary-words-${var.environment}"
+  bedrock_model_id          = var.bedrock_model_id
+  temperature               = 0.3
+  top_p                     = 0.9
 }
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"

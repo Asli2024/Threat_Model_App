@@ -219,3 +219,9 @@ variable "replica_regions" {
   type        = list(string)
   default     = []
 }
+
+variable "bedrock_model_id" {
+  description = "Bedrock model ID for translations"
+  type        = string
+  default     = "anthropic.claude-3-7-sonnet-20250219-v1:0"
+}

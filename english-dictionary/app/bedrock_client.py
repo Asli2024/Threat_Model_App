@@ -27,14 +27,15 @@ class BedrockClient:
             raise
 
         try:
+            # Use local region for DynamoDB (Global Table handles replication)
             self.dynamodb = boto3.resource(
                 "dynamodb",
-                region_name=settings.AWS_REGION,
+                region_name=settings.dynamodb_region,  # Uses local region automatically
                 aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             )
             self.table = self.dynamodb.Table(settings.DYNAMODB_TABLE_NAME)
-            logger.info(f"DynamoDB table initialized: {settings.DYNAMODB_TABLE_NAME}")
+            logger.info(f"DynamoDB table initialized: {settings.DYNAMODB_TABLE_NAME} in region: {settings.dynamodb_region}")
         except Exception as e:
             logger.error(f"Failed to initialize DynamoDB: {str(e)}")
             raise
@@ -56,11 +57,11 @@ class BedrockClient:
         Returns:
             The translation response from Claude or DynamoDB cache
         """
-        # 1. Try DynamoDB first
+        # 1. Try DynamoDB first (reads from local region)
         try:
             response = self.table.get_item(Key={"word": word})
             if "Item" in response and "meaning" in response["Item"]:
-                logger.info(f"Found '{word}' in DynamoDB cache.")
+                logger.info(f"Found '{word}' in DynamoDB cache (region: {settings.dynamodb_region}).")
                 return response["Item"]["meaning"]
         except ClientError as e:
             logger.error(f"DynamoDB get_item error: {e}")
@@ -112,10 +113,10 @@ class BedrockClient:
             logger.error(f"Bedrock invocation error: {str(e)}")
             raise Exception(f"Failed to get translation: {str(e)}")
 
-        # 3. Save to DynamoDB
+        # 3. Save to DynamoDB (writes to local region, auto-replicates to other regions)
         try:
             self.table.put_item(Item={"word": word, "meaning": translation})
-            logger.info(f"Saved '{word}' to DynamoDB.")
+            logger.info(f"Saved '{word}' to DynamoDB (region: {settings.dynamodb_region}).")
         except ClientError as e:
             logger.error(f"DynamoDB put_item error: {e}")
 

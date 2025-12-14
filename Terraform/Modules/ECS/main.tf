@@ -1,6 +1,7 @@
 locals {
   service_name_effective = length(trimspace(var.service_name)) > 0 ? var.service_name : (length(trimspace(var.family)) > 0 ? "${var.family}-service" : "ecs-service")
 }
+
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
   setting {
@@ -8,6 +9,7 @@ resource "aws_ecs_cluster" "this" {
     value = "enabled"
   }
 }
+
 resource "aws_kms_key" "ecs_log_key" {
   description             = "KMS key for ECR repository encryption"
   deletion_window_in_days = 7
@@ -59,6 +61,7 @@ data "aws_iam_policy_document" "ecs_log_kms_key_policy" {
       values   = ["arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:log-group:*"]
     }
   }
+
   statement {
     sid    = "AllowECSTasksToWriteLogs"
     effect = "Allow"
@@ -156,6 +159,47 @@ resource "aws_ecs_task_definition" "this" {
       name      = var.container_name,
       image     = var.image,
       essential = true,
+
+      # Environment variables for FastAPI app
+      environment = [
+        {
+          name  = "AWS_REGION"
+          value = var.region
+        },
+        {
+          name  = "DYNAMODB_TABLE_NAME"
+          value = var.dynamodb_table_name
+        },
+        {
+          name  = "DYNAMODB_REGION"
+          value = var.region
+        },
+        {
+          name  = "MODEL_ID"
+          value = var.bedrock_model_id
+        },
+        {
+          name  = "BEDROCK_MAX_OUTPUT_LENGTH"
+          value = tostring(var.max_tokens)
+        },
+        {
+          name  = "TEMPERATURE"
+          value = tostring(var.temperature)
+        },
+        {
+          name  = "TOP_P"
+          value = tostring(var.top_p)
+        },
+        {
+          name  = "APP_NAME"
+          value = "Somali Dictionary API"
+        },
+        {
+          name  = "DEBUG"
+          value = "false"
+        }
+      ],
+
       portMappings = [{
         containerPort = var.container_port,
         hostPort      = var.container_port
@@ -171,5 +215,6 @@ resource "aws_ecs_task_definition" "this" {
       }
     }
   ])
+
   depends_on = [aws_cloudwatch_log_group.ecs_log_group]
 }

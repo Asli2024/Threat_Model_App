@@ -38,18 +38,21 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_kms_key_alias_ecs_log"></a> [aws\_kms\_key\_alias\_ecs\_log](#input\_aws\_kms\_key\_alias\_ecs\_log) | KMS alias for the module-managed key (must start with alias/). Leave empty to skip alias. | `string` | `""` | no |
+| <a name="input_bedrock_model_id"></a> [bedrock\_model\_id](#input\_bedrock\_model\_id) | Bedrock model ID for translations | `string` | `"anthropic.claude-3-7-sonnet-20250219-v1:0"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the ECS cluster | `string` | `""` | no |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Name of the container | `string` | `""` | no |
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Container port to expose | `number` | `null` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | CPU units for the task | `string` | `""` | no |
 | <a name="input_cpu_target"></a> [cpu\_target](#input\_cpu\_target) | Target average CPU utilization (%) before scaling | `number` | `null` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | How many tasks to run | `number` | `null` | no |
+| <a name="input_dynamodb_table_name"></a> [dynamodb\_table\_name](#input\_dynamodb\_table\_name) | Name of the DynamoDB table for dictionary data | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment identifier used to suffix KMS alias if provided | `string` | `""` | no |
 | <a name="input_execution_role_arn"></a> [execution\_role\_arn](#input\_execution\_role\_arn) | IAM role ARN for ECS task execution | `string` | `""` | no |
 | <a name="input_family"></a> [family](#input\_family) | Task definition family name | `string` | `""` | no |
 | <a name="input_force_new_deployment"></a> [force\_new\_deployment](#input\_force\_new\_deployment) | Force a new deployment of the ECS service | `bool` | `false` | no |
 | <a name="input_image"></a> [image](#input\_image) | Docker image URI | `string` | `""` | no |
 | <a name="input_max_capacity"></a> [max\_capacity](#input\_max\_capacity) | Maximum number of ECS tasks | `number` | `null` | no |
+| <a name="input_max_tokens"></a> [max\_tokens](#input\_max\_tokens) | Maximum number of tokens for Bedrock model output | `number` | `1000` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Memory for the task in MiB | `string` | `""` | no |
 | <a name="input_min_capacity"></a> [min\_capacity](#input\_min\_capacity) | Minimum number of ECS tasks | `number` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region for CloudWatch Logs | `string` | `""` | no |
@@ -58,6 +61,8 @@ No modules.
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of private subnet IDs | `list(string)` | `[]` | no |
 | <a name="input_target_group_arn"></a> [target\_group\_arn](#input\_target\_group\_arn) | Target group ARN from the ALB | `string` | `""` | no |
 | <a name="input_task_role_arn"></a> [task\_role\_arn](#input\_task\_role\_arn) | ARN of IAM role for ECS task runtime permissions (used by application code) | `string` | `""` | no |
+| <a name="input_temperature"></a> [temperature](#input\_temperature) | Temperature for Bedrock model | `number` | `0.3` | no |
+| <a name="input_top_p"></a> [top\_p](#input\_top\_p) | Top P for Bedrock model | `number` | `0.9` | no |
 
 ## Outputs
 

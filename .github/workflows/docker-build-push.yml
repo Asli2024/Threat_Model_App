@@ -20,7 +20,6 @@ on:
         default: "eu-west-2"
   push:
     branches:
-      - main
       - feature*
       - fix*
     paths:
