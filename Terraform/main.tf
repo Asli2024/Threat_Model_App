@@ -323,7 +323,7 @@ module "dynamodb" {
 }
 
 module "cloudwatch_dashboard" {
-  source = "../Terraform/Modules/CloudWatch"
+  source = "../Terraform/Modules/Cloudwatch"
 
   dashboard_name = "${var.environment}-dictionary-dashboards"
   region         = var.region
