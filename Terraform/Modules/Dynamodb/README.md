@@ -40,5 +40,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_table_arn"></a> [table\_arn](#output\_table\_arn) | ARN of the DynamoDB table |
+| <a name="output_table_name"></a> [table\_name](#output\_table\_name) | Name of the DynamoDB table |
 <!-- END_TF_DOCS -->
