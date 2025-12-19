@@ -26,14 +26,15 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix used for the Name tag applied to the gateway endpoint. | `string` | `"gw"` | no |
-| <a name="input_route_table_ids"></a> [route\_table\_ids](#input\_route\_table\_ids) | A list of route table IDs to associate with the gateway endpoint. | `list(string)` | n/a | yes |
-| <a name="input_service_name"></a> [service\_name](#input\_service\_name) | The name of the service for the gateway endpoint (e.g., com.amazonaws.us-east-1.s3). | `list(string)` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC where the gateway endpoint will be created. | `string` | n/a | yes |
+| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for endpoint names | `string` | `"vpce"` | no |
+| <a name="input_route_table_ids"></a> [route\_table\_ids](#input\_route\_table\_ids) | List of route table IDs | `list(string)` | n/a | yes |
+| <a name="input_service_names"></a> [service\_names](#input\_service\_names) | List of AWS service names for gateway endpoints | `list(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_gateway_endpoint_id"></a> [gateway\_endpoint\_id](#output\_gateway\_endpoint\_id) | n/a |
+| <a name="output_gateway_endpoint_arns"></a> [gateway\_endpoint\_arns](#output\_gateway\_endpoint\_arns) | Map of gateway endpoint ARNs |
+| <a name="output_gateway_endpoint_ids"></a> [gateway\_endpoint\_ids](#output\_gateway\_endpoint\_ids) | Map of gateway endpoint IDs |
 <!-- END_TF_DOCS -->

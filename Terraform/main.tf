@@ -13,8 +13,9 @@ module "vpc" {
 module "gateway_endpoints" {
   source          = "../Terraform/Modules/Gateway_Endpoint"
   vpc_id          = module.vpc.vpc_id
-  service_name    = var.gateway_endpoints
+  service_names   = var.gateway_endpoints # Changed from service_name to service_names
   route_table_ids = [module.vpc.private_route_table_id]
+  name_prefix     = var.environment
 }
 
 module "interface_endpoints" {
