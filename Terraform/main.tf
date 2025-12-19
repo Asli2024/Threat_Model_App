@@ -13,7 +13,7 @@ module "vpc" {
 module "gateway_endpoints" {
   source          = "../Terraform/Modules/Gateway_Endpoint"
   vpc_id          = module.vpc.vpc_id
-  service_names   = var.gateway_endpoints # Changed from service_name to service_names
+  service_names   = var.gateway_endpoints
   route_table_ids = [module.vpc.private_route_table_id]
   name_prefix     = var.environment
 }
@@ -320,4 +320,13 @@ module "dynamodb" {
   table_name         = "dictionary-words-${var.environment}"
   replica_regions    = var.replica_regions
   ecs_task_role_name = module.ecs_task_role.role_name
+}
+
+module "cloudwatch_dashboard" {
+  source = "../Terraform/Modules/CloudWatch"
+
+  dashboard_name = "${var.environment}-dictionary-dashboard"
+  region         = var.region
+  cluster_name   = var.cluster_name
+  service_name   = var.service_name
 }
