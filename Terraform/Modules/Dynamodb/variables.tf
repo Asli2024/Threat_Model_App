@@ -15,7 +15,7 @@ variable "ecs_task_role_name" {
 }
 
 variable "region" {
-  description = "AWS region where the DynamoDB table will be created"
+  description = "AWS region for the primary DynamoDB table"
   type        = string
-  default     = ""
+  default     = "eu-west-2"
 }

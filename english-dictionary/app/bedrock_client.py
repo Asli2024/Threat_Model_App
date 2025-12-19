@@ -30,7 +30,7 @@ class BedrockClient:
             # Use local region for DynamoDB (Global Table handles replication)
             self.dynamodb = boto3.resource(
                 "dynamodb",
-                region_name=settings.dynamodb_region,  # Uses local region automatically
+                region_name=settings.dynamodb_region,
                 aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             )

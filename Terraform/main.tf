@@ -186,6 +186,7 @@ module "ecs" {
   bedrock_model_id          = var.bedrock_model_id
   temperature               = 0.3
   top_p                     = 0.9
+  max_tokens                = var.max_tokens
 }
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"

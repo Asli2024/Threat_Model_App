@@ -225,3 +225,8 @@ variable "bedrock_model_id" {
   type        = string
   default     = "anthropic.claude-3-7-sonnet-20250219-v1:0"
 }
+variable "max_tokens" {
+  description = "Maximum tokens for Bedrock responses"
+  type        = number
+  default     = 1000
+}
