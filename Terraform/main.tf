@@ -331,5 +331,22 @@ module "cloudwatch_dashboard" {
   service_name            = var.service_name
   alb_arn_suffix          = module.alb.alb_arn_suffix
   target_group_arn_suffix = module.alb.target_group_arn_suffix
+  dynamodb_table_name     = "dictionary-words-${var.environment}"
+
+}
+
+module "cloudwatch_alarms" {
+  source      = "../Terraform/Modules/CloudwatchAlarm"
+  environment = var.environment
+  alarm_email = var.alarm_email
+
+  cluster_name  = var.cluster_name
+  service_name  = var.service_name
+  desired_count = var.desired_count
+
+  alb_arn_suffix          = module.alb.alb_arn_suffix
+  target_group_arn_suffix = module.alb.target_group_arn_suffix
+
+  dynamodb_table_name = "dictionary-words-${var.environment}"
 
 }

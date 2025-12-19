@@ -230,3 +230,9 @@ variable "max_tokens" {
   type        = number
   default     = 1000
 }
+
+variable "alarm_email" {
+  description = "Email address to receive CloudWatch alarm notifications (must confirm subscription)"
+  type        = list(string)
+  default     = []
+}

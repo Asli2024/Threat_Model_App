@@ -115,7 +115,64 @@ resource "aws_cloudwatch_dashboard" "main" {
           title  = "Target Group (Latency + Healthy/Unhealthy)"
           yAxis  = { left = { min = 0 } }
         }
+      },
+      ############################################
+      # DynamoDB: Throttles + Errors
+      ############################################
+      {
+        type   = "metric"
+        width  = 12
+        height = 6
+        properties = {
+          metrics = [
+            ["AWS/DynamoDB", "ThrottledRequests", "TableName", var.dynamodb_table_name, { stat = "Sum" }],
+            [".", "SystemErrors", "TableName", var.dynamodb_table_name, { stat = "Sum" }],
+            [".", "UserErrors", "TableName", var.dynamodb_table_name, { stat = "Sum" }]
+          ]
+          period = 300
+          region = var.region
+          title  = "DynamoDB (Throttles + Errors)"
+          yAxis  = { left = { min = 0 } }
+        }
+      },
+
+      ############################################
+      # DynamoDB: Consumed Capacity (reads/writes)
+      ############################################
+      {
+        type   = "metric"
+        width  = 12
+        height = 6
+        properties = {
+          metrics = [
+            ["AWS/DynamoDB", "ConsumedReadCapacityUnits", "TableName", var.dynamodb_table_name, { stat = "Sum" }],
+            [".", "ConsumedWriteCapacityUnits", "TableName", var.dynamodb_table_name, { stat = "Sum" }]
+          ]
+          period = 300
+          region = var.region
+          title  = "DynamoDB (Consumed Capacity)"
+          yAxis  = { left = { min = 0 } }
+        }
+      },
+
+      ############################################
+      # DynamoDB: Latency
+      ############################################
+      {
+        type   = "metric"
+        width  = 24
+        height = 6
+        properties = {
+          metrics = [
+            ["AWS/DynamoDB", "SuccessfulRequestLatency", "TableName", var.dynamodb_table_name, { stat = "Average" }]
+          ]
+          period = 300
+          region = var.region
+          title  = "DynamoDB (SuccessfulRequestLatency - Avg)"
+          yAxis  = { left = { min = 0 } }
+        }
       }
+
     ]
   })
 }
