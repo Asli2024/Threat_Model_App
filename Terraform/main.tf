@@ -315,9 +315,7 @@ module "waf_acl" {
 
 module "dynamodb" {
   source             = "../Terraform/Modules/Dynamodb"
-  region             = var.region
   table_name         = "dictionary-words-${var.environment}"
   replica_regions    = var.replica_regions
-  environment        = var.environment
-  ecs_task_role_name = "${var.environment}-dictionary-task-role"
+  ecs_task_role_name = module.ecs_task_role.role_name
 }

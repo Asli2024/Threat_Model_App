@@ -1,20 +1,29 @@
+###############################################
+# DynamoDB module (KMS MRK + replica + table)
+# NOTE: Do NOT put terraform{} or provider{} blocks inside a child module.
+###############################################
+
 data "aws_caller_identity" "current" {}
-resource "aws_kms_key" "dynamodb_table_key" {
-  description             = "KMS key for DynamoDB table encryption - ${var.table_name}"
+
+locals {
+  enable_use1 = contains(var.replica_regions, "us-east-1")
+}
+
+########################
+# 1) Primary MRK (in primary region)
+########################
+resource "aws_kms_key" "dynamodb_mrk" {
+  description             = "MRK for DynamoDB Global Table - ${var.table_name}"
   deletion_window_in_days = 7
   enable_key_rotation     = true
+  multi_region            = true
 
   tags = {
-    Name = "${var.table_name}-dynamodb-kms-key"
+    Name = "${var.table_name}-dynamodb-mrk"
   }
 }
 
-resource "aws_kms_key_policy" "aws_dynamodb_table_key_policy" {
-  key_id = aws_kms_key.dynamodb_table_key.id
-  policy = data.aws_iam_policy_document.dynamodb_table_kms_key_policy.json
-}
-
-data "aws_iam_policy_document" "dynamodb_table_kms_key_policy" {
+data "aws_iam_policy_document" "dynamodb_kms_policy" {
   statement {
     sid    = "EnableRootPermissions"
     effect = "Allow"
@@ -44,6 +53,7 @@ data "aws_iam_policy_document" "dynamodb_table_kms_key_policy" {
     resources = ["*"]
   }
 
+  # Optional: only needed if YOUR APP calls KMS directly (not required for DynamoDB SSE)
   statement {
     sid    = "AllowECSTaskRole"
     effect = "Allow"
@@ -56,13 +66,39 @@ data "aws_iam_policy_document" "dynamodb_table_kms_key_policy" {
       "kms:DescribeKey",
       "kms:GenerateDataKey"
     ]
-    resources = [
-      "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}",
-      "arn:aws:dynamodb:us-east-1:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}"
-    ]
+    resources = ["*"]
   }
 }
 
+resource "aws_kms_key_policy" "dynamodb_mrk_policy" {
+  key_id = aws_kms_key.dynamodb_mrk.id
+  policy = data.aws_iam_policy_document.dynamodb_kms_policy.json
+}
+
+########################
+# 2) Replica MRK (only if us-east-1 is enabled)
+########################
+resource "aws_kms_replica_key" "dynamodb_mrk_use1" {
+  count           = local.enable_use1 ? 1 : 0
+  provider        = aws.use1
+  primary_key_arn = aws_kms_key.dynamodb_mrk.arn
+  description     = "Replica MRK for DynamoDB Global Table - ${var.table_name} (us-east-1)"
+
+  tags = {
+    Name = "${var.table_name}-dynamodb-mrk-use1"
+  }
+}
+
+resource "aws_kms_key_policy" "dynamodb_mrk_use1_policy" {
+  count    = local.enable_use1 ? 1 : 0
+  provider = aws.use1
+  key_id   = aws_kms_replica_key.dynamodb_mrk_use1[0].id
+  policy   = data.aws_iam_policy_document.dynamodb_kms_policy.json
+}
+
+########################
+# 3) DynamoDB Global Table (primary + replica kms_key_arn)
+########################
 resource "aws_dynamodb_table" "dictionary_words" {
   name         = var.table_name
   billing_mode = "PAY_PER_REQUEST"
@@ -77,7 +113,7 @@ resource "aws_dynamodb_table" "dictionary_words" {
 
   server_side_encryption {
     enabled     = true
-    kms_key_arn = aws_kms_key.dynamodb_table_key.arn
+    kms_key_arn = aws_kms_key.dynamodb_mrk.arn
   }
 
   attribute {
@@ -91,9 +127,10 @@ resource "aws_dynamodb_table" "dictionary_words" {
   }
 
   dynamic "replica" {
-    for_each = var.replica_regions
+    for_each = local.enable_use1 ? ["us-east-1"] : []
     content {
       region_name            = replica.value
+      kms_key_arn            = aws_kms_replica_key.dynamodb_mrk_use1[0].arn
       point_in_time_recovery = true
       propagate_tags         = true
     }
