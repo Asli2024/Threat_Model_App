@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     AWS_SECRET_ACCESS_KEY: Optional[str] = None
 
     # DynamoDB Configuration
-    DYNAMODB_TABLE_NAME: str = "dictionary_words"
+    DYNAMODB_TABLE_NAME: str = "dictionary-words-dev"
     DYNAMODB_REGION: Optional[str] = None
 
     @property
