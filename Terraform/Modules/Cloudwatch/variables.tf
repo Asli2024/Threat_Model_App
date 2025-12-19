@@ -17,3 +17,13 @@ variable "service_name" {
   description = "ECS service name"
   type        = string
 }
+
+variable "alb_arn_suffix" {
+  description = "ALB ARN suffix (app/.../...) required for CloudWatch ALB metrics"
+  type        = string
+}
+
+variable "target_group_arn_suffix" {
+  description = "Target group ARN suffix (targetgroup/.../...) required for CloudWatch target group metrics"
+  type        = string
+}

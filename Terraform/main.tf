@@ -325,8 +325,11 @@ module "dynamodb" {
 module "cloudwatch_dashboard" {
   source = "../Terraform/Modules/Cloudwatch"
 
-  dashboard_name = "${var.environment}-dictionary-dashboards"
-  region         = var.region
-  cluster_name   = var.cluster_name
-  service_name   = var.service_name
+  dashboard_name          = "${var.environment}-dictionary-dashboards"
+  region                  = var.region
+  cluster_name            = var.cluster_name
+  service_name            = var.service_name
+  alb_arn_suffix          = module.alb.alb_arn_suffix
+  target_group_arn_suffix = module.alb.target_group_arn_suffix
+
 }
