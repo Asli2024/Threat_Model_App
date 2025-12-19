@@ -336,7 +336,7 @@ module "cloudwatch_dashboard" {
 }
 
 module "cloudwatch_alarms" {
-  source      = "../Terraform/Modules/CloudwatchAlarm"
+  source      = "../Terraform/Modules/CloudWatchAlarm"
   environment = var.environment
   alarm_email = var.alarm_email
 
