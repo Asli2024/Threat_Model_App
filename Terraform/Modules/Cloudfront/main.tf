@@ -6,8 +6,8 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
 }
 
-data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
-  name = "Managed-AllViewerExceptHostHeader"
+data "aws_cloudfront_origin_request_policy" "all_viewer" {
+  name = "Managed-AllViewer"
 }
 resource "aws_cloudfront_vpc_origin" "alb" {
   vpc_origin_endpoint_config {
@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "this" {
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   }
   ordered_cache_behavior {
     path_pattern           = "/static/*"
@@ -61,7 +61,7 @@ resource "aws_cloudfront_distribution" "this" {
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   }
 
   viewer_certificate {

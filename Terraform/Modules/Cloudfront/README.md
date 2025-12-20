@@ -24,7 +24,7 @@ No modules.
 | [aws_cloudfront_vpc_origin.alb](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/resources/cloudfront_vpc_origin) | resource |
 | [aws_cloudfront_cache_policy.caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_cloudfront_cache_policy.caching_optimized](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/cloudfront_cache_policy) | data source |
-| [aws_cloudfront_origin_request_policy.all_viewer_except_host](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/cloudfront_origin_request_policy) | data source |
+| [aws_cloudfront_origin_request_policy.all_viewer](https://registry.terraform.io/providers/hashicorp/aws/6.15.0/docs/data-sources/cloudfront_origin_request_policy) | data source |
 
 ## Inputs
 
