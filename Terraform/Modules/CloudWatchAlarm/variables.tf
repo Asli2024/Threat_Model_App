@@ -1,7 +1,3 @@
-############################################
-# Terraform/Modules/CloudwatchAlarms/variables.tf
-############################################
-
 variable "environment" {
   description = "Environment name (e.g. dev, pre, prod)"
   type        = string
@@ -50,10 +46,6 @@ variable "dynamodb_table_name" {
   type        = string
   default     = ""
 }
-
-############################################
-# Defaults tuned to be useful but not noisy
-############################################
 
 variable "alb_5xx_threshold" {
   description = "ALB target 5XX threshold (Sum over period)"

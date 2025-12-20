@@ -1,4 +1,4 @@
-variable "service_names" { # Changed from service_name (singular) to service_names (plural)
+variable "service_names" {
   description = "List of AWS service names for gateway endpoints"
   type        = list(string)
 }

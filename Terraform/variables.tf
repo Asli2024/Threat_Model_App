@@ -104,7 +104,7 @@ variable "target_group_protocol" {
 variable "health_check_path" {
   description = "Health check path for the target group"
   type        = string
-  default     = "api/health"
+  default     = "/api/health"
 }
 
 variable "dns_ttl" {

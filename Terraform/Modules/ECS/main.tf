@@ -160,7 +160,7 @@ resource "aws_ecs_task_definition" "this" {
       image     = var.image,
       essential = true,
 
-      # Environment variables for FastAPI app
+
       environment = [
         {
           name  = "AWS_REGION"

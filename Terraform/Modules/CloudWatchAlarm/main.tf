@@ -1,10 +1,3 @@
-############################################
-# Terraform/Modules/CloudwatchAlarms/main.tf
-############################################
-
-############################################
-# Customer-managed KMS key for SNS
-############################################
 data "aws_caller_identity" "current" {}
 
 resource "aws_kms_key" "sns_key" {
@@ -26,7 +19,6 @@ resource "aws_kms_alias" "sns_key_alias" {
 }
 
 data "aws_iam_policy_document" "sns_kms_key_policy" {
-  # Full admin to account root (standard)
   statement {
     sid    = "EnableRootPermissions"
     effect = "Allow"
@@ -37,8 +29,6 @@ data "aws_iam_policy_document" "sns_kms_key_policy" {
     actions   = ["kms:*"]
     resources = ["*"]
   }
-
-  # Allow SNS service to use the key
   statement {
     sid    = "AllowSNSUseOfKey"
     effect = "Allow"
@@ -54,9 +44,6 @@ data "aws_iam_policy_document" "sns_kms_key_policy" {
   }
 }
 
-############################################
-# SNS topic encrypted with customer-managed key
-############################################
 resource "aws_sns_topic" "cloudwatch_alarms" {
   name              = "${var.environment}-cloudwatch-alarms"
   kms_master_key_id = aws_kms_key.sns_key.arn
@@ -73,9 +60,6 @@ resource "aws_sns_topic_subscription" "alarm_email" {
   endpoint  = join(",", var.alarm_email)
 }
 
-############################################
-# Alarm 1: ALB Target 5XX (user impact)
-############################################
 resource "aws_cloudwatch_metric_alarm" "alb_target_5xx" {
   alarm_name          = "${var.environment}-alb-target-5xx"
   alarm_description   = "ALB target returned 5XX errors"
@@ -96,9 +80,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_target_5xx" {
   alarm_actions = [aws_sns_topic.cloudwatch_alarms.arn]
 }
 
-############################################
-# Alarm 2: ALB Unhealthy hosts (service health)
-############################################
 resource "aws_cloudwatch_metric_alarm" "alb_unhealthy_hosts" {
   alarm_name          = "${var.environment}-alb-unhealthy-hosts"
   alarm_description   = "One or more targets are unhealthy"
@@ -118,10 +99,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_unhealthy_hosts" {
 
   alarm_actions = [aws_sns_topic.cloudwatch_alarms.arn]
 }
-
-############################################
-# Alarm 3: ALB TargetResponseTime (latency)
-############################################
 resource "aws_cloudwatch_metric_alarm" "alb_target_response_time" {
   alarm_name          = "${var.environment}-alb-target-response-time"
   alarm_description   = "ALB target response time is high"
@@ -142,9 +119,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_target_response_time" {
   alarm_actions = [aws_sns_topic.cloudwatch_alarms.arn]
 }
 
-############################################
-# Alarm 4: ECS running tasks < desired tasks
-############################################
 resource "aws_cloudwatch_metric_alarm" "ecs_running_tasks_low" {
   alarm_name          = "${var.environment}-ecs-running-tasks-low"
   alarm_description   = "ECS running tasks less than desired"
@@ -165,9 +139,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_running_tasks_low" {
   alarm_actions = [aws_sns_topic.cloudwatch_alarms.arn]
 }
 
-############################################
-# Alarm 5: DynamoDB throttles
-############################################
 resource "aws_cloudwatch_metric_alarm" "dynamodb_throttles" {
   alarm_name          = "${var.environment}-dynamodb-throttled"
   alarm_description   = "DynamoDB requests are being throttled"
@@ -187,9 +158,6 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_throttles" {
   alarm_actions = [aws_sns_topic.cloudwatch_alarms.arn]
 }
 
-############################################
-# Alarm 6: DynamoDB system errors
-############################################
 resource "aws_cloudwatch_metric_alarm" "dynamodb_system_errors" {
   alarm_name          = "${var.environment}-dynamodb-system-errors"
   alarm_description   = "DynamoDB SystemErrors > 0"

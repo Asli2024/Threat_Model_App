@@ -1,7 +1,3 @@
-###############################################
-# Modules/Cloudfront/variables.tf
-###############################################
-
 variable "alb_arn" {
   description = "ARN of the ALB to expose via CloudFront VPC origin"
   type        = string

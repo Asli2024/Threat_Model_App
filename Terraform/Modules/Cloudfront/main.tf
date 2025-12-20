@@ -1,12 +1,3 @@
-###############################################
-# Modules/Cloudfront/main.tf
-###############################################
-
-###############################################
-# Managed policies (AWS-managed)
-# - API:   CachingDisabled
-# - Static: CachingOptimized
-###############################################
 data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
@@ -18,10 +9,6 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
 data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
   name = "Managed-AllViewerExceptHostHeader"
 }
-
-###############################################
-# CloudFront VPC origin -> ALB
-###############################################
 resource "aws_cloudfront_vpc_origin" "alb" {
   vpc_origin_endpoint_config {
     name                   = "english-somali-dictionary-vpc-origin"
@@ -55,11 +42,6 @@ resource "aws_cloudfront_distribution" "this" {
       vpc_origin_id = aws_cloudfront_vpc_origin.alb.id
     }
   }
-
-  #############################################################
-  # DEFAULT: API behaviour (disable caching)
-  # - Your API includes POST/PUT/etc -> should NOT be cached
-  #############################################################
   default_cache_behavior {
     target_origin_id       = "vpc-origin"
     viewer_protocol_policy = "redirect-to-https"
@@ -70,11 +52,6 @@ resource "aws_cloudfront_distribution" "this" {
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
   }
-
-  #############################################################
-  # STATIC: /static/* (cache aggressively)
-  # - app.js, styles.css, etc.
-  #############################################################
   ordered_cache_behavior {
     path_pattern           = "/static/*"
     target_origin_id       = "vpc-origin"
