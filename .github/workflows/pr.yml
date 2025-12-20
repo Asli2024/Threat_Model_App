@@ -2,20 +2,25 @@ name: PR Checks
 
 on:
     pull_request:
-        branches:
-            - main
+        branches: [main]
         paths:
             - "Terraform/**"
             - ".github/workflows/**"
 
 permissions:
-    id-token: write
     contents: read
-    actions: write
+    id-token: write
 
 env:
     AWS_REGION: eu-west-2
-    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+    TF_IN_AUTOMATION: "true"
+    TF_INPUT: "false"
+    TF_ROOT: Terraform
+    TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
+
+concurrency:
+    group: pr-checks-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
 
 jobs:
     pre-commit:
@@ -37,12 +42,13 @@ jobs:
               uses: hashicorp/setup-terraform@v3
               with:
                   terraform_version: "1.10.4"
+                  terraform_wrapper: false
 
             - name: Cache pre-commit
               uses: actions/cache@v4
               with:
                   path: ~/.cache/pre-commit
-                  key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+                  key: pre-commit-${{ runner.os }}-py311-${{ hashFiles('.pre-commit-config.yaml') }}
 
             - name: Install terraform-docs
               run: |
@@ -59,7 +65,7 @@ jobs:
             - name: Install Trivy
               run: |
                   wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-                  echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+                  echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
                   sudo apt-get update
                   sudo apt-get install trivy -y
                   trivy --version
@@ -76,7 +82,7 @@ jobs:
     terraform-plan:
         name: Terraform Plan - ${{ matrix.environment }}
         runs-on: ubuntu-latest
-        timeout-minutes: 15
+        timeout-minutes: 20
         needs: [pre-commit]
         strategy:
             matrix:
@@ -97,14 +103,30 @@ jobs:
               uses: hashicorp/setup-terraform@v3
               with:
                   terraform_version: "1.10.4"
+                  terraform_wrapper: false
 
-            - name: Cache Terraform
+            - name: Create Terraform plugin cache dir
+              run: mkdir -p "${TF_PLUGIN_CACHE_DIR}"
+
+            - name: Cache Terraform providers
               uses: actions/cache@v4
               with:
-                  path: |
-                      .terraform
-                      .terraform.lock.hcl
-                  key: ${{ runner.os }}-terraform-${{ matrix.environment }}-${{ hashFiles('**/*.tf') }}
-                  restore-keys: |
-                      ${{ runner.os }}-terraform-${{ matrix.environment }}-
-                      ${{ runner.os }}-terraform-
+                  path: ${{ env.TF_PLUGIN_CACHE_DIR }}
+                  key: ${{ runner.os }}-tf-plugins-${{ hashFiles(format('{0}/**/*.tf', env.TF_ROOT)) }}
+
+            - name: Terraform Init
+              working-directory: ${{ env.TF_ROOT }}
+              run: |
+                  terraform init -upgrade
+
+            - name: Terraform Validate
+              working-directory: ${{ env.TF_ROOT }}
+              run: |
+                  terraform validate
+
+            - name: Terraform Plan
+              working-directory: ${{ env.TF_ROOT }}
+              run: |
+                  terraform plan \
+                    -var-file="envs/${{ matrix.environment }}.tfvars" \
+                    -no-color
