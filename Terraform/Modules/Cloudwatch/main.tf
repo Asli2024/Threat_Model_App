@@ -4,7 +4,7 @@ resource "aws_cloudwatch_dashboard" "main" {
   dashboard_body = jsonencode({
     widgets = [
       ############################################
-      # ECS: CPU
+      # ECS: CPU (AWS/ECS)
       ############################################
       {
         type   = "metric"
@@ -12,7 +12,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            ["ECS/ContainerInsights", "CPUUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
+            ["AWS/ECS", "CPUUtilization", "ClusterName", var.cluster_name, "ServiceName", var.service_name, { stat = "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -23,7 +23,7 @@ resource "aws_cloudwatch_dashboard" "main" {
       },
 
       ############################################
-      # ECS: Memory
+      # ECS: Memory (AWS/ECS)
       ############################################
       {
         type   = "metric"
@@ -31,7 +31,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            ["ECS/ContainerInsights", "MemoryUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
+            ["AWS/ECS", "MemoryUtilization", "ClusterName", var.cluster_name, "ServiceName", var.service_name, { stat = "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_dashboard" "main" {
       },
 
       ############################################
-      # ECS: Running vs Desired vs Pending tasks
+      # ECS: Running vs Desired vs Pending tasks (ECS/ContainerInsights)
       ############################################
       {
         type   = "metric"
@@ -50,9 +50,9 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            ["ECS/ContainerInsights", "RunningTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }],
-            [".", "DesiredTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }],
-            [".", "PendingTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
+            ["ECS/ContainerInsights", "RunningTaskCount", "ClusterName", var.cluster_name, "ServiceName", var.service_name, { stat = "Sum" }],
+            [".", "DesiredTaskCount", "ClusterName", var.cluster_name, "ServiceName", var.service_name, { stat = "Sum" }],
+            [".", "PendingTaskCount", "ClusterName", var.cluster_name, "ServiceName", var.service_name, { stat = "Sum" }]
           ]
           period = 60
           region = var.region
@@ -116,6 +116,7 @@ resource "aws_cloudwatch_dashboard" "main" {
           yAxis  = { left = { min = 0 } }
         }
       },
+
       ############################################
       # DynamoDB: Throttles + Errors
       ############################################
@@ -172,7 +173,6 @@ resource "aws_cloudwatch_dashboard" "main" {
           yAxis  = { left = { min = 0 } }
         }
       }
-
     ]
   })
 }
