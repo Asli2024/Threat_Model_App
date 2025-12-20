@@ -128,5 +128,5 @@ jobs:
               working-directory: ${{ env.TF_ROOT }}
               run: |
                   terraform plan \
-                    -var-file="envs/${{ matrix.environment }}.tfvars" \
+                    -var-file="config/${{ matrix.environment }}.tfvars" \
                     -no-color
