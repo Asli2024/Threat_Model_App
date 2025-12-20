@@ -1,5 +1,5 @@
 variable "vpc_id" {
-  description = "VPC ID where the security groups will be created"
+  description = "VPC ID"
   type        = string
   default     = ""
 }
@@ -12,19 +12,19 @@ variable "target_group_name" {
 variable "target_group_port" {
   description = "target group port"
   type        = number
-  default     = 443
+  default     = 8000
 }
 
 variable "target_group_protocol" {
   description = "value of the protocol to use"
   type        = string
-  default     = "HTTPS"
+  default     = "HTTP"
 }
 
 variable "health_check_path" {
   description = "Path for health check"
   type        = string
-  default     = "/"
+  default     = "/api/health"
 }
 
 variable "security_group_id" {

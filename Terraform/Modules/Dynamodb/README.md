@@ -33,7 +33,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ecs_task_role_name"></a> [ecs\_task\_role\_name](#input\_ecs\_task\_role\_name) | Name of the ECS task role that needs access to DynamoDB | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region for the primary DynamoDB table | `string` | `"eu-west-2"` | no |
 | <a name="input_replica_regions"></a> [replica\_regions](#input\_replica\_regions) | List of regions to replicate DynamoDB table to | `list(string)` | `[]` | no |
 | <a name="input_table_name"></a> [table\_name](#input\_table\_name) | Name of the DynamoDB table | `string` | n/a | yes |
@@ -42,6 +41,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | Primary DynamoDB MRK ARN (eu-west-2) |
+| <a name="output_kms_replica_key_arn_use1"></a> [kms\_replica\_key\_arn\_use1](#output\_kms\_replica\_key\_arn\_use1) | Replica DynamoDB MRK ARN (us-east-1) if enabled |
 | <a name="output_table_arn"></a> [table\_arn](#output\_table\_arn) | ARN of the DynamoDB table |
 | <a name="output_table_name"></a> [table\_name](#output\_table\_name) | Name of the DynamoDB table |
 <!-- END_TF_DOCS -->

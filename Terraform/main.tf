@@ -119,6 +119,17 @@ module "application_sg" {
 
   ]
 }
+
+module "cloudfront" {
+  source              = "../Terraform/Modules/Cloudfront"
+  acm_certificate_arn = data.aws_acm_certificate.cloudfront_cert.arn
+  aliases             = var.aliases
+
+  alb_arn     = module.alb.alb_arn
+  domain_name = module.alb.alb_dns_name
+  waf_acl     = module.waf_acl.waf_arn
+  price_class = "PriceClass_100"
+}
 module "route53_new_zone" {
   source                 = "../Terraform/Modules/Route53"
   domain_name            = var.domain_name
@@ -146,18 +157,6 @@ module "acm_alb" {
   zone_id            = module.route53_new_zone.hosted_zone_id
   dns_ttl            = var.dns_ttl
   validation_timeout = var.validation_timeout
-}
-
-module "cloudfront" {
-  source              = "../Terraform/Modules/Cloudfront"
-  acm_certificate_arn = data.aws_acm_certificate.cloudfront_cert.arn
-  aliases             = var.aliases
-  alb_arn             = module.alb.alb_arn
-  domain_name         = module.alb.alb_dns_name
-  waf_acl             = module.waf_acl.waf_arn
-  default_ttl         = var.default_ttl
-  min_ttl             = var.min_ttl
-  max_ttl             = var.max_ttl
 }
 
 module "ecs" {
@@ -189,6 +188,7 @@ module "ecs" {
   top_p                     = 0.9
   max_tokens                = var.max_tokens
 }
+
 module "ecs_execution_role" {
   source                 = "../Terraform/Modules/IAM"
   role_name              = "${var.environment}-ecs-execution-roles"
@@ -224,10 +224,8 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
   }
 
   statement {
-    effect = "Allow"
-    actions = [
-      "ecr:GetAuthorizationToken"
-    ]
+    effect    = "Allow"
+    actions   = ["ecr:GetAuthorizationToken"]
     resources = ["*"]
   }
 
@@ -236,18 +234,23 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
     actions = [
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "logs:CreateLogGroup",
-      "logs:DescribeLogStreams",
+      "logs:DescribeLogStreams"
+    ]
+    resources = [
+      module.ecs.cloudwatch_log_group_arn,
+      "${module.ecs.cloudwatch_log_group_arn}:log-stream:*"
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
       "kms:Decrypt",
       "kms:DescribeKey",
       "kms:Encrypt",
       "kms:GenerateDataKey"
-
-
     ]
-    resources = [
-      "*"
-    ]
+    resources = [module.ecs.kms_key_arn]
   }
 }
 
@@ -259,7 +262,6 @@ module "ecs_task_role" {
   custom_policy_name     = "${var.environment}-translate-policy"
   custom_policy_document = data.aws_iam_policy_document.translate_policy.json
 }
-
 data "aws_iam_policy_document" "translate_policy" {
   statement {
     effect = "Allow"
@@ -267,7 +269,10 @@ data "aws_iam_policy_document" "translate_policy" {
       "bedrock:InvokeModel",
       "bedrock:InvokeModelWithResponseStream"
     ]
-    resources = ["*"]
+
+    resources = [
+      "arn:aws:bedrock:${var.region}::foundation-model/${var.bedrock_model_id}"
+    ]
   }
   statement {
     effect = "Allow"
@@ -281,7 +286,9 @@ data "aws_iam_policy_document" "translate_policy" {
       "dynamodb:BatchGetItem",
       "dynamodb:BatchWriteItem"
     ]
+
     resources = [
+
       "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}",
       "arn:aws:dynamodb:us-east-1:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}"
     ]
@@ -293,7 +300,14 @@ data "aws_iam_policy_document" "translate_policy" {
       "kms:DescribeKey",
       "kms:GenerateDataKey"
     ]
-    resources = ["*"]
+
+
+    resources = compact([
+      module.dynamodb.kms_key_arn,
+      module.dynamodb.kms_replica_key_arn_use1
+    ])
+
+
     condition {
       test     = "StringEquals"
       variable = "kms:ViaService"
@@ -310,16 +324,14 @@ module "waf_acl" {
   providers = {
     aws = aws.use1
   }
-
   name        = "${var.environment}-${var.waf_name}"
   description = "Web ACL for Dictionary App - ${var.environment}"
 }
 
 module "dynamodb" {
-  source             = "../Terraform/Modules/Dynamodb"
-  table_name         = "dictionary-words-${var.environment}"
-  replica_regions    = var.replica_regions
-  ecs_task_role_name = module.ecs_task_role.role_name
+  source          = "../Terraform/Modules/Dynamodb"
+  table_name      = "dictionary-words-${var.environment}"
+  replica_regions = var.replica_regions
 }
 
 module "cloudwatch_dashboard" {

@@ -125,7 +125,7 @@ resource "aws_appautoscaling_target" "this" {
 }
 
 resource "aws_appautoscaling_policy" "cpu" {
-  name               = "${var.service_name}-cpu-autoscaling"
+  name               = "${local.service_name_effective}-cpu-autoscaling"
   service_namespace  = "ecs"
   resource_id        = aws_appautoscaling_target.this.resource_id
   scalable_dimension = "ecs:service:DesiredCount"

@@ -1,5 +1,14 @@
+###############################################
+# Modules/Cloudfront/variables.tf
+###############################################
+
 variable "alb_arn" {
   description = "ARN of the ALB to expose via CloudFront VPC origin"
+  type        = string
+}
+
+variable "domain_name" {
+  description = "ALB DNS name (origin domain name) used by CloudFront"
   type        = string
 }
 
@@ -20,31 +29,8 @@ variable "price_class" {
   default     = "PriceClass_100"
 }
 
-variable "default_ttl" {
-  description = "Default TTL (seconds)"
-  type        = number
-  default     = 3600
-}
-
-variable "max_ttl" {
-  description = "Max TTL (seconds)"
-  type        = number
-  default     = 86400
-}
-
-variable "min_ttl" {
-  description = "Min TTL (seconds)"
-  type        = number
-  default     = 0
-}
-
-variable "domain_name" {
-  description = "Domain name for the CloudFront distribution"
-  type        = string
-}
-
 variable "waf_acl" {
-  description = "The ID of the WAF to associate with the CloudFront distribution"
+  description = "WAF Web ACL ARN/ID to associate with the CloudFront distribution (optional)"
   type        = string
   default     = ""
 }

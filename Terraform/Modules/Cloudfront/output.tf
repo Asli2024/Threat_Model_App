@@ -1,24 +1,28 @@
-output "distribution_id" {
-  value       = aws_cloudfront_distribution.this.id
+###############################################
+# Modules/Cloudfront/outputs.tf
+###############################################
+
+output "id" {
   description = "CloudFront distribution ID"
+  value       = aws_cloudfront_distribution.this.id
 }
 
-output "distribution_arn" {
-  value       = aws_cloudfront_distribution.this.arn
+output "arn" {
   description = "CloudFront distribution ARN"
+  value       = aws_cloudfront_distribution.this.arn
 }
 
 output "domain_name" {
+  description = "CloudFront distribution domain name"
   value       = aws_cloudfront_distribution.this.domain_name
-  description = "CloudFront domain name (dxxxx.cloudfront.net)"
 }
 
 output "hosted_zone_id" {
+  description = "CloudFront hosted zone ID (for Route53 alias records)"
   value       = aws_cloudfront_distribution.this.hosted_zone_id
-  description = "Hosted zone ID to use for Route 53 ALIAS records"
 }
 
 output "vpc_origin_id" {
-  description = "VPC Origin ID"
+  description = "CloudFront VPC origin ID"
   value       = aws_cloudfront_vpc_origin.alb.id
 }
