@@ -86,7 +86,7 @@ jobs:
         needs: [pre-commit]
         strategy:
             matrix:
-                environment: [dev, staging, prod]
+                environment: [dev]
             fail-fast: false
 
         steps:

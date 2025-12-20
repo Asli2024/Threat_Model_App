@@ -10,8 +10,14 @@ repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.103.0
     hooks:
-      - id: terraform_fmt
-      - id: terraform_validate
-      - id: terraform_tflint
-      - id: terraform_docs
-      - id: terraform_trivy
+    - id: terraform_fmt
+    - id: terraform_validate
+    - id: terraform_tflint
+    - id: terraform_docs
+      args:
+        - --hook-config=--path-to-file=README.md
+        - --hook-config=--add-to-existing-file=true
+        - --hook-config=--create-file-if-not-exist=true
+        - --hook-config=--use-standard-markers=true
+        - --hook-config=--output-mode=inject
+    - id: terraform_trivy
