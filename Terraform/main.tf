@@ -320,7 +320,7 @@ data "aws_iam_policy_document" "translate_policy" {
 }
 
 module "waf_acl" {
-  source = "../Terraform/Modules/WAF"
+  source = "../Terraform/Modules/waf"
   providers = {
     aws = aws.use1
   }

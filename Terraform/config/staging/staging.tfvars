@@ -50,6 +50,4 @@ min_capacity          = 1
 max_capacity          = 2
 family                = "staging-english-somali-dictionary-task-family"
 service_name          = "staging-english-somali-dictionary-service"
-default_ttl           = 3600
-max_ttl               = 86400
-min_ttl               = 0
+alarm_email           = ["ashleyaden4u@hotmail.com"]

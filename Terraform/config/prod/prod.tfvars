@@ -50,6 +50,3 @@ min_capacity          = 1
 max_capacity          = 2
 family                = "prod-english-somali-dictionary-task-family"
 service_name          = "prod-english-somali-dictionary-service"
-default_ttl           = 3600
-max_ttl               = 86400
-min_ttl               = 0
