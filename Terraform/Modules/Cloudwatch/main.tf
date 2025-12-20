@@ -12,7 +12,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ECS", "CPUUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
+            ["ECS/ContainerInsights", "CPUUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -31,7 +31,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ECS", "MemoryUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
+            ["ECS/ContainerInsights", "MemoryUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -50,7 +50,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ECS", "RunningTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }],
+            ["ECS/ContainerInsights", "RunningTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }],
             [".", "DesiredTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }],
             [".", "PendingTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "Average" }]
           ]
