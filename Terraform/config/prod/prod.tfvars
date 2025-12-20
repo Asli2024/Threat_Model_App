@@ -12,7 +12,7 @@ private_subnet_cidr_blocks = ["10.10.1.0/24", "10.10.2.0/24"]
 public_subnet_cidr_blocks  = ["10.10.101.0/24", "10.10.102.0/24"]
 enable_dns_support         = true
 enable_dns_hostnames       = true
-vpc_flow_log_role_name     = "prod-vpc-flow-logs-roles"
+vpc_flow_log_role_name     = "prod-vpc-flow-logs-role"
 gateway_endpoints = [
   "com.amazonaws.eu-west-2.s3",
   "com.amazonaws.eu-west-2.dynamodb"
