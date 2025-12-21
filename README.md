@@ -101,20 +101,20 @@ English-Somali-Dictionary/
 │   │       └── prod.tfvars
 │   │
 │   └── Modules/
-│       ├── vpc/
-│       ├── security_groups/
-│       ├── gateway_endpoint/
-│       ├── interface_endpoint/
-│       ├── alb/
 │       ├── acm/
+│       ├── alb/
 │       ├── cloudfront/
-│       ├── waf/
-│       ├── ecs/
-│       ├── iam/
-│       ├── dynamodb/
-│       ├── route53/
+│       ├── cloudwatch_alarm/
 │       ├── cloudwatch_dashboard/
-│       └── cloudwatch_alarm/
+│       ├── dynamodb/
+│       ├── ecs/
+│       ├── gateway_endpoint/
+│       ├── iam/
+│       ├── interface_endpoint/
+│       ├── route53/
+│       ├── security_groups/
+│       ├── vpc/
+│       ├── waf/
 │
 ├── .github/
 │   └── workflows/
