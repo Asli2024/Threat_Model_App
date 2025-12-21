@@ -1,17 +1,6 @@
-Here’s a **polished, senior-level rewrite** of your README that keeps your content and intent intact, but improves:
+# EnglishSomali Dictionary App
 
-* clarity and flow
-* technical tone (more “production / platform engineer”)
-* consistency and readability
-* GitHub rendering (spacing, headings, structure)
-
-You can **copy-paste this directly**.
-
----
-
-# English–Somali Dictionary App
-
-The **English–Somali Dictionary App** is a production-ready, cloud-native translation service built on **AWS ECS Fargate** and provisioned entirely using **Terraform**.
+The **English Somali Dictionary App** is a production-ready, cloud-native translation service built on **AWS ECS Fargate** and provisioned entirely using **Terraform**.
 
 It provides real-time English → Somali translation using **Amazon Bedrock** foundation models, with **optional DynamoDB caching** to improve performance and reduce inference costs.
 
