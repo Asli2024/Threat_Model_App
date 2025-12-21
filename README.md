@@ -66,7 +66,6 @@ This allows fast iteration locally while keeping production optimized and cost-e
 
 ## Repository Structure
 
-<details>
 <summary><strong>Folder Structure</strong></summary>
 
 ```text
