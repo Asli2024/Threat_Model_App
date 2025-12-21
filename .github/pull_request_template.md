@@ -1,4 +1,3 @@
-
 # Pull Request Template
 
 ## Summary
@@ -28,7 +27,6 @@
 - [ ] Not applicable (explain below)
 
 ### Evidence / Commands / Output
-
 <!-- Paste relevant output, screenshots, or logs here. -->
 
 ---
@@ -49,4 +47,3 @@
 
 ## Reviewer Notes
 <!-- Anything specific reviewers should focus on, or questions for reviewers. -->
-
