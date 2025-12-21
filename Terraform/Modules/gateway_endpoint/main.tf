@@ -1,5 +1,5 @@
 resource "aws_vpc_endpoint" "gateway" {
-  for_each = toset(var.service_names) # Changed from service_name to service_names
+  for_each = toset(var.service_names)
 
   vpc_id       = var.vpc_id
   service_name = each.value

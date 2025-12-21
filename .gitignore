@@ -16,6 +16,7 @@ crash.*.log
 *.tfvars
 *.tfvars.json
 
+
 # But allow environment-specific tfvars that don't contain secrets
 !Terraform/config/dev/dev.tfvars
 !Terraform/config/staging/staging.tfvars
