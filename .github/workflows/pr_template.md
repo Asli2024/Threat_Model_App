@@ -14,6 +14,7 @@
 - [ ] Docs
 - [ ] Infrastructure (Terraform)
 - [ ] CI/CD
+- [ ] Other
 
 ## Related Issues / Tickets
 <!-- List any related issues, tickets, or PRs. Use GitHub auto-linking (e.g. #123) if possible. -->
