@@ -68,7 +68,17 @@ This allows fast iteration locally while keeping production optimized and cost-e
 
 ```text
 
+
 English-Somali-Dictionary/
+├── .github/
+│   └── workflows/
+│       ├── pr.yml
+│       ├── docker-build-push.yml
+│       ├── terraform-plan.yml
+│       ├── terraform-apply.yml
+│       ├── terraform-destroy-plan.yml
+│       └── terraform-destroy-apply.yml
+│
 ├── english-dictionary/
 │   ├── Dockerfile
 │   ├── README.md
@@ -115,15 +125,6 @@ English-Somali-Dictionary/
 │       ├── security_groups/
 │       ├── vpc/
 │       ├── waf/
-│
-├── .github/
-│   └── workflows/
-│       ├── pr.yml
-│       ├── docker-build-push.yml
-│       ├── terraform-plan.yml
-│       ├── terraform-apply.yml
-│       ├── terraform-destroy-plan.yml
-│       └── terraform-destroy-apply.yml
 │
 ├── .pre-commit-config.yaml
 ├── .gitignore
