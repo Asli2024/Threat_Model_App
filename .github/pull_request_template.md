@@ -34,6 +34,7 @@
 ## Screenshots (if applicable)
 <!-- Add before/after screenshots or diagrams if UI or infrastructure changes are visual. -->
 
+
 ---
 
 ## Checklist
@@ -44,6 +45,3 @@
 - [ ] No sensitive data or secrets are included
 
 ---
-
-## Reviewer Notes
-<!-- Anything specific reviewers should focus on, or questions for reviewers. -->
