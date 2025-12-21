@@ -104,7 +104,7 @@ variable "target_group_protocol" {
 variable "health_check_path" {
   description = "Health check path for the target group"
   type        = string
-  default     = "/"
+  default     = "/api/health"
 }
 
 variable "dns_ttl" {
@@ -194,24 +194,6 @@ variable "environment" {
   description = "Short environment identifier used for naming (e.g. dev, staging, prod)."
   type        = string
   default     = ""
-}
-
-variable "default_ttl" {
-  description = "Default TTL for CloudFront cache (in seconds)"
-  type        = number
-  default     = 3600
-}
-
-variable "min_ttl" {
-  description = "Minimum TTL for CloudFront cache (in seconds)"
-  type        = number
-  default     = 0
-}
-
-variable "max_ttl" {
-  description = "Maximum TTL for CloudFront cache (in seconds)"
-  type        = number
-  default     = 86400
 }
 
 variable "replica_regions" {

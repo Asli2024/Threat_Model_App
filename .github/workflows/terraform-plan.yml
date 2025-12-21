@@ -85,7 +85,7 @@ jobs:
         working-directory: ./Terraform
         run: |
           echo "Selecting workspace: ${{ github.event.inputs.environment }}"
-          terraform workspace select ${{ github.event.inputs.environment }}
+          terraform workspace select -or-create ${{ github.event.inputs.environment }}
 
       - name: Terraform Plan
         working-directory: ./Terraform
@@ -122,6 +122,6 @@ jobs:
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.TOKEN_2}}" \
+            -H "Authorization: Bearer ${{ secrets.CI_CD_REPO_ACCESS}}" \
             https://api.github.com/repos/${{ github.repository }}/dispatches \
             -d '{"event_type":"terraform-apply-approved","client_payload":{"environment":"${{ github.event.inputs.environment }}","account_number":"${{ github.event.inputs.account_number }}","aws_region":"${{ github.event.inputs.aws_region }}"}}'

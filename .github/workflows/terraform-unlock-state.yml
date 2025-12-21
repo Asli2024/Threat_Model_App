@@ -64,7 +64,7 @@ jobs:
               working-directory: ./Terraform
               run: |
                   echo "Selecting workspace: ${{ github.event.inputs.environment }}"
-                  terraform workspace select ${{ github.event.inputs.environment }}
+                  terraform workspace select -or-create ${{ github.event.inputs.environment }}
 
             - name: Force Unlock State
               working-directory: ./Terraform
