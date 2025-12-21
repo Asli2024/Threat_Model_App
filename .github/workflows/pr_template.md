@@ -19,9 +19,4 @@
 - [ ] Not applicable (explain below)
 
 ### Evidence / Commands / Output
-<!-- Paste commands run + relevant output, screenshots, or links -->
-```bash
-# Example:
-# pre-commit run -a
-# terraform -chdir=Terraform validate
-# terraform -chdir=Terraform plan -var-file=config/dev/dev.tfvars
+
