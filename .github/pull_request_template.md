@@ -1,4 +1,3 @@
-
 # Pull Request Template
 
 ## Summary
@@ -14,7 +13,6 @@
 - [ ] Docs
 - [ ] Infrastructure (Terraform)
 - [ ] CI/CD
-- [ ] Other
 
 ## Related Issues / Tickets
 <!-- List any related issues, tickets, or PRs. Use GitHub auto-linking (e.g. #123) if possible. -->
@@ -29,7 +27,6 @@
 - [ ] Not applicable (explain below)
 
 ### Evidence / Commands / Output
-
 <!-- Paste relevant output, screenshots, or logs here. -->
 
 ---
@@ -50,4 +47,3 @@
 
 ## Reviewer Notes
 <!-- Anything specific reviewers should focus on, or questions for reviewers. -->
-
