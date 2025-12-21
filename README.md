@@ -118,7 +118,6 @@ English-Somali-Dictionary/
         └── styles.css
 ```
 
-
 ---
 
 ## CI/CD
