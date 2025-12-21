@@ -66,64 +66,12 @@ This allows fast iteration locally while keeping production optimized and cost-e
 
 ## Repository Structure
 
-<summary><strong>Folder Structure</strong></summary>
-
 ```text
 English-Somali-Dictionary/
-├── .gitignore
-├── .pre-commit-config.yaml
-├── README.md
-├── Terraform/
-│   ├── Modules/
-│   │   ├── acm/
-│   │   ├── alb/
-│   │   ├── cloudfront/
-│   │   ├── ecs/
-│   │   ├── gateway_endpoint/
-│   │   ├── iam/
-│   │   ├── interface_endpoint/
-│   │   ├── route53/
-│   │   ├── security_groups/
-│   │   ├── vpc/
-│   │   └── waf/
-│   ├── config/
-│   │   ├── dev/
-│   │   ├── staging/
-│   │   └── prod/
-│   ├── backend.tf
-
-```text
-English-Somali-Dictionary/
-├── .gitignore
-├── .pre-commit-config.yaml
-├── README.md
-├── Terraform/
-│   ├── Modules/
-│   │   ├── acm/
-│   │   ├── alb/
-│   │   ├── cloudfront/
-│   │   ├── cloudwatch_alarm/
-│   │   ├── cloudwatch_dashboard/
-│   │   ├── dynamodb/
-│   │   ├── ecs/
-│   │   ├── gateway_endpoint/
-│   │   ├── iam/
-│   │   ├── interface_endpoint/
-│   │   ├── route53/
-│   │   ├── security_groups/
-│   │   ├── vpc/
-│   │   └── waf/
-│   ├── config/
-│   │   ├── dev/
-│   │   ├── prod/
-│   │   └── staging/
-│   ├── backend.tf
-│   ├── data.tf
-│   ├── main.tf
-│   ├── provider.tf
-│   ├── variables.tf
-│   └── README.md
 ├── english-dictionary/
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── requirements.txt
 │   ├── app/
 │   │   ├── __init__.py
 │   │   ├── bedrock_client.py
@@ -134,65 +82,119 @@ English-Somali-Dictionary/
 │   │   ├── app.js
 │   │   ├── index.html
 │   │   └── styles.css
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── README.md
-└── .github/
-  └── workflows/
-    ├── docker-build-push.yml
-    ├── pr.yml
-    ├── terraform-apply.yml
-    ├── terraform-plan.yml
-    ├── terraform-destroy-plan.yml
-    └── terraform-destroy-apply.yml
-```
-
-```bash
-pip install -r requirements.txt
-```
-
-4. **Run the application**
-
-```bash
-uvicorn app.main:app --reload
-```
-
-The API will be available at:
-👉 [http://localhost:8000](http://localhost:8000)
-
----
-
-### Run with Docker (Optional)
-
-```bash
-docker build -t english-dictionary .
-docker run -p 8000:8000 english-dictionary
-```
-
----
-
-### Frontend
-
-Open the UI directly in your browser:
-
-```text
-english-dictionary/static/index.html
-```
-
----
-
-## Infrastructure (Terraform)
-
-All cloud infrastructure is defined using **Terraform** and lives in the `Terraform/` directory.
-
-### Common Commands
-
-```bash
-cd Terraform
-terraform init
-terraform workspace select dev   # or staging / prod
-terraform plan  -var-file=config/dev/dev.tfvars
-terraform apply -var-file=config/dev/dev.tfvars
+├── Terraform/
+│   ├── backend.tf
+│   ├── data.tf
+│   ├── main.tf
+│   ├── provider.tf
+│   ├── variables.tf
+│   ├── README.md
+│   ├── config/
+│   │   ├── dev/
+│   │   │   └── dev.tfvars
+│   │   ├── prod/
+│   │   │   └── prod.tfvars
+│   │   └── staging/
+│   │       └── staging.tfvars
+│   └── Modules/
+│       ├── acm/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── alb/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── cloudfront/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── cloudwatch_alarm/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── cloudwatch_dashboard/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── dynamodb/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── ecs/
+│       │   ├── data.tf
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── gateway_endpoint/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── iam/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── interface_endpoint/
+│       │   ├── data.tf
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── route53/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── security_groups/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── vpc/
+│       │   ├── data.tf
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+│       ├── waf/
+│       │   ├── main.tf
+│       │   ├── output.tf
+│       │   ├── provider.tf
+│       │   ├── README.md
+│       │   └── variables.tf
+├── .github/
+│   └── workflows/
+│       ├── docker-build-push.yml
+│       ├── pr.yml
+│       ├── terraform-apply.yml
+│       ├── terraform-plan.yml
+│       ├── terraform-destroy-plan.yml
+│       └── terraform-destroy-apply.yml
+├── .gitignore
+├── .pre-commit-config.yaml
+└── README.md
 ```
 
 See `Terraform/README.md` for detailed module documentation.
