@@ -4,15 +4,17 @@ import os
 
 
 class Settings(BaseSettings):
+    # Option to enable/disable DynamoDB usage (set to False for local development)
+    USE_DYNAMODB: bool = bool(os.environ.get("USE_DYNAMODB", "False").lower() in ("1", "true", "yes"))
     """Application settings loaded from environment variables"""
 
     # AWS Configuration
-    AWS_REGION: str = "eu-west-2"
-    AWS_ACCESS_KEY_ID: Optional[str] = None
-    AWS_SECRET_ACCESS_KEY: Optional[str] = None
+    AWS_REGION: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
 
     # DynamoDB Configuration
-    DYNAMODB_TABLE_NAME: str = "dictionary-words-dev"
+    DYNAMODB_TABLE_NAME: str
     DYNAMODB_REGION: Optional[str] = None
 
     @property
@@ -22,7 +24,7 @@ class Settings(BaseSettings):
 
     # Bedrock Model Configuration
     MODEL_ID: str = "anthropic.claude-3-7-sonnet-20250219-v1:0"
-    BEDROCK_MAX_OUTPUT_LENGTH: int = 1000  # Renamed from MAX_TOKENS
+    BEDROCK_MAX_OUTPUT_LENGTH: int = 1000
     TEMPERATURE: float = 0.3
     TOP_P: float = 0.9
 
