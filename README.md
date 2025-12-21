@@ -129,7 +129,6 @@ English-Somali-Dictionary/
         └── styles.css
 ```
 
-For detailed infrastructure documentation, see `Terraform/README.md`.
 
 ---
 
