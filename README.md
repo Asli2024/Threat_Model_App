@@ -66,7 +66,6 @@ This allows fast iteration locally while keeping production optimized and cost-e
 
 ## Repository Structure
 
-```text
 English-Somali-Dictionary/
 ├── english-dictionary/
 │   ├── Dockerfile
@@ -74,130 +73,60 @@ English-Somali-Dictionary/
 │   ├── requirements.txt
 │   ├── app/
 │   │   ├── __init__.py
+│   │   ├── main.py
 │   │   ├── bedrock_client.py
 │   │   ├── config.py
-│   │   ├── main.py
 │   │   └── prompts.py
-│   ├── static/
-│   │   ├── app.js
-│   │   ├── index.html
-│   │   └── styles.css
+│   └── static/
+│       ├── index.html
+│       ├── app.js
+│       └── styles.css
+│
 ├── Terraform/
 │   ├── backend.tf
+│   ├── provider.tf
 │   ├── data.tf
 │   ├── main.tf
-│   ├── provider.tf
 │   ├── variables.tf
 │   ├── README.md
+│   │
 │   ├── config/
 │   │   ├── dev/
 │   │   │   └── dev.tfvars
-│   │   ├── prod/
-│   │   │   └── prod.tfvars
-│   │   └── staging/
-│   │       └── staging.tfvars
+│   │   ├── staging/
+│   │   │   └── staging.tfvars
+│   │   └── prod/
+│   │       └── prod.tfvars
+│   │
 │   └── Modules/
-│       ├── acm/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── alb/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── cloudfront/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── cloudwatch_alarm/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── cloudwatch_dashboard/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── dynamodb/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── ecs/
-│       │   ├── data.tf
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── gateway_endpoint/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── iam/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── interface_endpoint/
-│       │   ├── data.tf
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── route53/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
-│       ├── security_groups/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
 │       ├── vpc/
-│       │   ├── data.tf
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
+│       ├── security_groups/
+│       ├── gateway_endpoint/
+│       ├── interface_endpoint/
+│       ├── alb/
+│       ├── acm/
+│       ├── cloudfront/
 │       ├── waf/
-│       │   ├── main.tf
-│       │   ├── output.tf
-│       │   ├── provider.tf
-│       │   ├── README.md
-│       │   └── variables.tf
+│       ├── ecs/
+│       ├── iam/
+│       ├── dynamodb/
+│       ├── route53/
+│       ├── cloudwatch_dashboard/
+│       └── cloudwatch_alarm/
+│
 ├── .github/
 │   └── workflows/
-│       ├── docker-build-push.yml
 │       ├── pr.yml
-│       ├── terraform-apply.yml
+│       ├── docker-build-push.yml
 │       ├── terraform-plan.yml
+│       ├── terraform-apply.yml
 │       ├── terraform-destroy-plan.yml
 │       └── terraform-destroy-apply.yml
-├── .gitignore
+│
 ├── .pre-commit-config.yaml
+├── .gitignore
 └── README.md
-```
 
-See `Terraform/README.md` for detailed module documentation.
 
 ---
 
