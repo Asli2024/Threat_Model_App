@@ -31,8 +31,8 @@ interface_endpoints = [
 ]
 ip_address_type       = "ipv4"
 parent_domain_name    = "techwithaden.com"
-domain_name           = "dev.techwithaden.com"
-aliases               = ["dev.techwithaden.com"]
+domain_name           = "dictionary-dev.techwithaden.com"
+aliases               = ["dictionary-dev.techwithaden.com"]
 target_group_name     = "dev-eng-somali-tg"
 target_group_port     = 8000
 target_group_protocol = "HTTP"
