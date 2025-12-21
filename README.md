@@ -66,6 +66,8 @@ This allows fast iteration locally while keeping production optimized and cost-e
 
 ## Repository Structure
 
+```text
+
 English-Somali-Dictionary/
 ├── english-dictionary/
 │   ├── Dockerfile
