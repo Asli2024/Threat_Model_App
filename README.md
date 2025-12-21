@@ -91,64 +91,61 @@ English-Somali-Dictionary/
 │   │   ├── staging/
 │   │   └── prod/
 │   ├── backend.tf
-│   ├── provider.tf
+
+```text
+English-Somali-Dictionary/
+├── .gitignore
+├── .pre-commit-config.yaml
+├── README.md
+├── Terraform/
+│   ├── Modules/
+│   │   ├── acm/
+│   │   ├── alb/
+│   │   ├── cloudfront/
+│   │   ├── cloudwatch_alarm/
+│   │   ├── cloudwatch_dashboard/
+│   │   ├── dynamodb/
+│   │   ├── ecs/
+│   │   ├── gateway_endpoint/
+│   │   ├── iam/
+│   │   ├── interface_endpoint/
+│   │   ├── route53/
+│   │   ├── security_groups/
+│   │   ├── vpc/
+│   │   └── waf/
+│   ├── config/
+│   │   ├── dev/
+│   │   ├── prod/
+│   │   └── staging/
+│   ├── backend.tf
+│   ├── data.tf
 │   ├── main.tf
+│   ├── provider.tf
 │   ├── variables.tf
 │   └── README.md
 ├── english-dictionary/
 │   ├── app/
 │   │   ├── __init__.py
-│   │   ├── main.py
 │   │   ├── bedrock_client.py
 │   │   ├── config.py
+│   │   ├── main.py
 │   │   └── prompts.py
 │   ├── static/
-│   │   ├── index.html
 │   │   ├── app.js
+│   │   ├── index.html
 │   │   └── styles.css
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── README.md
 └── .github/
-   └── workflows/
-      ├── pr.yml
-      ├── docker-build-push.yml
-      ├── terraform-plan.yml
-      ├── terraform-apply.yml
-      ├── terraform-destroy-plan.yml
-      └── terraform-destroy-apply.yml
+  └── workflows/
+    ├── docker-build-push.yml
+    ├── pr.yml
+    ├── terraform-apply.yml
+    ├── terraform-plan.yml
+    ├── terraform-destroy-plan.yml
+    └── terraform-destroy-apply.yml
 ```
-
----
-
-## Local Development
-
-### Prerequisites
-
-* Python **3.11+**
-* Docker
-* (Optional) Terraform CLI
-* (Optional) AWS CLI
-
----
-
-### Run the API Locally (without DynamoDB)
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/Asli2024/English-Somali-Dictionary.git
-cd English-Somali-Dictionary/english-dictionary
-```
-
-2. **Create and activate a virtual environment**
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-3. **Install dependencies**
 
 ```bash
 pip install -r requirements.txt
