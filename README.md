@@ -1,4 +1,4 @@
-# English–Somali Dictionary App
+# English Somali Dictionary App
 
 The **English–Somali Dictionary App** is a production-ready, cloud-native translation service built on **AWS ECS Fargate** and provisioned entirely using **Terraform**.
 It provides real-time English-to-Somali translation using **Amazon Bedrock** foundation models, with optional caching via **DynamoDB** to improve performance and reduce inference costs.
@@ -120,7 +120,6 @@ English-Somali-Dictionary/
       └── terraform-destroy-apply.yml
 ```
 
-</details>
 
 ---
 
@@ -233,10 +232,3 @@ Workflows are located in `.github/workflows/`.
 MIT License
 
 ---
-
-If you want, next we can:
-
-* Tighten this further for **portfolio / interview use**
-* Add an **architecture diagram section**
-* Split **local vs cloud env variables** into a table
-* Or make a **short “Why this project?” section** for recruiters
