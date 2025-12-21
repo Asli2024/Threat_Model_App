@@ -174,8 +174,12 @@ jobs:
 
       - name: Load and Push Docker Image
         run: |
-          docker load -i /tmp/image.tar
-          docker push ${{ needs.build-and-scan.outputs.image-uri }}
+          # Load the image and capture the loaded image name
+          LOADED_IMAGE=$(docker load -i /tmp/image.tar | grep "Loaded image:" | cut -d' ' -f3)
+          echo "Loaded image: $LOADED_IMAGE"
+
+          # Push the loaded image
+          docker push $LOADED_IMAGE
 
       - name: Push Summary
         run: |
@@ -183,4 +187,4 @@ jobs:
           echo "Repository: ${{ env.ECR_REPOSITORY }}"
           echo "Tag: ${{ needs.build-and-scan.outputs.image-tag }}"
           echo "Region: ${{ env.AWS_REGION }}"
-          echo "Full Image URI: ${{ needs.build-and-scan.outputs.image-uri }}"
+          echo "Image URI: ${{ needs.build-and-scan.outputs.image-uri }}"
