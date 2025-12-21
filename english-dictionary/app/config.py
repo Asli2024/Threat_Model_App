@@ -4,17 +4,15 @@ import os
 
 
 class Settings(BaseSettings):
-    # Option to enable/disable DynamoDB usage (set to False for local development)
-    USE_DYNAMODB: bool = bool(os.environ.get("USE_DYNAMODB", "False").lower() in ("1", "true", "yes"))
     """Application settings loaded from environment variables"""
 
-    # AWS Configuration
-    AWS_REGION: str
-    AWS_ACCESS_KEY_ID: str
-    AWS_SECRET_ACCESS_KEY: str
+    # AWS Configuration - make optional for ECS (uses IAM roles)
+    AWS_REGION: str = "eu-west-2"
+    AWS_ACCESS_KEY_ID: Optional[str] = None
+    AWS_SECRET_ACCESS_KEY: Optional[str] = None
 
-    # DynamoDB Configuration
-    DYNAMODB_TABLE_NAME: str
+    # DynamoDB Configuration - optional for local development
+    DYNAMODB_TABLE_NAME: Optional[str] = None
     DYNAMODB_REGION: Optional[str] = None
 
     @property
@@ -38,9 +36,10 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = {
+        "env_file": ".env",
+        "case_sensitive": True
+    }
 
 
 settings = Settings()
