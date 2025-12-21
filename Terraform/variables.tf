@@ -131,12 +131,6 @@ variable "desired_count" {
   default     = null
 }
 
-variable "container_name" {
-  description = "Name of the container in the ECS task"
-  type        = string
-  default     = ""
-}
-
 variable "container_port" {
   description = "Port on which the container listens"
   type        = number

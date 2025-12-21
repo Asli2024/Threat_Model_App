@@ -165,7 +165,7 @@ module "ecs" {
   security_group_id         = module.application_sg.security_group_id
   cluster_name              = var.cluster_name
   desired_count             = var.desired_count
-  container_name            = var.container_name
+  container_name            = "english-somali-dictionary-app-${var.environment}"
   container_port            = var.container_port
   cpu                       = var.cpu
   memory                    = var.memory
