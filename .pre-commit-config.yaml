@@ -17,6 +17,6 @@ repos:
     - id: terraform_tflint
       files: \.(tf|tfvars|hcl)$
     - id: terraform_docs
-      files: (\.tf|\.tfvars|\.hcl|README\.md)$
+      files: (\.tf|\.tfvars|\.hcl|Terraform/README\.md)$
     - id: terraform_trivy
       files: \.(tf|tfvars|hcl)$
