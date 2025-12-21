@@ -120,7 +120,7 @@ English-Somali-Dictionary/
       └── terraform-destroy-apply.yml
 ```
 
-
+<details>
 ---
 
 ## Local Development
