@@ -68,47 +68,21 @@ This allows fast iteration locally while keeping production optimized and cost-e
 
 ```text
 
-
 English-Somali-Dictionary/
-├── .github/
-│   └── workflows/
-│       ├── pr.yml
-│       ├── docker-build-push.yml
-│       ├── terraform-plan.yml
-│       ├── terraform-apply.yml
-│       ├── terraform-destroy-plan.yml
-│       └── terraform-destroy-apply.yml
-│
-├── english-dictionary/
-│   ├── Dockerfile
-│   ├── README.md
-│   ├── requirements.txt
-│   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py
-│   │   ├── bedrock_client.py
-│   │   ├── config.py
-│   │   └── prompts.py
-│   └── static/
-│       ├── index.html
-│       ├── app.js
-│       └── styles.css
+├── README.md
 │
 ├── Terraform/
+│   ├── README.md
 │   ├── backend.tf
 │   ├── provider.tf
 │   ├── data.tf
 │   ├── main.tf
 │   ├── variables.tf
-│   ├── README.md
 │   │
 │   ├── config/
 │   │   ├── dev/
-│   │   │   └── dev.tfvars
-│   │   ├── staging/
-│   │   │   └── staging.tfvars
-│   │   └── prod/
-│   │       └── prod.tfvars
+│   │   ├── prod/
+│   │   └── staging/
 │   │
 │   └── Modules/
 │       ├── acm/
@@ -124,11 +98,25 @@ English-Somali-Dictionary/
 │       ├── route53/
 │       ├── security_groups/
 │       ├── vpc/
-│       ├── waf/
+│       └── waf/
 │
-├── .pre-commit-config.yaml
-├── .gitignore
-└── README.md
+└── english-dictionary/
+    ├── Dockerfile
+    ├── README.md
+    ├── requirements.txt
+    │
+    ├── app/
+    │   ├── __init__.py
+    │   ├── main.py
+    │   ├── bedrock_client.py
+    │   ├── config.py
+    │   └── prompts.py
+    │
+    └── static/
+        ├── index.html
+        ├── app.js
+        └── styles.css
+
 
 
 ---
