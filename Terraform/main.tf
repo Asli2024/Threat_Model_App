@@ -324,7 +324,7 @@ module "waf_acl" {
   providers = {
     aws = aws.use1
   }
-  name        = "${var.environment}-${var.waf_name}"
+  name        = "${var.environment}-waf-acl"
   description = "Web ACL for Dictionary App - ${var.environment}"
 }
 

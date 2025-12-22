@@ -178,12 +178,6 @@ variable "service_name" {
   default     = ""
 }
 
-variable "waf_name" {
-  description = "Name for the WAFv3 Web ACL"
-  type        = string
-  default     = ""
-}
-
 variable "environment" {
   description = "Short environment identifier used for naming (e.g. dev, staging, prod)."
   type        = string
