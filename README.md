@@ -93,11 +93,14 @@ This approach allows fast local iteration while keeping production deployments o
 
 ---
 
-## Repository Structure
 
+## Repository Structure
 ```text
 English-Somali-Dictionary/
 ├── README.md
+├── images/
+│   ├── architecture.gif
+│   └── local-deployment-demo.gif
 ├── Terraform/
 │   ├── Modules/
 │   │   ├── acm/
@@ -147,7 +150,6 @@ English-Somali-Dictionary/
         ├── index.html
         └── styles.css
 ```
-
 ---
 
 ## CI/CD
