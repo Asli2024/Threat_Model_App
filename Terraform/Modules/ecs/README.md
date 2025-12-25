@@ -44,6 +44,7 @@ No modules.
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Container port to expose | `number` | `null` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | CPU units for the task | `string` | `""` | no |
 | <a name="input_cpu_target"></a> [cpu\_target](#input\_cpu\_target) | Target average CPU utilization (%) before scaling | `number` | `null` | no |
+| <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | The waiting period before the KMS key is deleted | `number` | `7` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | How many tasks to run | `number` | `null` | no |
 | <a name="input_dynamodb_table_name"></a> [dynamodb\_table\_name](#input\_dynamodb\_table\_name) | Name of the DynamoDB table for dictionary data | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment identifier used to suffix KMS alias if provided | `string` | `""` | no |

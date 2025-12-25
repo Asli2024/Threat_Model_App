@@ -14,6 +14,6 @@ data "aws_acm_certificate" "cloudfront_cert" {
 }
 
 data "aws_ecr_image" "app_image" {
-  repository_name = "english-somali-dictionary-app"
+  repository_name = "english-somali-dictionary-app-ecr-repo"
   most_recent     = true
 }

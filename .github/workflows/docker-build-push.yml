@@ -18,13 +18,6 @@ on:
         description: "AWS Region"
         required: true
         default: "eu-west-2"
-  push:
-    branches:
-      - feature*
-      - fix*
-    paths:
-      - "english-dictionary/**"
-      - ".github/workflows/docker-build-push.yml"
 
 permissions:
   id-token: write
@@ -34,7 +27,7 @@ permissions:
 env:
   AWS_REGION: ${{ github.event.inputs.aws_region || 'eu-west-2' }}
   AWS_ACCOUNT_ID: ${{ github.event.inputs.account_number || secrets.AWS_ACCOUNT_ID }}
-  ECR_REPOSITORY: english-somali-dictionary-app
+  ECR_REPOSITORY: english-somali-dictionary-app-ecr-repo
 
 jobs:
   build-and-scan:
@@ -55,7 +48,7 @@ jobs:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -139,7 +132,6 @@ jobs:
     name: Approve Push to ECR
     runs-on: ubuntu-latest
     needs: [build-and-scan]
-    if: github.event_name == 'workflow_dispatch'
     environment:
       name: push-approval-${{ github.event.inputs.environment }}
     steps:
@@ -153,14 +145,14 @@ jobs:
     name: Push to ECR
     runs-on: ubuntu-latest
     needs: [build-and-scan, approval]
-    if: always() && needs.build-and-scan.result == 'success' && (needs.approval.result == 'success' || needs.approval.result == 'skipped')
+    if: always() && needs.build-and-scan.result == 'success' && needs.approval.result == 'success'
     environment: ${{ github.event.inputs.environment }}
 
     steps:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR

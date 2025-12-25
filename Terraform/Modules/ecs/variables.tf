@@ -134,3 +134,9 @@ variable "max_tokens" {
   type        = number
   default     = 1000
 }
+
+variable "deletion_window_in_days" {
+  description = "The waiting period before the KMS key is deleted"
+  type        = number
+  default     = 7
+}

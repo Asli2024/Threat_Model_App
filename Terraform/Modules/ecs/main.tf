@@ -12,7 +12,7 @@ resource "aws_ecs_cluster" "this" {
 
 resource "aws_kms_key" "ecs_log_key" {
   description             = "KMS key for ECS log encryption"
-  deletion_window_in_days = 7
+  deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
 }
 

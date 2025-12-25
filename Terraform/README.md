@@ -87,7 +87,6 @@
 | <a name="input_validation_timeout"></a> [validation\_timeout](#input\_validation\_timeout) | Timeout for ACM certificate validation | `string` | `"2h"` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block for the VPC | `string` | `""` | no |
 | <a name="input_vpc_flow_log_role_name"></a> [vpc\_flow\_log\_role\_name](#input\_vpc\_flow\_log\_role\_name) | IAM Role name for VPC Flow Logs | `string` | `""` | no |
-| <a name="input_waf_name"></a> [waf\_name](#input\_waf\_name) | Name for the WAFv3 Web ACL | `string` | `""` | no |
 
 ## Outputs
 
