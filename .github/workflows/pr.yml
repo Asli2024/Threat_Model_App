@@ -1,132 +1,132 @@
 name: PR Checks
 
 on:
-  pull_request:
-    branches: [main]
+    pull_request:
+        branches: [main]
 
 permissions:
-  contents: read
-  id-token: write
+    contents: read
+    id-token: write
 
 env:
-  AWS_REGION: eu-west-2
-  TF_IN_AUTOMATION: "true"
-  TF_INPUT: "false"
-  TF_ROOT: Terraform
-  TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
+    AWS_REGION: eu-west-2
+    TF_IN_AUTOMATION: "true"
+    TF_INPUT: "false"
+    TF_ROOT: Terraform
+    TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
 
 concurrency:
-  group: pr-checks-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+    group: pr-checks-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
 
 jobs:
-  pre-commit:
-    name: Pre-commit Checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    pre-commit:
+        name: Pre-commit Checks
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: "pip"
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.11"
+                  cache: "pip"
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.10.4"
-          terraform_wrapper: false
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                  terraform_version: "1.10.4"
+                  terraform_wrapper: false
 
-      - name: Cache pre-commit
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pre-commit
-          key: pre-commit-${{ runner.os }}-py311-${{ hashFiles('.pre-commit-config.yaml') }}
+            - name: Cache pre-commit
+              uses: actions/cache@v4
+              with:
+                  path: ~/.cache/pre-commit
+                  key: pre-commit-${{ runner.os }}-py311-${{ hashFiles('.pre-commit-config.yaml') }}
 
-      - name: Install terraform-docs
-        run: |
-          wget -q https://github.com/terraform-docs/terraform-docs/releases/download/v0.20.0/terraform-docs-v0.20.0-linux-amd64.tar.gz
-          tar -xzf terraform-docs-v0.20.0-linux-amd64.tar.gz
-          sudo mv terraform-docs /usr/local/bin/
-          terraform-docs --version
+            - name: Install terraform-docs
+              run: |
+                  wget -q https://github.com/terraform-docs/terraform-docs/releases/download/v0.20.0/terraform-docs-v0.20.0-linux-amd64.tar.gz
+                  tar -xzf terraform-docs-v0.20.0-linux-amd64.tar.gz
+                  sudo mv terraform-docs /usr/local/bin/
+                  terraform-docs --version
 
-      - name: Install tflint
-        run: |
-          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-          tflint --version
+            - name: Install tflint
+              run: |
+                  curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+                  tflint --version
 
-      - name: Install Trivy
-        run: |
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install trivy -y
-          trivy --version
+            - name: Install Trivy
+              run: |
+                  wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+                  echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+                  sudo apt-get update
+                  sudo apt-get install trivy -y
+                  trivy --version
 
-      - name: Clear Trivy Cache
-        run: rm -rf ~/.cache/trivy
+            - name: Clear Trivy Cache
+              run: rm -rf ~/.cache/trivy
 
-      - name: Install pre-commit
-        run: |
-          pip install pre-commit
-          pre-commit --version
+            - name: Install pre-commit
+              run: |
+                  pip install pre-commit
+                  pre-commit --version
 
-      - name: Run pre-commit
-        run: |
-          pre-commit run --all-files --show-diff-on-failure
+            - name: Run pre-commit
+              run: |
+                  pre-commit run --all-files --show-diff-on-failure
 
-  terraform-plan:
-    name: Terraform Plan - ${{ matrix.environment }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: [pre-commit]
-    strategy:
-      matrix:
-        environment: [dev]
-      fail-fast: false
+    terraform-plan:
+        name: Terraform Plan - ${{ matrix.environment }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        needs: [pre-commit]
+        strategy:
+            matrix:
+                environment: [dev]
+            fail-fast: false
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials via OIDC
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
-          aws-region: ${{ env.AWS_REGION }}
+            - name: Configure AWS Credentials via OIDC
+              uses: aws-actions/configure-aws-credentials@v5
+              with:
+                  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-role
+                  aws-region: ${{ env.AWS_REGION }}
 
-      - name: Set Up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.10.4"
-          terraform_wrapper: false
+            - name: Set Up Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                  terraform_version: "1.10.4"
+                  terraform_wrapper: false
 
-      - name: Create Terraform plugin cache dir
-        run: mkdir -p "${TF_PLUGIN_CACHE_DIR}"
+            - name: Create Terraform plugin cache dir
+              run: mkdir -p "${TF_PLUGIN_CACHE_DIR}"
 
-      - name: Cache Terraform providers
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
-          key: ${{ runner.os }}-tf-plugins-${{ hashFiles(format('{0}/**/*.tf', env.TF_ROOT)) }}
+            - name: Cache Terraform providers
+              uses: actions/cache@v4
+              with:
+                  path: ${{ env.TF_PLUGIN_CACHE_DIR }}
+                  key: ${{ runner.os }}-tf-plugins-${{ hashFiles(format('{0}/**/*.tf', env.TF_ROOT)) }}
 
-      - name: Terraform Init
-        working-directory: ${{ env.TF_ROOT }}
-        run: |
-          terraform init -upgrade
+            - name: Terraform Init
+              working-directory: ${{ env.TF_ROOT }}
+              run: |
+                  terraform init -upgrade
 
-      - name: Terraform Validate
-        working-directory: ${{ env.TF_ROOT }}
-        run: |
-          terraform validate
+            - name: Terraform Validate
+              working-directory: ${{ env.TF_ROOT }}
+              run: |
+                  terraform validate
 
-      - name: Terraform Plan
-        working-directory: ${{ env.TF_ROOT }}
-        run: |
-          terraform plan \
-            -var-file="config/${{ matrix.environment }}/${{ matrix.environment }}.tfvars" \
-            -no-color
+            - name: Terraform Plan
+              working-directory: ${{ env.TF_ROOT }}
+              run: |
+                  terraform plan \
+                    -var-file="config/${{ matrix.environment }}/${{ matrix.environment }}.tfvars" \
+                    -no-color

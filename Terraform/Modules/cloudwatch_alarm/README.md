@@ -55,6 +55,7 @@ No modules.
 | <a name="input_ddb_throttle_evaluation_periods"></a> [ddb\_throttle\_evaluation\_periods](#input\_ddb\_throttle\_evaluation\_periods) | DynamoDB throttles alarm evaluation periods | `number` | `1` | no |
 | <a name="input_ddb_throttle_period_seconds"></a> [ddb\_throttle\_period\_seconds](#input\_ddb\_throttle\_period\_seconds) | DynamoDB throttles alarm period in seconds | `number` | `300` | no |
 | <a name="input_ddb_throttle_threshold"></a> [ddb\_throttle\_threshold](#input\_ddb\_throttle\_threshold) | DynamoDB throttled requests threshold (Sum over period) | `number` | `0` | no |
+| <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | The waiting period before the KMS key is deleted | `number` | `7` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Desired task count for ECS service (used as threshold for running tasks alarm) | `number` | `1` | no |
 | <a name="input_dynamodb_table_name"></a> [dynamodb\_table\_name](#input\_dynamodb\_table\_name) | DynamoDB table name | `string` | `""` | no |
 | <a name="input_ecs_tasks_evaluation_periods"></a> [ecs\_tasks\_evaluation\_periods](#input\_ecs\_tasks\_evaluation\_periods) | ECS running tasks alarm evaluation periods | `number` | `1` | no |

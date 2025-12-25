@@ -11,12 +11,42 @@ The application is designed to run in two modes:
 
 ---
 
+## Local Deployment with Docker
+
+To run the English Somali Dictionary app locally using Docker:
+
+1. **Build the Docker image:**
+   ```bash
+   cd english-dictionary
+   docker build -t english-somali-dictionary .
+   ```
+
+2. **Run the Docker container (with required AWS credentials):**
+   ```bash
+   docker run -p 8000:8000 \
+     -e AWS_REGION=eu-west-2 \
+     -e AWS_ACCESS_KEY_ID=<your-access-key-id> \
+     -e AWS_SECRET_ACCESS_KEY=<your-secret-access-key> \
+     -e USE_DYNAMODB=False \
+     english-somali-dictionary
+   ```
+
+3. **Access the API at:**
+   [http://localhost:8000/](http://localhost:8000/)
+
+4. **Watch the demo:**
+
+   [![Local Deployment Demo](https://cdn.loom.com/sessions/thumbnails/YOUR_VIDEO_ID-with-play.gif)](https://www.loom.com/share/06e87610f41940f89303b1f0bb9ee2bb)
+
+   *Click the image above to see a quick demonstration of the local deployment process*
+
+---
+
 ## Key Features
 
 * **FastAPI backend** for real-time translation APIs
 * **Amazon Bedrock integration** for AI-powered English → Somali translation
 * **Optional DynamoDB Global Table** for translation caching
-
   * Enabled in cloud deployments
   * Disabled by default for local development
 * **ECS Fargate** for serverless container orchestration
@@ -57,7 +87,6 @@ Translations can be cached in **DynamoDB** to:
 * DynamoDB is **optional for local development**
 * When running locally, the application can operate **without DynamoDB**
 * Caching behaviour is controlled via environment variables defined in:
-
   * `english-dictionary/app/config.py`
   * `english-dictionary/app/bedrock_client.py`
 
@@ -70,51 +99,53 @@ This approach allows fast local iteration while keeping production deployments o
 ```text
 English-Somali-Dictionary/
 ├── README.md
-│
 ├── Terraform/
+│   ├── Modules/
+│   │   ├── acm/
+│   │   ├── alb/
+│   │   ├── cloudfront/
+│   │   ├── cloudwatch_alarm/
+│   │   ├── cloudwatch_dashboard/
+│   │   ├── dynamodb/
+│   │   ├── ecr/
+│   │   ├── ecs/
+│   │   ├── gateway_endpoint/
+│   │   ├── iam/
+│   │   ├── interface_endpoint/
+│   │   ├── route53/
+│   │   ├── s3/
+│   │   ├── security_groups/
+│   │   ├── vpc/
+│   │   └── waf/
 │   ├── README.md
 │   ├── backend.tf
-│   ├── provider.tf
-│   ├── data.tf
-│   ├── main.tf
-│   ├── variables.tf
-│   │
 │   ├── config/
 │   │   ├── dev/
 │   │   ├── prod/
 │   │   └── staging/
-│   │
-│   └── Modules/
-│       ├── acm/
-│       ├── alb/
-│       ├── cloudfront/
-│       ├── cloudwatch_alarm/
-│       ├── cloudwatch_dashboard/
-│       ├── dynamodb/
-│       ├── ecs/
-│       ├── gateway_endpoint/
-│       ├── iam/
-│       ├── interface_endpoint/
-│       ├── route53/
-│       ├── security_groups/
-│       ├── vpc/
-│       └── waf/
-│
+│   ├── data.tf
+│   ├── main.tf
+│   ├── provider.tf
+│   └── variables.tf
+├── bootstrap/
+│   ├── README.md
+│   ├── data.tf
+│   ├── main.tf
+│   ├── provider.tf
+│   └── variables.tf
 └── english-dictionary/
     ├── Dockerfile
     ├── README.md
-    ├── requirements.txt
-    │
     ├── app/
     │   ├── __init__.py
-    │   ├── main.py
     │   ├── bedrock_client.py
     │   ├── config.py
+    │   ├── main.py
     │   └── prompts.py
-    │
+    ├── requirements.txt
     └── static/
-        ├── index.html
         ├── app.js
+        ├── index.html
         └── styles.css
 ```
 
@@ -140,5 +171,3 @@ All workflows are located in `.github/workflows/`.
 2. Create a feature branch
 3. Commit changes with pre-commit checks passing
 4. Open a pull request
-
----

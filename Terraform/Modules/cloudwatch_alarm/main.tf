@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_kms_key" "sns_key" {
   description             = "KMS key for SNS topic encryption (${var.environment}-cloudwatch-alarms)"
-  deletion_window_in_days = 7
+  deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
 
   policy = data.aws_iam_policy_document.sns_kms_key_policy.json

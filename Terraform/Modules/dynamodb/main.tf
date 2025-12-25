@@ -5,7 +5,7 @@ locals {
 }
 resource "aws_kms_key" "dynamodb_mrk" {
   description             = "MRK for DynamoDB Global Table - ${var.table_name}"
-  deletion_window_in_days = 7
+  deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
   multi_region            = true
 

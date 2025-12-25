@@ -33,6 +33,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | The waiting period before the KMS key is deleted | `number` | `7` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region for the primary DynamoDB table | `string` | `"eu-west-2"` | no |
 | <a name="input_replica_regions"></a> [replica\_regions](#input\_replica\_regions) | List of regions to replicate DynamoDB table to | `list(string)` | `[]` | no |
 | <a name="input_table_name"></a> [table\_name](#input\_table\_name) | Name of the DynamoDB table | `string` | n/a | yes |

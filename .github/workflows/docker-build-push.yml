@@ -34,7 +34,7 @@ permissions:
 env:
   AWS_REGION: ${{ github.event.inputs.aws_region || 'eu-west-2' }}
   AWS_ACCOUNT_ID: ${{ github.event.inputs.account_number || secrets.AWS_ACCOUNT_ID }}
-  ECR_REPOSITORY: english-somali-dictionary-app
+  ECR_REPOSITORY: english-somali-dictionary-app-ecr-repo
 
 jobs:
   build-and-scan:
@@ -55,7 +55,7 @@ jobs:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -160,7 +160,7 @@ jobs:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Github_Role_Demo
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR

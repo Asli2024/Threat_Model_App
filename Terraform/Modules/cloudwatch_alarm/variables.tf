@@ -148,3 +148,9 @@ variable "ddb_system_error_evaluation_periods" {
   type        = number
   default     = 1
 }
+
+variable "deletion_window_in_days" {
+  description = "The waiting period before the KMS key is deleted"
+  type        = number
+  default     = 7
+}
