@@ -38,7 +38,6 @@ To run the English Somali Dictionary app locally using Docker:
 
    ![Local Deployment Demo](images/local-deployment-demo.gif)
 
-   *Click the link above to see a quick demonstration of the local deployment process*
 
 ## Key Features
 
