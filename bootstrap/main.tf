@@ -23,11 +23,18 @@ data "aws_iam_policy_document" "oidc_assume_role" {
       type        = "Federated"
       identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"]
     }
-    actions = ["sts:sts:AssumeRoleWithWebIdentity"]
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
     condition {
       test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:Asli2024/English-Somali-Dictionary/*"]
+      values   = ["repo:Asli2024/English-Somali-Dictionary:*"]
     }
   }
 }

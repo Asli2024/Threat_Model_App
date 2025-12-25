@@ -1,5 +1,5 @@
 # Multi-stage build for smaller image
-FROM python:3.11-alpine AS builder
+FROM python:3.12-alpine AS builder
 
 WORKDIR /app
 
