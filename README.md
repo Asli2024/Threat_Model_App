@@ -59,6 +59,8 @@ To run the English Somali Dictionary app locally using Docker:
 
 ## Architecture Overview
 
+![English-Somali Dictionary Architecture](assets/architecture.gif)
+
 At a high level, the system consists of:
 
 * A **FastAPI container** running on ECS Fargate
