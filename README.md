@@ -163,7 +163,7 @@ GitHub Actions workflows provide:
 
 All workflows are located in `.github/workflows/`.
 
-[Docker Build, Scan , Approve and Push Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20532104502): (images/docker-build-push.png)
+[Docker Build, Scan , Approve and Push Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20532104502): ![Docker Build Screenshot](images/docker-build-push.png)
 
 [Terraform Plan and Approve Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531602146):
 
