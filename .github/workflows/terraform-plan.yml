@@ -48,19 +48,19 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Initializing Terraform..."
           terraform init
 
       - name: Terraform Format Check
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Running terraform fmt -check -recursive..."
           terraform fmt -check -recursive
 
       - name: Terraform Validate
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Running terraform validate..."
           terraform validate
@@ -76,19 +76,19 @@ jobs:
           trivy --version
 
       - name: Run Trivy Scan
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Running Trivy security scan..."
           trivy config . --exit-code 0 --severity HIGH,CRITICAL
 
       - name: Terraform Workspace
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Selecting workspace: ${{ github.event.inputs.environment }}"
           terraform workspace select -or-create ${{ github.event.inputs.environment }}
 
       - name: Terraform Plan
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Creating Terraform plan for ${{ github.event.inputs.environment }}..."
           terraform plan -var-file=config/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars -out=tfplan-${{ github.event.inputs.environment }}
@@ -97,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-${{ github.event.inputs.environment }}
-          path: ./Terraform/tfplan-${{ github.event.inputs.environment }}
+          path: ./terraform/tfplan-${{ github.event.inputs.environment }}
           retention-days: 30
 
       - name: Plan Summary

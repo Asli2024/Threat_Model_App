@@ -55,19 +55,19 @@ jobs:
               uses: hashicorp/setup-terraform@v3
 
             - name: Terraform Init
-              working-directory: ./Terraform
+              working-directory: ./terraform
               run: |
                   echo "Initializing Terraform..."
                   terraform init
 
             - name: Select Workspace
-              working-directory: ./Terraform
+              working-directory: ./terraform
               run: |
                   echo "Selecting workspace: ${{ github.event.inputs.environment }}"
                   terraform workspace select -or-create ${{ github.event.inputs.environment }}
 
             - name: Force Unlock State
-              working-directory: ./Terraform
+              working-directory: ./terraform
               run: |
                   echo "Force unlocking state with Lock ID: ${{ github.event.inputs.lock_id }}"
                   echo "Environment: ${{ github.event.inputs.environment }}"
@@ -75,7 +75,7 @@ jobs:
                   terraform force-unlock -force ${{ github.event.inputs.lock_id }}
 
             - name: Verify State Status
-              working-directory: ./Terraform
+              working-directory: ./terraform
               run: |
                   echo "State unlocked successfully"
                   terraform workspace show

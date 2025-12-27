@@ -12,7 +12,7 @@ env:
   AWS_REGION: eu-west-2
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
-  TF_ROOT: Terraform
+  TF_ROOT: terraform
   TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
 
 concurrency:
