@@ -12,7 +12,7 @@ env:
   AWS_REGION: eu-west-2
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
-  TF_ROOT: terraform
+  TF_ROOT: ./terraform
   TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
 
 concurrency:
@@ -41,11 +41,11 @@ jobs:
           terraform_version: "1.10.4"
           terraform_wrapper: false
 
-      #- name: Cache pre-commit
-      # uses: actions/cache@v4
-      #with:
-      #path: ~/.cache/pre-commit
-      #key: pre-commit-${{ runner.os }}-py311-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-py311-${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Install terraform-docs
         run: |
