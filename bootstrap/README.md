@@ -17,9 +17,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecr"></a> [ecr](#module\_ecr) | ../Terraform/Modules/ecr | n/a |
-| <a name="module_iam_oidc_role"></a> [iam\_oidc\_role](#module\_iam\_oidc\_role) | ../Terraform/Modules/iam | n/a |
-| <a name="module_s3"></a> [s3](#module\_s3) | ../Terraform/Modules/s3 | n/a |
+| <a name="module_ecr"></a> [ecr](#module\_ecr) | ../terraform/modules/ecr | n/a |
+| <a name="module_iam_oidc_role"></a> [iam\_oidc\_role](#module\_iam\_oidc\_role) | ../terraform/modules/iam | n/a |
+| <a name="module_s3"></a> [s3](#module\_s3) | ../terraform/modules/s3 | n/a |
 
 ## Resources
 

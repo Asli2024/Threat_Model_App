@@ -33,10 +33,15 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | The waiting period before the KMS key is deleted | `number` | `7` | no |
+| <a name="input_ecr_kms_key_alias_name"></a> [ecr\_kms\_key\_alias\_name](#input\_ecr\_kms\_key\_alias\_name) | The alias name for the KMS key used for ECR encryption (must start with alias/) | `string` | `"alias/ecr-repository-kms-keys"` | no |
 | <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository | `string` | `"MUTABLE"` | no |
 | <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | The name of the ECR repository | `string` | `""` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_this_ecr_repository_arn"></a> [this\_ecr\_repository\_arn](#output\_this\_ecr\_repository\_arn) | ECR repository ARN |
+| <a name="output_this_ecr_repository_id"></a> [this\_ecr\_repository\_id](#output\_this\_ecr\_repository\_id) | ECR repository ID |
+| <a name="output_this_ecr_repository_url"></a> [this\_ecr\_repository\_url](#output\_this\_ecr\_repository\_url) | ECR repository URL |
 <!-- END_TF_DOCS -->

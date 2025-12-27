@@ -63,3 +63,9 @@ variable "deletion_window_in_days" {
   type        = number
   default     = 7
 }
+
+variable "s3_kms_key_alias_name" {
+  description = "The alias name for the KMS key used for S3 bucket encryption (must start with alias/)"
+  type        = string
+  default     = "alias/s3-bucket-kms-keys"
+}

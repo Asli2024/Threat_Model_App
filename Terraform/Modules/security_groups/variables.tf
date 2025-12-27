@@ -9,6 +9,7 @@ variable "sg_name" {
   type        = string
   default     = ""
 }
+
 variable "ingress_rules" {
   description = "Ingress rules"
   type = list(object({

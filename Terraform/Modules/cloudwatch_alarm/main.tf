@@ -19,6 +19,7 @@ resource "aws_kms_alias" "sns_key_alias" {
 }
 
 data "aws_iam_policy_document" "sns_kms_key_policy" {
+
   statement {
     sid    = "EnableRootPermissions"
     effect = "Allow"
@@ -29,6 +30,7 @@ data "aws_iam_policy_document" "sns_kms_key_policy" {
     actions   = ["kms:*"]
     resources = ["*"]
   }
+
   statement {
     sid    = "AllowSNSUseOfKey"
     effect = "Allow"
@@ -99,6 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_unhealthy_hosts" {
 
   alarm_actions = [aws_sns_topic.cloudwatch_alarms.arn]
 }
+
 resource "aws_cloudwatch_metric_alarm" "alb_target_response_time" {
   alarm_name          = "${var.environment}-alb-target-response-time"
   alarm_description   = "ALB target response time is high"

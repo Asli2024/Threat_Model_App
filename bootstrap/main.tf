@@ -1,6 +1,8 @@
+data "aws_caller_identity" "current" {}
+
 #tfsec:ignore:AVD-AWS-0089 Logging is not required for all S3 buckets in this use case
 module "s3" {
-  source             = "../Terraform/Modules/s3"
+  source             = "../terraform/modules/s3"
   prefix             = var.prefix
   environment        = var.environment
   uploader_role_name = module.iam_oidc_role.role_name
@@ -8,7 +10,7 @@ module "s3" {
 }
 
 module "iam_oidc_role" {
-  source                 = "../Terraform/Modules/iam"
+  source                 = "../terraform/modules/iam"
   role_name              = "github-oidc-role"
   assume_role_policy     = data.aws_iam_policy_document.oidc_assume_role.json
   create_custom_policy   = true
@@ -45,6 +47,7 @@ data "aws_iam_policy_document" "oidc_policy" {
     effect = "Allow"
     actions = [
       "acm:*",
+      "application-autoscaling:*",
       "autoscaling:*",
       "bedrock:*",
       "cloudfront:*",
@@ -61,6 +64,7 @@ data "aws_iam_policy_document" "oidc_policy" {
       "s3:*",
       "sns:*",
       "sts:*",
+      "wafv2:*",
     ]
     resources = [
       "*"
@@ -69,6 +73,6 @@ data "aws_iam_policy_document" "oidc_policy" {
 }
 
 module "ecr" {
-  source          = "../Terraform/Modules/ecr"
+  source          = "../terraform/modules/ecr"
   repository_name = "${var.prefix}-ecr-repo"
 }

@@ -4,6 +4,8 @@ locals {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_vpc_endpoint" "this" {
   for_each            = toset(var.service_names)
   vpc_id              = var.vpc_id

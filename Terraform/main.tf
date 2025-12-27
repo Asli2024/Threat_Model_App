@@ -1,5 +1,5 @@
 module "vpc" {
-  source                     = "../Terraform/Modules/vpc"
+  source                     = "../terraform/modules/vpc"
   vpc_cidr_block             = var.vpc_cidr_block
   enable_dns_support         = var.enable_dns_support
   enable_dns_hostnames       = var.enable_dns_hostnames
@@ -11,7 +11,7 @@ module "vpc" {
 }
 
 module "gateway_endpoints" {
-  source          = "../Terraform/Modules/gateway_endpoint"
+  source          = "../terraform/modules/gateway_endpoint"
   vpc_id          = module.vpc.vpc_id
   service_names   = var.gateway_endpoints
   route_table_ids = [module.vpc.private_route_table_id]
@@ -19,7 +19,7 @@ module "gateway_endpoints" {
 }
 
 module "interface_endpoints" {
-  source              = "../Terraform/Modules/interface_endpoint"
+  source              = "../terraform/modules/interface_endpoint"
   vpc_id              = module.vpc.vpc_id
   service_names       = var.interface_endpoints
   subnet_ids          = module.vpc.private_subnet_ids
@@ -30,7 +30,7 @@ module "interface_endpoints" {
 }
 
 module "vpce_sg" {
-  source         = "../Terraform/Modules/security_groups"
+  source         = "../terraform/modules/security_groups"
   vpc_id         = module.vpc.vpc_id
   sg_name        = "${var.environment}-VPCE-SG"
   sg_description = "Security group for Interface VPC Endpoints"
@@ -58,8 +58,9 @@ module "vpce_sg" {
     }
   ]
 }
+
 module "alb_sg" {
-  source         = "../Terraform/Modules/security_groups"
+  source         = "../terraform/modules/security_groups"
   vpc_id         = module.vpc.vpc_id
   sg_name        = "${var.environment}-ALB-SG"
   sg_description = "ALB security group"
@@ -89,7 +90,7 @@ module "alb_sg" {
 }
 
 module "application_sg" {
-  source         = "../Terraform/Modules/security_groups"
+  source         = "../terraform/modules/security_groups"
   vpc_id         = module.vpc.vpc_id
   sg_name        = "${var.environment}-APP-SG"
   sg_description = "Application security group for ECS service"
@@ -121,7 +122,7 @@ module "application_sg" {
 }
 
 module "cloudfront" {
-  source              = "../Terraform/Modules/cloudfront"
+  source              = "../terraform/modules/cloudfront"
   acm_certificate_arn = data.aws_acm_certificate.cloudfront_cert.arn
   aliases             = var.aliases
 
@@ -130,16 +131,18 @@ module "cloudfront" {
   waf_acl     = module.waf_acl.waf_arn
   price_class = "PriceClass_100"
 }
+
 module "route53_new_zone" {
-  source                 = "../Terraform/Modules/route53"
+  source                 = "../terraform/modules/route53"
   domain_name            = var.domain_name
   parent_domain_name     = var.parent_domain_name
   dns_name               = module.cloudfront.domain_name
   zone_id                = module.cloudfront.hosted_zone_id
   evaluate_target_health = false
 }
+
 module "alb" {
-  source                = "../Terraform/Modules/alb"
+  source                = "../terraform/modules/alb"
   vpc_id                = module.vpc.vpc_id
   security_group_id     = module.alb_sg.security_group_id
   private_subnet_ids    = module.vpc.private_subnet_ids
@@ -152,7 +155,7 @@ module "alb" {
 }
 
 module "acm_alb" {
-  source             = "../Terraform/Modules/acm"
+  source             = "../terraform/modules/acm"
   domain_name        = var.domain_name
   zone_id            = module.route53_new_zone.hosted_zone_id
   dns_ttl            = var.dns_ttl
@@ -160,7 +163,7 @@ module "acm_alb" {
 }
 
 module "ecs" {
-  source                    = "../Terraform/Modules/ecs"
+  source                    = "../terraform/modules/ecs"
   subnet_ids                = module.vpc.private_subnet_ids
   security_group_id         = module.application_sg.security_group_id
   cluster_name              = var.cluster_name
@@ -190,7 +193,7 @@ module "ecs" {
 }
 
 module "ecs_execution_role" {
-  source                 = "../Terraform/Modules/iam"
+  source                 = "../terraform/modules/iam"
   role_name              = "${var.environment}-ecs-execution-roles"
   assume_role_policy     = data.aws_iam_policy_document.ecs_execution_assume_role.json
   create_custom_policy   = true
@@ -255,13 +258,14 @@ data "aws_iam_policy_document" "ecs_execution_policy" {
 }
 
 module "ecs_task_role" {
-  source                 = "../Terraform/Modules/iam"
+  source                 = "../terraform/modules/iam"
   role_name              = "${var.environment}-dictionary-task-role"
   assume_role_policy     = data.aws_iam_policy_document.ecs_execution_assume_role.json
   create_custom_policy   = true
   custom_policy_name     = "${var.environment}-translate-policy"
   custom_policy_document = data.aws_iam_policy_document.translate_policy.json
 }
+
 data "aws_iam_policy_document" "translate_policy" {
   statement {
     effect = "Allow"
@@ -274,6 +278,7 @@ data "aws_iam_policy_document" "translate_policy" {
       "arn:aws:bedrock:${var.region}::foundation-model/${var.bedrock_model_id}"
     ]
   }
+
   statement {
     effect = "Allow"
     actions = [
@@ -293,6 +298,7 @@ data "aws_iam_policy_document" "translate_policy" {
       "arn:aws:dynamodb:us-east-1:${data.aws_caller_identity.current.account_id}:table/dictionary-words-${var.environment}"
     ]
   }
+
   statement {
     effect = "Allow"
     actions = [
@@ -301,12 +307,10 @@ data "aws_iam_policy_document" "translate_policy" {
       "kms:GenerateDataKey"
     ]
 
-
     resources = compact([
       module.dynamodb.kms_key_arn,
       module.dynamodb.kms_replica_key_arn_use1
     ])
-
 
     condition {
       test     = "StringEquals"
@@ -320,7 +324,7 @@ data "aws_iam_policy_document" "translate_policy" {
 }
 
 module "waf_acl" {
-  source = "../Terraform/Modules/waf"
+  source = "../terraform/modules/waf"
   providers = {
     aws = aws.use1
   }
@@ -329,13 +333,13 @@ module "waf_acl" {
 }
 
 module "dynamodb" {
-  source          = "../Terraform/Modules/dynamodb"
+  source          = "../terraform/modules/dynamodb"
   table_name      = "dictionary-words-${var.environment}"
   replica_regions = var.replica_regions
 }
 
 module "cloudwatch_dashboard" {
-  source = "../Terraform/Modules/cloudwatch_dashboard"
+  source = "../terraform/modules/cloudwatch_dashboard"
 
   dashboard_name          = "${var.environment}-dictionary-dashboards"
   region                  = var.region
@@ -348,7 +352,7 @@ module "cloudwatch_dashboard" {
 }
 
 module "cloudwatch_alarms" {
-  source      = "../Terraform/Modules/cloudwatch_alarm"
+  source      = "../terraform/modules/cloudwatch_alarm"
   environment = var.environment
   alarm_email = var.alarm_email
 

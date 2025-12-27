@@ -2,6 +2,10 @@ locals {
   service_name_effective = length(trimspace(var.service_name)) > 0 ? var.service_name : (length(trimspace(var.family)) > 0 ? "${var.family}-service" : "ecs-service")
 }
 
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
   setting {
