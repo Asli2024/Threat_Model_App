@@ -18,6 +18,6 @@ repos:
       exclude: ^bootstrap/
     - id: terraform_docs
       files: (\.tf|\.tfvars|\.hcl|Terraform/README\.md)$
-      exclude: ^bootstrap/
+      exclude: (^bootstrap/,^README\.md$)
     - id: terraform_trivy
       exclude: ^bootstrap/

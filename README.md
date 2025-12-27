@@ -176,8 +176,6 @@ All workflows are located in `.github/workflows/`.
 
 [Terraform Destroy Apply](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223): ![Terraform Destroy Apply](images/terraform-destroy-apply.png)
 
-
-
 ---
 
 ## Contributing
