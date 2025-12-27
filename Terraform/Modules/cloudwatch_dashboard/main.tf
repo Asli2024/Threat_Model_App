@@ -3,9 +3,7 @@ resource "aws_cloudwatch_dashboard" "main" {
 
   dashboard_body = jsonencode({
     widgets = [
-      ############################################
-      # ECS: CPU (AWS/ECS)
-      ############################################
+
       {
         type   = "metric"
         width  = 12
@@ -22,9 +20,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # ECS: Memory (AWS/ECS)
-      ############################################
       {
         type   = "metric"
         width  = 12
@@ -41,9 +36,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # ECS: Running vs Desired vs Pending tasks (ECS/ContainerInsights)
-      ############################################
       {
         type   = "metric"
         width  = 24
@@ -61,9 +53,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # ALB: RequestCount
-      ############################################
       {
         type   = "metric"
         width  = 12
@@ -78,9 +67,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # ALB: 5XX errors (Target + ELB)
-      ############################################
       {
         type   = "metric"
         width  = 12
@@ -97,9 +83,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # ALB: Latency + Health
-      ############################################
       {
         type   = "metric"
         width  = 24
@@ -117,9 +100,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # DynamoDB: Throttles + Errors
-      ############################################
       {
         type   = "metric"
         width  = 12
@@ -137,9 +117,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # DynamoDB: Consumed Capacity (reads/writes)
-      ############################################
       {
         type   = "metric"
         width  = 12
@@ -156,9 +133,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         }
       },
 
-      ############################################
-      # DynamoDB: Latency
-      ############################################
       {
         type   = "metric"
         width  = 24

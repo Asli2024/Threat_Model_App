@@ -47,6 +47,7 @@ No modules.
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Project or team prefix | `string` | `""` | no |
 | <a name="input_random_length"></a> [random\_length](#input\_random\_length) | Length of random suffix | `number` | `6` | no |
 | <a name="input_resource"></a> [resource](#input\_resource) | Type of resource, e.g., s3, vpc, alb | `string` | `"s3"` | no |
+| <a name="input_s3_kms_key_alias_name"></a> [s3\_kms\_key\_alias\_name](#input\_s3\_kms\_key\_alias\_name) | The alias name for the KMS key used for S3 bucket encryption (must start with alias/) | `string` | `"alias/s3-bucket-kms-keys"` | no |
 | <a name="input_transition_to_deep_glacier_days"></a> [transition\_to\_deep\_glacier\_days](#input\_transition\_to\_deep\_glacier\_days) | Days after which noncurrent objects transition to DEEP\_ARCHIVE. | `number` | `150` | no |
 | <a name="input_transition_to_glacier_days"></a> [transition\_to\_glacier\_days](#input\_transition\_to\_glacier\_days) | Days after which noncurrent objects transition to GLACIER. | `number` | `60` | no |
 | <a name="input_transition_to_ia_days"></a> [transition\_to\_ia\_days](#input\_transition\_to\_ia\_days) | Days after which noncurrent objects transition to STANDARD\_IA. | `number` | `30` | no |

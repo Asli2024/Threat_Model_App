@@ -9,6 +9,7 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
 data "aws_cloudfront_origin_request_policy" "all_viewer" {
   name = "Managed-AllViewer"
 }
+
 resource "aws_cloudfront_vpc_origin" "alb" {
   vpc_origin_endpoint_config {
     name                   = "english-somali-dictionary-vpc-origin"
@@ -42,6 +43,7 @@ resource "aws_cloudfront_distribution" "this" {
       vpc_origin_id = aws_cloudfront_vpc_origin.alb.id
     }
   }
+
   default_cache_behavior {
     target_origin_id       = "vpc-origin"
     viewer_protocol_policy = "redirect-to-https"
@@ -52,6 +54,7 @@ resource "aws_cloudfront_distribution" "this" {
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   }
+
   ordered_cache_behavior {
     path_pattern           = "/static/*"
     target_origin_id       = "vpc-origin"

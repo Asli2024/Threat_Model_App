@@ -15,6 +15,12 @@ locals {
   }
 }
 
+data "aws_availability_zones" "available" {}
+
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
 resource "aws_vpc" "main_vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = var.enable_dns_support

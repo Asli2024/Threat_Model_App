@@ -45,7 +45,7 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_kms_alias" "this" {
-  name          = "alias/s3-bucket-kms-key-tf"
+  name          = var.s3_kms_key_alias_name
   target_key_id = aws_kms_key.this.id
 }
 
