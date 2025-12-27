@@ -166,16 +166,16 @@ All workflows are located in `.github/workflows/`.
 **Latest Docker Build, Scan , Approve and Push Run:**
 [Docker Build, Scan , Approve and Push Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20532104502)
 
-**Latest Terraform Plan and Approve Run:**
+Latest Terraform Plan and Approve Run:
 [Terraform Plan and Approve Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531602146)
 
-**Latest Terraform Apply Run:**
+Latest Terraform Apply Run:
 [Terraform Apply Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531632706)
 
-**Latest Terraform Destroy Plan and Approve:**
+Latest Terraform Destroy Plan and Approve:
 [Terraform Destroy Plan and Approve](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223)
 
-**Latest Terraform Destroy Apply Run:**
+Latest Terraform Destroy Apply Run:
 [Terraform Destroy Apply](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223)
 
 
