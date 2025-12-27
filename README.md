@@ -165,16 +165,16 @@ All workflows are located in `.github/workflows/`.
 
 [Docker Build, Scan , Approve and Push Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20532104502): ![Docker Build Screenshot](images/docker-build-push.png)
 
-[Terraform Plan and Approve Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531602146):
+[Terraform Plan and Approve Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531602146): ![Terraform Plan and Approve Run](images/terraform-plan-and-approve.png)
 
 
-[Terraform Apply Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531632706):
+[Terraform Apply Run](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531632706): ![Terraform Apply Run](images/terraform-apply.png)
 
 
-[Terraform Destroy Plan and Approve](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223):
+[Terraform Destroy Plan and Approve](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223): ![Terraform Destroy Plan and Approve](images/terraform-destroy-plan-and-approve.png)
 
 
-[Terraform Destroy Apply](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223):
+[Terraform Destroy Apply](https://github.com/Asli2024/English-Somali-Dictionary/actions/runs/20531703223): ![Terraform Destroy Apply](images/terraform-destroy-apply.png)
 
 
 
