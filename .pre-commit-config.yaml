@@ -10,9 +10,14 @@ repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.104.0
     hooks:
-      - id: terraform_fmt
-      - id: terraform_validate
-      - id: terraform_tflint
-      - id: terraform_docs
-        files: (\.tf|\.tfvars|\.hcl|Terraform/README\.md)$
-      - id: terraform_trivy
+    - id: terraform_fmt
+      exclude: ^bootstrap/
+    - id: terraform_validate
+      exclude: ^bootstrap/
+    - id: terraform_tflint
+      exclude: ^bootstrap/
+    - id: terraform_docs
+      files: (\.tf|\.tfvars|\.hcl|Terraform/README\.md)$
+      exclude: ^bootstrap/
+    - id: terraform_trivy
+      exclude: ^bootstrap/
