@@ -32,13 +32,13 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Initializing Terraform..."
           terraform init
 
       - name: Terraform Workspace
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           terraform workspace select -or-create ${{ env.ENVIRONMENT }}
 
@@ -48,10 +48,10 @@ jobs:
           workflow: terraform-plan.yml
           workflow_conclusion: success
           name: tfplan-${{ env.ENVIRONMENT }}
-          path: ./Terraform
+          path: ./terraform
 
       - name: Verify Plan Exists
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           if [ ! -f "tfplan-${{ env.ENVIRONMENT }}" ]; then
               echo "Error: Plan file not found!"
@@ -61,7 +61,7 @@ jobs:
           echo "Plan file found"
 
       - name: Terraform Apply
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Applying Terraform plan for ${{ env.ENVIRONMENT }}..."
           terraform apply -auto-approve tfplan-${{ env.ENVIRONMENT }}

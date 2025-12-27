@@ -48,17 +48,17 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           terraform init
 
       - name: Terraform Workspace
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           terraform workspace select -or-create ${{ github.event.inputs.environment }}
 
       - name: Terraform Destroy Plan
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           terraform plan -destroy -var-file=config/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars -out=tfplan-destroy-${{ github.event.inputs.environment }}
 
@@ -66,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-destroy-${{ github.event.inputs.environment }}
-          path: ./Terraform/tfplan-destroy-${{ github.event.inputs.environment }}
+          path: ./terraform/tfplan-destroy-${{ github.event.inputs.environment }}
           retention-days: 30
 
       - name: Plan Summary

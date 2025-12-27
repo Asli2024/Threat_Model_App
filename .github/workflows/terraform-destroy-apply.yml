@@ -32,12 +32,12 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           terraform init
 
       - name: Terraform Workspace
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           terraform workspace select -or-create ${{ env.ENVIRONMENT }}
 
@@ -47,10 +47,10 @@ jobs:
           workflow: terraform-destroy-plan.yml
           workflow_conclusion: success
           name: tfplan-destroy-${{ env.ENVIRONMENT }}
-          path: ./Terraform
+          path: ./terraform
 
       - name: Verify Destroy Plan Exists
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           if [ ! -f "tfplan-destroy-${{ env.ENVIRONMENT }}" ]; then
               echo "Error: Destroy plan file not found!"
@@ -60,7 +60,7 @@ jobs:
           echo "Destroy plan file found"
 
       - name: Terraform Destroy Apply
-        working-directory: ./Terraform
+        working-directory: ./terraform
         run: |
           echo "Applying Terraform destroy plan for ${{ env.ENVIRONMENT }}..."
           terraform apply -auto-approve tfplan-destroy-${{ env.ENVIRONMENT }}
