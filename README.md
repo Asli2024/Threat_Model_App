@@ -15,7 +15,6 @@ The application is designed to run in two modes:
 
 To run the English Somali Dictionary app locally using Docker:
 
-
 1. **Build the Docker image:**
    ```bash
    cd english-dictionary
